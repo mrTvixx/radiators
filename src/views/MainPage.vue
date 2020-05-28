@@ -1,9 +1,17 @@
 <template>
-  <div class="root">Project core</div>
+  <fragment>
+    <Header />
+  </fragment>
 </template>
 
 <script>
-export default {};
+import Header from "../components/Header";
+
+export default {
+  components: {
+    Header
+  }
+};
 </script>
 
 <style scoped>

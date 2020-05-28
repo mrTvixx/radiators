@@ -1,25 +1,10 @@
 <template>
-  <div class="main">
-    <router-view></router-view>
-  </div>
+  <router-view></router-view>
 </template>
-
-<script>
-export default {
-  name: "App",
-  components: {}
-};
-</script>
 
 <style>
 * {
+  text-decoration: none;
   outline: unset;
-}
-body {
-  display: flex;
-  margin: 0px;
-}
-.main {
-  width: 100%;
 }
 </style>
