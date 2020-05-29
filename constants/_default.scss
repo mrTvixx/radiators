@@ -1,0 +1,17 @@
+$project-color: #333;
+$project-bkg: #f2f6fa;
+$project-red: #f12d05;
+
+span, div, a,
+input, button,
+body {
+    margin: 0;
+    padding: 0;
+    color: unset;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    text-decoration: none;
+    outline: unset;
+}
