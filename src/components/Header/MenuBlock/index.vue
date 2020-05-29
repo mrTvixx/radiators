@@ -73,7 +73,10 @@ export default {
 
   .cart {
     font-size: 20px;
-    
+    min-width: 156px;
+    display: flex;
+    align-items: center;
+
     &-svg {
       width: 30px;
       margin: 0 10px 0 0;

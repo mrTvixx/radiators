@@ -77,12 +77,13 @@ export default {
 
   .info {
     font-size: 14px;
+    letter-spacing: .7px;
   }
 
   &__number {
     display: flex;
     flex-flow: column;
-    width: 250px;
+    min-width: 156px;
   }
 
   &__logo {
