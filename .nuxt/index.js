@@ -15,6 +15,7 @@ import { createStore } from './store.js'
 import nuxt_plugin_icon_56cb20d0 from 'nuxt_plugin_icon_56cb20d0' // Source: ../plugins/icon (mode: 'client')
 import nuxt_plugin_fragment_dd1679b2 from 'nuxt_plugin_fragment_dd1679b2' // Source: ../plugins/fragment (mode: 'client')
 import nuxt_plugin_lodash_536ea3a8 from 'nuxt_plugin_lodash_536ea3a8' // Source: ../plugins/lodash (mode: 'client')
+import nuxt_plugin_slider_3bdab910 from 'nuxt_plugin_slider_3bdab910' // Source: ../plugins/slider (mode: 'client')
 
 // Component: <ClientOnly>
 Vue.component(ClientOnly.name, ClientOnly)
@@ -186,6 +187,10 @@ async function createApp (ssrContext) {
 
   if (process.client && typeof nuxt_plugin_lodash_536ea3a8 === 'function') {
     await nuxt_plugin_lodash_536ea3a8(app.context, inject)
+  }
+
+  if (process.client && typeof nuxt_plugin_slider_3bdab910 === 'function') {
+    await nuxt_plugin_slider_3bdab910(app.context, inject)
   }
 
   // If server-side, wait for async component to be resolved first

@@ -1,18 +1,13 @@
 <template>
   <div class="menu-block">
     <div class="products">
-      <Menu
-        :showMenu="showMenu"
-        :options="menuElementsList"
-        :onClose="toggleMenu"
-      >
+      <Menu :showMenu="showMenu" :options="menuElementsList" :onClose="toggleMenu">
         <button @click="toggleMenu" type="button" class="btn">
           <div :class="['burger', {'burger--active': showMenu}]">
             <div :class="['burger-row', {'burger-row--hide': showMenu}]"></div>
             <div class="burger-row"></div>
             <div :class="['burger-row', {'burger-row--hide': showMenu}]"></div>
-          </div>
-          Каталог товаров
+          </div>Каталог товаров
         </button>
       </Menu>
       <div class="search">
@@ -22,7 +17,7 @@
           placeholder="Что искать?"
           v-model="searchValue"
           @focus="search"
-        >
+        />
         <Menu
           :showMenu="list && list.length > 0"
           :options="list"
@@ -39,71 +34,71 @@
 </template>
 
 <script>
-import _ from 'lodash';
-import { mapGetters } from 'vuex';
+import _ from "lodash";
+import { mapGetters } from "vuex";
 
-import Menu from '../../Menu';
-import { GET_PRODUCTS } from '../../../store/actions.type';
-import { CLEAR_SEARCH_PRODUCTS } from '../../../store/mutations.type';
+import Menu from "../../DropMenu";
+import { GET_PRODUCTS } from "../../../store/actions.type";
+import { CLEAR_SEARCH_PRODUCTS } from "../../../store/mutations.type";
 
 export default {
   components: {
-    Menu,
+    Menu
   },
   data() {
     return {
       summ: 23540,
       showMenu: false,
-      searchValue: '',
+      searchValue: "",
       menuElementsList: [
         {
           id: 0,
-          name: 'Радиаторы',
+          name: "Радиаторы"
         },
         {
           id: 1,
-          name: 'Комплектующие',
+          name: "Комплектующие"
         },
         {
           id: 2,
-          name: 'Трубы',
+          name: "Трубы"
         },
         {
           id: 3,
-          name: 'Системы защиты от протечек',
-        },
+          name: "Системы защиты от протечек"
+        }
       ],
       items: [
         {
           id: 0,
-          title: 'Радиаторы',
+          title: "Радиаторы"
         },
         {
           id: 1,
-          title: 'Трубы',
+          title: "Трубы"
         },
         {
           id: 2,
-          title: 'Комплектующие',
+          title: "Комплектующие"
         },
         {
           id: 3,
-          title: 'Системы защиты от протечек воды',
-        },
+          title: "Системы защиты от протечек воды"
+        }
       ]
-    }
+    };
   },
   watch: {
     searchValue() {
       this.debouncedSearch();
-    },
+    }
   },
   filters: {
     financFormat(value) {
-      return `${(value).toLocaleString('ru')}р.`;
+      return `${value.toLocaleString("ru")}р.`;
     }
   },
-  computed: mapGetters(['list']),
+  computed: mapGetters(["list"]),
   methods: {
     search() {
       this.$store.dispatch(GET_PRODUCTS, { name: this.searchValue, limit: 5 });
@@ -115,10 +110,10 @@ export default {
       this.$store.commit(CLEAR_SEARCH_PRODUCTS);
     }
   },
-  created () {
+  created() {
     this.debouncedSearch = _.debounce(this.search, 350);
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -144,7 +139,7 @@ export default {
 
   .search {
     background-color: white;
-    box-shadow: 0px 0px 0px .5px rgba(0,0,0,0.20);
+    box-shadow: 0px 0px 0px 0.5px rgba(0, 0, 0, 0.2);
     border-radius: 0 12px 12px 0;
     width: calc(100% - 210px);
 
@@ -172,7 +167,7 @@ export default {
     align-items: center;
     background-color: $project-red;
     color: white;
-    box-shadow: 0px 0px 0px 1px rgba(0,0,0,0.20);
+    box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.2);
     border-radius: 12px 0 0 12px;
     display: flex;
     justify-content: space-between;
@@ -198,7 +193,7 @@ export default {
     flex-flow: column;
     margin: 0 20px 0 0;
     justify-content: space-around;
-    transition: .3s;
+    transition: 0.3s;
 
     &--active {
       transform: rotate(180deg);
@@ -209,7 +204,7 @@ export default {
       height: 1px;
       border-radius: 2px;
       border: 2px solid $project-red;
-      transition: .3s;
+      transition: 0.3s;
       box-sizing: border-box;
 
       &--hide {

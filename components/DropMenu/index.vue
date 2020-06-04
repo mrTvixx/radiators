@@ -1,5 +1,5 @@
 <template>
-  <div class="dropdown-container" :style="styleWidthObject">
+  <div class="dropdown" :style="styleWidthObject">
     <div class="dropdown-button">
       <slot></slot>
     </div>
@@ -44,12 +44,10 @@ export default {
 @import "./constants/_default.scss";
 
 .dropdown {
-  &-container {
-    position: relative;
-    display: inline-block;
-    vertical-align: middle;
-  }
-
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  
   &-menu {
     position: absolute;
     top: 100%;

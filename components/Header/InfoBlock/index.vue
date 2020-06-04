@@ -15,7 +15,7 @@
     </nav>
     <span class="company-block__number">
       <a href="tel:+79459999999" class="phone">+7 945 999 99 99</a>
-      <span class="info">Каждый день с 9<sup>00</sup>-20<sup>00</sup></span>
+      <span class="info">Ежедневно с 9<sup>00</sup>-20<sup>00</sup></span>
     </span>
   </div>
 </template>
@@ -75,7 +75,7 @@ export default {
 
   .info {
     font-size: 14px;
-    letter-spacing: .6px;
+    letter-spacing: 1.4px;
   }
 
   &__number {

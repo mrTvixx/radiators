@@ -10,7 +10,7 @@ import { HTTP } from "../common/api.service";
 const getFormattedList = (arr, reg) => {
   const newArr = arr.map((item) => ({
     ...item,
-    name: item.name.toLowerCase().replace(reg.toLowerCase(), `<b>${reg}</b>`)
+    name: item.name.toLowerCase().replace(reg.toLowerCase(), `<b>${reg.toLowerCase()}</b>`)
   }));
 
   return newArr;
