@@ -1,36 +1,39 @@
 <template>
-  <div class="menu-block">
-    <div class="products">
-      <Menu :showMenu="showMenu" :options="menuElementsList" :onClose="toggleMenu">
-        <button @click="toggleMenu" type="button" class="btn">
-          <div :class="['burger', {'burger--active': showMenu}]">
-            <div :class="['burger-row', {'burger-row--hide': showMenu}]"></div>
-            <div class="burger-row"></div>
-            <div :class="['burger-row', {'burger-row--hide': showMenu}]"></div>
-          </div>Каталог товаров
-        </button>
-      </Menu>
-      <div class="search">
-        <input
-          type="text"
-          class="search-field"
-          placeholder="Что искать?"
-          v-model="searchValue"
-          @focus="search"
-        />
-        <Menu
-          :showMenu="list && list.length > 0"
-          :options="list"
-          :onClose="toggleSearchMenu"
-          :styleWidthObject="{ width: '100%'}"
-        />
+  <fragment>
+    <div :class="['menu-block', {'menu-block--fixed': isBlockFixed}]" id="menu-block">
+      <div class="products">
+        <Menu :showMenu="showMenu" :options="menuElementsList" :onClose="toggleMenu">
+          <button @click="toggleMenu" type="button" class="btn">
+            <div :class="['burger', {'burger--active': showMenu}]">
+              <div :class="['burger-row', {'burger-row--hide': showMenu}]"></div>
+              <div class="burger-row"></div>
+              <div :class="['burger-row', {'burger-row--hide': showMenu}]"></div>
+            </div>Каталог товаров
+          </button>
+        </Menu>
+        <div class="search">
+          <input
+            type="text"
+            class="search-field"
+            placeholder="Что искать?"
+            v-model="searchValue"
+            @focus="search"
+          />
+          <Menu
+            :showMenu="list && list.length > 0"
+            :options="list"
+            :onClose="toggleSearchMenu"
+            :styleWidthObject="{ width: '100%'}"
+          />
+        </div>
+      </div>
+      <div class="cart">
+        <v-icon class="cart-svg" name="shopping-cart"></v-icon>
+        {{ summ | financFormat}}
       </div>
     </div>
-    <div class="cart">
-      <v-icon class="cart-svg" name="shopping-cart"></v-icon>
-      {{ summ | financFormat}}
-    </div>
-  </div>
+    <div v-if="isBlockFixed" class="blank-block" />
+  </fragment>
 </template>
 
 <script>
@@ -49,6 +52,8 @@ export default {
     return {
       summ: 23540,
       showMenu: false,
+      searchElement: null,
+      isBlockFixed: false,
       searchValue: "",
       menuElementsList: [
         {
@@ -108,10 +113,22 @@ export default {
     },
     toggleSearchMenu() {
       this.$store.commit(CLEAR_SEARCH_PRODUCTS);
+    },
+    changeSearchType() {
+      if (this.searchElement) {
+        this.isBlockFixed = this.searchElement.scrollTop > 65;
+      }
     }
   },
   created() {
     this.debouncedSearch = _.debounce(this.search, 350);
+  },
+  mounted() {
+    document.addEventListener("scroll", this.changeSearchType);
+    this.searchElement = document.documentElement;
+  },
+  destroyed() {
+    document.removeEventListener("scroll", this.changeSearchType);
   }
 };
 </script>
@@ -119,14 +136,29 @@ export default {
 <style lang="scss" scoped>
 @import "./constants/_default.scss";
 
+.blank-block {
+  height: 67px;
+}
+
 .menu-block {
-  padding: 15px 0 0 0;
+  padding: 25px 0 0 0;
   display: flex;
   justify-content: space-between;
 
+  &--fixed {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    left: 0;
+    z-index: 1;
+    background-color: $project-bkg;
+    padding: 20px 0 10px 50px;
+    display: flex;
+    justify-content: space-between;
+  }
+
   .cart {
     cursor: pointer;
-    font-size: 20px;
     min-width: 156px;
     display: flex;
     align-items: center;
@@ -140,15 +172,14 @@ export default {
   .search {
     background-color: white;
     box-shadow: 0px 0px 0px 0.5px rgba(0, 0, 0, 0.2);
-    border-radius: 0 12px 12px 0;
+    border-radius: 0 5px 5px 0;
     width: calc(100% - 210px);
 
     &-field {
       height: 100%;
       width: calc(100% - 10px);
-      border-radius: 0 12px 12px 0;
+      border-radius: 0 5px 5px 0;
       padding: 0 0 0 10px;
-      font-size: 18px;
       color: $project-color;
     }
   }
@@ -168,12 +199,11 @@ export default {
     background-color: $project-red;
     color: white;
     box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.2);
-    border-radius: 12px 0 0 12px;
+    border-radius: 5px 0 0 5px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 10px 0 10px;
-    font-size: 20px;
     font-weight: 500;
 
     & div {

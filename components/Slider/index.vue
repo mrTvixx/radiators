@@ -33,7 +33,7 @@ export default {
 @import "./constants/_default.scss";
 
 .slider {
-  padding: 25px 0 25px 0;
+  padding: 30px 0 30px 0;
   position: relative;
 
   .cart-svg {
@@ -73,7 +73,7 @@ export default {
     color: white;
     font-size: 46px;
     text-align: center;
-    border-radius: 12px;
+    border-radius: 5px;
   }
 
   &-track {

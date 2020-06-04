@@ -1,13 +1,15 @@
 <template>
-  <fragment>
-    <Header />
-    <main class="main">
-      <Slider />
-      <article>
-        <Catalog />
-      </article>
-    </main>
-  </fragment>
+  <no-ssr>
+    <fragment>
+      <Header />
+      <main class="main">
+        <Slider />
+        <article>
+          <Catalog />
+        </article>
+      </main>
+    </fragment>
+  </no-ssr>
 </template>
 
 <script>
@@ -31,7 +33,7 @@ export default {
 
 .main {
   max-width: 1300px;
-  width: 100%;
+  width: calc(100% - 20px);
   margin: 0 auto;
 }
 </style>

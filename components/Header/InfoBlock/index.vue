@@ -1,7 +1,8 @@
 <template>
   <div class="company-block">
     <router-link to="/" class="company-block__logo">
-      Дом<span class="red">В</span>Тепле
+      Дом
+      <span class="red">В</span>Тепле
     </router-link>
     <nav class="company-block__menu">
       <router-link
@@ -9,13 +10,15 @@
         :key="item.id"
         class="company-block__menu-item"
         :to="item.link"
-      >
-        {{item.title}}
-      </router-link>
+      >{{item.title}}</router-link>
     </nav>
     <span class="company-block__number">
       <a href="tel:+79459999999" class="phone">+7 945 999 99 99</a>
-      <span class="info">Ежедневно с 9<sup>00</sup>-20<sup>00</sup></span>
+      <span class="info">
+        Ежедневно с 9
+        <sup>00</sup>-20
+        <sup>00</sup>
+      </span>
     </span>
   </div>
 </template>
@@ -27,38 +30,38 @@ export default {
       linksList: [
         {
           id: 0,
-          link: '/warranty',
-          title: 'Гарантии',
+          link: "/warranty",
+          title: "Гарантии"
         },
         {
           id: 1,
-          link: '/payment',
-          title: 'Оплата',
+          link: "/payment",
+          title: "Оплата"
         },
         {
           id: 2,
-          link: '/delivery',
-          title: 'Доставка',
+          link: "/delivery",
+          title: "Доставка"
         },
         {
           id: 3,
-          link: '/return',
-          title: 'Возврат',
+          link: "/return",
+          title: "Возврат"
         },
         {
           id: 4,
-          link: '/contacts',
-          title: 'Контакты',
+          link: "/contacts",
+          title: "Контакты"
         },
         {
           id: 5,
-          link: '/about',
-          title: 'О компании',
-        },
+          link: "/about",
+          title: "О компании"
+        }
       ]
-    }
-  },
-}
+    };
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -70,12 +73,13 @@ export default {
   justify-content: space-between;
 
   .red {
-    color: $project-red
+    color: $project-red;
+    font-size: inherit;
   }
 
   .info {
-    font-size: 14px;
-    letter-spacing: 1.4px;
+    font-size: 0.9rem;
+    letter-spacing: 0.1px;
   }
 
   &__number {
@@ -86,8 +90,8 @@ export default {
 
   &__logo {
     cursor: pointer;
-    min-width: 200px;
-    font-size: 36px;
+    min-width: 210px;
+    font-size: 2.3rem;
     font-weight: 500;
   }
 
@@ -96,10 +100,9 @@ export default {
     width: 100%;
     display: flex;
     padding: 0 0 6px 30px;
-    align-items: center;
+    align-items: flex-end;
 
     &-item {
-      font-size: 18px;
       padding: 0 15px 0 0;
       color: $project-color;
       transition: 0.3s;
@@ -113,6 +116,6 @@ export default {
 
 .phone {
   color: $project-red;
-  font-size: 22px;
+  font-size: 1.24rem;
 }
 </style>
