@@ -144,6 +144,7 @@ export default {
   padding: 25px 0 0 0;
   display: flex;
   justify-content: space-between;
+  box-sizing: border-box;
 
   &--fixed {
     position: fixed;
@@ -152,7 +153,7 @@ export default {
     left: 0;
     z-index: 1;
     background-color: $project-bkg;
-    padding: 20px 0 10px 50px;
+    padding: 20px 35px 10px 50px;
     display: flex;
     justify-content: space-between;
   }
@@ -162,6 +163,10 @@ export default {
     min-width: 156px;
     display: flex;
     align-items: center;
+
+    &--fixed {
+      margin: 0 20px 0 20px;
+    }
 
     &-svg {
       width: 30px;

@@ -1,7 +1,7 @@
 <template>
-  <section class="catalog">
-    <span class="catalog__title">Каталог</span>
-    <div class="catalog__list">
+  <div class="catalog">
+    <h1 class="catalog__title">Каталог</h1>
+    <section class="catalog__list">
       <CatalogElement
         v-for="item in catalogList"
         :key="item.id"
@@ -9,12 +9,15 @@
         :link="item.link"
         :image="item.img"
       />
-    </div>
-  </section>
+    </section>
+    <CatalogText />
+  </div>
 </template>
 
 <script>
 import CatalogElement from "./CatalogElement";
+import CatalogText from './CatalogText';
+
 import RadiatorImage from "../../assets/images/radiator.jpg";
 import ComponentImage from "../../assets/images/component.jpg";
 import PipesImage from "../../assets/images/pipes.jpg";
@@ -22,7 +25,8 @@ import ProtectImage from "../../assets/images/protect.png";
 
 export default {
   components: {
-    CatalogElement
+    CatalogElement,
+    CatalogText
   },
   data() {
     return {
@@ -74,7 +78,7 @@ export default {
   }
 
   &__list {
-    padding: 30px 0 50px 0;
+    padding: 30px 0 70px 0;
     display: flex;
     justify-content: space-between;
   }

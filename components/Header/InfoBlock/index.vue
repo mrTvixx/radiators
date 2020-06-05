@@ -1,8 +1,9 @@
 <template>
   <div class="company-block">
     <router-link to="/" class="company-block__logo">
-      Дом
-      <span class="red">В</span>Тепле
+      <span>Дом</span>
+      <span class="red">В</span>
+      <span>Тепле</span>
     </router-link>
     <nav class="company-block__menu">
       <router-link
@@ -75,6 +76,8 @@ export default {
   .red {
     color: $project-red;
     font-size: inherit;
+    font-size: 2.3rem;
+    margin: 0 -4px 0 -4px;
   }
 
   .info {
@@ -91,8 +94,11 @@ export default {
   &__logo {
     cursor: pointer;
     min-width: 210px;
-    font-size: 2.3rem;
-    font-weight: 500;
+
+    span {
+      font-size: 2.3rem;
+      font-weight: 500;
+    }
   }
 
   &__menu {
