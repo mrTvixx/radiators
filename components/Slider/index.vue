@@ -1,6 +1,6 @@
 <template>
   <div class="slider">
-    <hooper ref="carousel" :autoPlay="false" :playSpeed="10000">
+    <hooper ref="carousel" :autoPlay="true" :playSpeed="5000">
       <slide>Slide content 1</slide>
       <slide>Slide content 2</slide>
       <slide>Slide content 3</slide>

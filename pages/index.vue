@@ -1,27 +1,22 @@
 <template>
-  <no-ssr>
+  <PageTemplate>
     <fragment>
-      <Header />
-      <main class="main">
-        <Slider />
-        <article>
-          <Catalog />
-        </article>
-      </main>
+      <Slider />
+      <Catalog />
     </fragment>
-  </no-ssr>
+  </PageTemplate>
 </template>
 
 <script>
-import Header from "../components/Header";
+import PageTemplate from "../components/PageTemplate";
 import Slider from "../components/Slider";
 import Catalog from "../components/Catalog";
 
 export default {
   components: {
-    Header,
     Slider,
-    Catalog
+    Catalog,
+    PageTemplate
   }
 };
 </script>

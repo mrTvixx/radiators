@@ -16,12 +16,9 @@
 
 <script>
 import CatalogElement from "./CatalogElement";
-import CatalogText from './CatalogText';
+import CatalogText from "./CatalogText";
 
-import RadiatorImage from "../../assets/images/radiator.jpg";
-import ComponentImage from "../../assets/images/component.jpg";
-import PipesImage from "../../assets/images/pipes.jpg";
-import ProtectImage from "../../assets/images/protect.png";
+import { catalog } from "../../constants/links";
 
 export default {
   components: {
@@ -30,38 +27,7 @@ export default {
   },
   data() {
     return {
-      catalogList: [
-        {
-          id: 0,
-          title: "Радиоторы",
-          link: "/radiator",
-          img: RadiatorImage
-        },
-        {
-          id: 1,
-          title: "Запорно регулирующая арматура",
-          link: "/components",
-          img: ComponentImage
-        },
-        {
-          id: 2,
-          title: "Трубы и фитинги",
-          link: "/pipes",
-          img: PipesImage
-        },
-        // {
-        //   id: 3,
-        //   title: 'Краны',
-        //   link: '/crane',
-        //   img: '',
-        // },
-        {
-          id: 4,
-          title: "Системы защиты от протечек воды",
-          link: "/protect",
-          img: ProtectImage
-        }
-      ]
+      catalogList: catalog
     };
   }
 };

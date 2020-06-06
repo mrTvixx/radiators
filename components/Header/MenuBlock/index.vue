@@ -156,6 +156,7 @@ export default {
     padding: 20px 35px 10px 50px;
     display: flex;
     justify-content: space-between;
+    box-shadow: 0 0 15px -5px rgba(0, 0, 0, 0.2);
   }
 
   .cart {

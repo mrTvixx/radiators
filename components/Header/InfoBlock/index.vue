@@ -25,41 +25,12 @@
 </template>
 
 <script>
+import { links } from "../../../constants/links";
+
 export default {
   data() {
     return {
-      linksList: [
-        {
-          id: 0,
-          link: "/warranty",
-          title: "Гарантии"
-        },
-        {
-          id: 1,
-          link: "/payment",
-          title: "Оплата"
-        },
-        {
-          id: 2,
-          link: "/delivery",
-          title: "Доставка"
-        },
-        {
-          id: 3,
-          link: "/return",
-          title: "Возврат"
-        },
-        {
-          id: 4,
-          link: "/contacts",
-          title: "Контакты"
-        },
-        {
-          id: 5,
-          link: "/about",
-          title: "О компании"
-        }
-      ]
+      linksList: links
     };
   }
 };

@@ -16,7 +16,7 @@ export default {
   },
   head () {
     return {
-      title: "ТеплоВДом",
+      title: "ДомВТепле",
       meta: [
         { hid: 'description', name: 'description', content: `
           Купить радиаторы, системы защиты от протечек воды, трубы и комплекующие в Москве.
