@@ -126,33 +126,5 @@ export default {
       }
     }
   }
-
-  // &__menu {
-  //   max-width: 600px;
-  //   height: 110px;
-  //   width: 100%;
-  //   display: flex;
-  //   flex-flow: column;
-  //   justify-content: space-around;
-
-  //   &-links {
-  //     height: 100px;
-  //     display: flex;
-  //     flex-wrap: wrap;
-
-  //     &-item {
-  //       color: $project-color;
-  //       transition: 0.3s;
-  //       font-size: 1rem;
-  //       padding: 10px 0 10px 0;
-  //       height: 18px;
-  //       width: 90px;
-
-  //       &:hover {
-  //         color: $project-red;
-  //       }
-  //     }
-  //   }
-  // }
 }
 </style>
