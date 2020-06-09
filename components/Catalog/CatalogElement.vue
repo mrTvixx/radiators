@@ -29,6 +29,7 @@ export default {
   &__title {
     text-align: center;
     height: 40px;
+    font-size: 1rem;
   }
 
   &__image {
@@ -38,6 +39,14 @@ export default {
   &:hover {
     box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.3);
     transform: translateY(-1px);
+  }
+}
+
+@media (max-width: 1000px) {
+  .cart {
+    margin: 70px 0 0 0;
+    width: 650px;
+    height: 920px;
   }
 }
 </style>

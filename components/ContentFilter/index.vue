@@ -14,14 +14,14 @@
     </div>
     <div class="row">
       <span class="title">
-        <b>Межосевое расстояние (мм):</b>
+        <b>Межосевое расстояние:</b>
       </span>
       <div class="content">
         От
         <input type="number" v-model="minOs" />
         до
         <input type="number" v-model="maxOs" />
-        р.
+        мм.
       </div>
     </div>
   </div>

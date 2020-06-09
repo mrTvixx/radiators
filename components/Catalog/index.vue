@@ -38,7 +38,7 @@ export default {
 
 .catalog {
   &__title {
-    font-size: 28px;
+    font-size: 1.7rem;
     color: $project-color;
     font-weight: 600;
   }
@@ -47,6 +47,15 @@ export default {
     padding: 30px 0 70px 0;
     display: flex;
     justify-content: space-between;
+  }
+}
+
+@media (max-width: 1000px) {
+  .catalog {
+    &__list {
+      flex-flow: column;
+      align-items: center;
+    }
   }
 }
 </style>

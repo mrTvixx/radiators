@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
+    "dev": "cross-env NUXT_HOST=0.0.0.0 NUXT_PORT=3333 nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate"
@@ -30,6 +30,7 @@
     "@vue/cli-service": "^4.2.0",
     "babel-eslint": "^10.0.3",
     "bp-vuejs-dropdown": "^2.1.1",
+    "cross-env": "^7.0.2",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.1.2",
     "node-sass": "^4.13.1",

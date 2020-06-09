@@ -95,4 +95,12 @@ export default {
   color: $project-red;
   font-size: 1.24rem;
 }
+
+@media (max-width: 1000px) {
+  .company-block {
+    &__menu {
+      display: none;
+    }
+  }
+}
 </style>

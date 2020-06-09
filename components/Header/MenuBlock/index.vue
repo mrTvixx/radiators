@@ -2,13 +2,14 @@
   <fragment>
     <div :class="['menu-block', {'menu-block--fixed': isBlockFixed}]" id="menu-block">
       <div class="products">
-        <Menu :showMenu="showMenu" :options="menuElementsList" :onClose="toggleMenu">
+        <Menu field="title" :showMenu="showMenu" :options="menuElementsList" :onClose="toggleMenu">
           <button @click="toggleMenu" type="button" class="btn">
             <div :class="['burger', {'burger--active': showMenu}]">
               <div :class="['burger-row', {'burger-row--hide': showMenu}]"></div>
               <div class="burger-row"></div>
               <div :class="['burger-row', {'burger-row--hide': showMenu}]"></div>
-            </div>Каталог товаров
+            </div>
+            <span class="burger-title">Каталог товаров</span>
           </button>
         </Menu>
         <div class="search">
@@ -33,6 +34,19 @@
       </div>
     </div>
     <div v-if="isBlockFixed" class="blank-block" />
+    <div :class="['sidebar', { 'sidebar--open': showBar }]">
+      <div class="sidebar-menu">
+        <div class="sidebar-header">
+          <b>Каталог</b>
+          <div class="sidebar-close" @click="toggleMenu">X</div>
+        </div>
+        <ul>
+          <li v-for="item in menuElementsList" :key="item.id">
+            <router-link :to="item.link">{{item.title}}</router-link>
+          </li>
+        </ul>
+      </div>
+    </div>
   </fragment>
 </template>
 
@@ -43,6 +57,7 @@ import { mapGetters } from "vuex";
 import Menu from "../../DropMenu";
 import { GET_PRODUCTS } from "../../../store/actions.type";
 import { CLEAR_SEARCH_PRODUCTS } from "../../../store/mutations.type";
+import { catalog } from "../../../constants/links";
 
 export default {
   components: {
@@ -52,45 +67,11 @@ export default {
     return {
       summ: 23540,
       showMenu: false,
+      showBar: false,
       searchElement: null,
       isBlockFixed: false,
       searchValue: "",
-      menuElementsList: [
-        {
-          id: 0,
-          name: "Радиаторы"
-        },
-        {
-          id: 1,
-          name: "Комплектующие"
-        },
-        {
-          id: 2,
-          name: "Трубы"
-        },
-        {
-          id: 3,
-          name: "Системы защиты от протечек"
-        }
-      ],
-      items: [
-        {
-          id: 0,
-          title: "Радиаторы"
-        },
-        {
-          id: 1,
-          title: "Трубы"
-        },
-        {
-          id: 2,
-          title: "Комплектующие"
-        },
-        {
-          id: 3,
-          title: "Системы защиты от протечек воды"
-        }
-      ]
+      menuElementsList: catalog
     };
   },
   watch: {
@@ -109,7 +90,11 @@ export default {
       this.$store.dispatch(GET_PRODUCTS, { name: this.searchValue, limit: 5 });
     },
     toggleMenu() {
-      this.showMenu = !this.showMenu;
+      if (document.documentElement.clientWidth > 1000) {
+        this.showMenu = !this.showMenu;
+      } else {
+        this.showBar = !this.showBar;
+      }
     },
     toggleSearchMenu() {
       this.$store.commit(CLEAR_SEARCH_PRODUCTS);
@@ -140,6 +125,42 @@ export default {
   height: 67px;
 }
 
+.sidebar {
+  position: fixed;
+  transition: 0.5s;
+  top: 0;
+  left: -1000px;
+  height: 100%;
+  width: 80%;
+  z-index: 5;
+  background-color: white;
+  box-shadow: 0 0 15px -2px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+
+  * {
+    font-size: 1.3rem;
+  }
+
+  &-header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &--open {
+    left: 0;
+  }
+
+  &-menu {
+  }
+
+  &-close {
+    cursor: pointer;
+  }
+}
+
 .menu-block {
   padding: 25px 0 0 0;
   display: flex;
@@ -159,11 +180,16 @@ export default {
     box-shadow: 0 0 15px -2px rgba(0, 0, 0, 0.2);
   }
 
+  .search-field {
+    font-size: 1.2rem;
+  }
+
   .cart {
     cursor: pointer;
     min-width: 156px;
     display: flex;
     align-items: center;
+    font-size: 1rem;
 
     &--fixed {
       margin: 0 20px 0 20px;
@@ -231,6 +257,10 @@ export default {
     justify-content: space-around;
     transition: 0.3s;
 
+    &-title {
+      color: white;
+    }
+
     &--active {
       transform: rotate(180deg);
     }
@@ -246,6 +276,43 @@ export default {
       &--hide {
         opacity: 0;
         border-color: transparent;
+      }
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  .menu-block {
+    .burger-title {
+      display: none;
+    }
+
+    .burger {
+      width: 55px;
+      height: 50px;
+      margin: 0;
+
+      &-row {
+        height: 10px;
+        background-color: white;
+        border-radius: 6px;
+      }
+    }
+
+    .btn {
+      width: 75px;
+      height: 70px;
+    }
+
+    .search {
+      width: calc(100% - 30px);
+    }
+
+    .cart {
+      min-width: 270px;
+
+      &-svg {
+        width: 50px;
       }
     }
   }

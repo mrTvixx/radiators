@@ -5,9 +5,9 @@
     </div>
     <ul class="dropdown-menu" v-if="showMenu" :style="styleWidthObject">
       <li
-        v-html="option.name"
+        v-html="option[field || 'name']"
         class="dropdown-menu__element"
-        v-for="option in options" 
+        v-for="option in options"
         :key="option.id"
       />
     </ul>
@@ -16,17 +16,12 @@
 
 <script>
 export default {
-  props: [
-    'options',
-    'showMenu',
-    'onClose',
-    'styleWidthObject',
-  ],
+  props: ["field", "options", "showMenu", "onClose", "styleWidthObject"],
   mounted() {
-    document.addEventListener('click', this.clickHandler);
+    document.addEventListener("click", this.clickHandler);
   },
   beforeDestroy() {
-    document.removeEventListener('click', this.clickHandler);
+    document.removeEventListener("click", this.clickHandler);
   },
   methods: {
     clickHandler(event) {
@@ -35,9 +30,9 @@ export default {
       if (!$el.contains(target) && this.showMenu) {
         this.onClose();
       }
-    },
-  },
-}
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -47,7 +42,7 @@ export default {
   position: relative;
   display: inline-block;
   vertical-align: middle;
-  
+
   &-menu {
     position: absolute;
     top: 100%;
@@ -66,15 +61,21 @@ export default {
 
     &__element {
       cursor: pointer;
-      padding: 10px 0 10px 20px;
+      padding: 10px 20px 10px 20px;
       color: $project-color;
       white-space: nowrap;
+      font-size: 1rem;
 
       &:hover {
         background: $project-bkg;
         color: $project-red;
       }
     }
+  }
+}
+
+@media (max-width: 1000px) {
+  .dropdown {
   }
 }
 </style>
