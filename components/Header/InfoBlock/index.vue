@@ -101,6 +101,14 @@ export default {
     &__menu {
       display: none;
     }
+
+    .info {
+      font-size: 1rem;
+    }
+
+    .phone {
+      font-size: 1.4rem;
+    }
   }
 }
 </style>

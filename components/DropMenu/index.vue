@@ -64,7 +64,7 @@ export default {
       padding: 10px 20px 10px 20px;
       color: $project-color;
       white-space: nowrap;
-      font-size: 1rem;
+      font-size: 1.2rem;
 
       &:hover {
         background: $project-bkg;

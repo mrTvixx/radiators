@@ -129,7 +129,7 @@ export default {
   position: fixed;
   transition: 0.5s;
   top: 0;
-  left: -1000px;
+  left: -100%;
   height: 100%;
   width: 80%;
   z-index: 5;
@@ -283,13 +283,15 @@ export default {
 
 @media (max-width: 1000px) {
   .menu-block {
+    padding: 45px 0 10px 0;
+
     .burger-title {
       display: none;
     }
 
     .burger {
-      width: 55px;
-      height: 50px;
+      width: 80px;
+      height: 75px;
       margin: 0;
 
       &-row {
@@ -300,8 +302,8 @@ export default {
     }
 
     .btn {
-      width: 75px;
-      height: 70px;
+      width: 105px;
+      height: 115px;
     }
 
     .search {
@@ -309,10 +311,11 @@ export default {
     }
 
     .cart {
-      min-width: 270px;
+      min-width: 250px;
+      padding: 0 0 0 20px;
 
       &-svg {
-        width: 50px;
+        width: 60px;
       }
     }
   }

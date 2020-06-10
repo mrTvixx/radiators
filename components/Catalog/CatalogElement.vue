@@ -44,9 +44,18 @@ export default {
 
 @media (max-width: 1000px) {
   .cart {
-    margin: 70px 0 0 0;
-    width: 650px;
+    margin: 70px auto;
+    width: 85%;
     height: 920px;
+
+    &__title {
+      font-size: 1.5rem;
+      height: unset;
+    }
+  }
+
+  a {
+    width: 100%;
   }
 }
 </style>

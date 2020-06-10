@@ -6,26 +6,29 @@
 </template>
 
 <script>
-import InfoBlock from './InfoBlock';
-import MenuBlock from './MenuBlock';
+import InfoBlock from "./InfoBlock";
+import MenuBlock from "./MenuBlock";
 
 export default {
   components: {
     InfoBlock,
-    MenuBlock,
+    MenuBlock
   },
-  head () {
+  head() {
     return {
       title: "ДомВТепле",
       meta: [
-        { hid: 'description', name: 'description', content: `
+        {
+          hid: "description",
+          name: "description",
+          content: `
           Купить радиаторы, системы защиты от протечек воды, трубы и комплекующие в Москве.
           Низкие цены, поставки прямо от производителя.`
-        },
+        }
       ]
-    }
+    };
   }
-}
+};
 </script>
 
 <style lang="scss">
@@ -34,5 +37,11 @@ export default {
 header {
   padding: 10px 35px 10px 50px;
   background-color: $project-bkg;
+}
+
+@media (max-width: 1000px) {
+  header {
+    padding: 10px 10px 10px 10px;
+  }
 }
 </style>
