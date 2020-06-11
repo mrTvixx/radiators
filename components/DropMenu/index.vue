@@ -4,16 +4,13 @@
       <slot></slot>
     </div>
     <ul class="dropdown-menu" v-if="showMenu" :style="styleWidthObject">
-      <li
-        v-html="option[field || 'name']"
-        class="dropdown-menu__element"
-        v-for="option in options"
-        :key="option.id"
-      />
+      <li class="dropdown-menu__element" v-for="option in options" :key="option.id">
+        <router-link :to="option.link">{{option[field || 'name']}}</router-link>
+      </li>
     </ul>
   </div>
 </template>
-
+//  допилить подсветку активной ссылки и закрытие при нажатии на активную ссылку 
 <script>
 export default {
   props: ["field", "options", "showMenu", "onClose", "styleWidthObject"],
@@ -68,14 +65,11 @@ export default {
 
       &:hover {
         background: $project-bkg;
-        color: $project-red;
+        a {
+          color: $project-red;
+        }
       }
     }
-  }
-}
-
-@media (max-width: 1000px) {
-  .dropdown {
   }
 }
 </style>

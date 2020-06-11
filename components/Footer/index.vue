@@ -63,6 +63,10 @@ export default {
     font-size: 0.8rem;
   }
 
+  span {
+    font-size: 1rem;
+  }
+
   hr {
     margin: 0;
   }
@@ -123,6 +127,24 @@ export default {
         &:hover {
           color: $project-red;
         }
+      }
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  .footer {
+    .row {
+      flex-flow: column;
+    }
+
+    &__catalog,
+    &__menu {
+      max-width: 100%;
+      height: 100%;
+
+      &-links {
+        padding: 5px 0 50px 0;
       }
     }
   }

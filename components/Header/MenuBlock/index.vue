@@ -290,7 +290,7 @@ export default {
     }
 
     .burger {
-      width: 80px;
+      width: 85px;
       height: 75px;
       margin: 0;
 
