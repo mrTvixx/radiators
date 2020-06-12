@@ -80,4 +80,10 @@ export default {
     outline: none;
   }
 }
+
+@media (max-width: 720px) {
+  .hooper {
+    height: 250px;
+  }
+}
 </style>

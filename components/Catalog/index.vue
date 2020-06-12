@@ -8,6 +8,7 @@
         :title="item.title"
         :link="item.link"
         :image="item.img"
+        :alt="item.title"
       />
     </section>
     <CatalogText />
@@ -44,13 +45,22 @@ export default {
   }
 
   &__list {
-    padding: 30px 0 70px 0;
+    flex-wrap: wrap;
+    padding: 10px 0 70px 0;
     display: flex;
     justify-content: space-between;
   }
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 830px) {
+  .catalog {
+    &__list {
+      justify-content: space-around;
+    }
+  }
+}
+
+@media (max-width: 720px) {
   .catalog {
     &__list {
       flex-flow: column;

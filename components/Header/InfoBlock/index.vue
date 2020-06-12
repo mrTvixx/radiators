@@ -96,18 +96,34 @@ export default {
   font-size: 1.24rem;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 720px) {
   .company-block {
     &__menu {
       display: none;
     }
 
+    &__number {
+      min-width: 125px;
+    }
+
     .info {
-      font-size: 1rem;
+      font-size: 0.7rem;
     }
 
     .phone {
-      font-size: 1.4rem;
+      font-size: 1rem;
+    }
+
+    &__logo {
+      min-width: 165px;
+
+      span {
+        font-size: 1.8rem;
+      }
+    }
+
+    .red {
+      font-size: 1.8rem;
     }
   }
 }

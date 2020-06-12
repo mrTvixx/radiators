@@ -6,9 +6,9 @@
       </span>
       <div class="content">
         От
-        <input type="number" v-model="min" />
+        <input type="number" v-model="min" :min="min" :max="max" />
         до
-        <input type="number" v-model="max" />
+        <input type="number" v-model="max" :min="min" :max="max" />
         р.
       </div>
     </div>
@@ -18,23 +18,35 @@
       </span>
       <div class="content">
         От
-        <input type="number" v-model="minOs" />
+        <input type="number" v-model="minOs" :min="minOs" :max="maxOs" />
         до
-        <input type="number" v-model="maxOs" />
+        <input type="number" v-model="maxOs" :min="minOs" :max="maxOs" />
         мм.
       </div>
     </div>
     <div class="row">
+      <span class="title">
+        <b>Гарантия:</b>
+      </span>
+      <div class="content">
+        От
+        <input type="number" v-model="minGarant" :min="minGarant" :max="maxGarant" />
+        до
+        <input type="number" v-model="maxGarant" :min="minGarant" :max="maxGarant" />
+        лет
+      </div>
+    </div>
+    <div class="row">
       <span @click="showConnectType = !showConnectType" class="title btn">
-        Тип подключения
+        Тип подключения:
         <v-icon :class="['cart-svg', {'cart-svg--open': showConnectType}]" name="arrow-down"></v-icon>
       </span>
       <div :class="['collapse-content', { 'collapse-content--open-cn': showConnectType }]">
-        <label v-for="item in connectTypes" :key="item.id" :for="item.id">
+        <label v-for="item in connectTypes" :key="item.id" :for="item.id + 'cn'">
           <input
             type="checkbox"
             v-model="selectedTypes"
-            :id="item.id"
+            :id="item.id + 'cn'"
             :value="item.id"
             class="check"
           />
@@ -44,15 +56,15 @@
     </div>
     <div class="row">
       <span @click="showCountry = !showCountry" class="title btn">
-        Страна производитель
+        Страна производитель:
         <v-icon :class="['cart-svg', {'cart-svg--open': showCountry}]" name="arrow-down"></v-icon>
       </span>
       <div :class="['collapse-content', { 'collapse-content--open-ct': showCountry }]">
-        <label v-for="item in countries" :key="item.id" :for="item.id">
+        <label v-for="item in countries" :key="item.id" :for="item.id + 'ct'">
           <input
             type="checkbox"
             v-model="selectedCountries"
-            :id="item.id"
+            :id="item.id + 'ct'"
             :value="item.id"
             class="check"
           />
@@ -62,15 +74,15 @@
     </div>
     <div class="row">
       <span @click="showProducers = !showProducers" class="title btn">
-        Поставщики
+        Поставщики:
         <v-icon :class="['cart-svg', {'cart-svg--open': showProducers}]" name="arrow-down"></v-icon>
       </span>
       <div :class="['collapse-content', { 'collapse-content--open-pr': showProducers }]">
-        <label v-for="item in producers" :key="item.id" :for="item.id">
+        <label v-for="item in producers" :key="item.id" :for="item.id + 'pr'">
           <input
             type="checkbox"
             v-model="selectedProducers"
-            :id="item.id"
+            :id="item.id + 'pr'"
             :value="item.id"
             class="check"
           />
@@ -90,6 +102,8 @@ export default {
       max: 100000,
       minOs: 50,
       maxOs: 500,
+      minGarant: 5,
+      maxGarant: 50,
       showConnectType: false,
       showCountry: false,
       showProducers: false,
@@ -210,7 +224,6 @@ $producersCount: 9;
     height: 0px;
     transition: 0.3s;
     overflow: hidden;
-    box-sizing: border-box;
     display: flex;
     flex-flow: column;
     justify-content: space-around;
@@ -218,13 +231,13 @@ $producersCount: 9;
 
     &--open {
       &-ct {
-        height: $countriesCount * 21px + $countriesCount * 3px;
+        height: $countriesCount * 24px;
       }
       &-cn {
-        height: $connectsCount * 21px + $connectsCount * 3px;
+        height: $connectsCount * 24px;
       }
       &-pr {
-        height: $producersCount * 21px + $producersCount * 3px;
+        height: $producersCount * 24px;
       }
     }
   }

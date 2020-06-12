@@ -1,7 +1,7 @@
 <template>
   <router-link :to="link">
     <div class="cart">
-      <img :src="image" class="cart__image" />
+      <img :alt="title" :src="image" class="cart__image" />
       <span class="cart__title">{{ title }}</span>
     </div>
   </router-link>
@@ -22,6 +22,7 @@ export default {
   display: flex;
   flex-flow: column;
   justify-content: space-between;
+  margin: 10px 0;
   padding: 10px;
   color: $project-color;
   box-shadow: 0 0 14px -5px rgba(0, 0, 0, 0.3);
@@ -33,7 +34,7 @@ export default {
   }
 
   &__image {
-    width: 100%;
+    height: 300px;
   }
 
   &:hover {
@@ -42,16 +43,10 @@ export default {
   }
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 720px) {
   .cart {
-    margin: 70px auto;
+    margin: 25px auto;
     width: 85%;
-    height: 920px;
-
-    &__title {
-      font-size: 1.5rem;
-      height: unset;
-    }
   }
 
   a {

@@ -5,7 +5,7 @@
     </div>
     <ul class="dropdown-menu" v-if="showMenu" :style="styleWidthObject">
       <li class="dropdown-menu__element" v-for="option in options" :key="option.id">
-        <router-link :to="option.link">{{option[field || 'name']}}</router-link>
+        <router-link :to="option.link" v-html="option[field || 'name']" />
       </li>
     </ul>
   </div>
@@ -58,10 +58,15 @@ export default {
 
     &__element {
       cursor: pointer;
-      padding: 10px 20px 10px 20px;
       color: $project-color;
       white-space: nowrap;
       font-size: 1.2rem;
+
+      a {
+        display: inline-block;
+        padding: 10px 20px 10px 20px;
+        width: 100%;
+      }
 
       &:hover {
         background: $project-bkg;

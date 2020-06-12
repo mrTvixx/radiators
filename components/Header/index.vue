@@ -18,6 +18,8 @@ export default {
     return {
       title: "ДомВТепле",
       meta: [
+        { charset: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
         {
           hid: "description",
           name: "description",
@@ -25,7 +27,10 @@ export default {
           Купить радиаторы, системы защиты от протечек воды, трубы и комплекующие в Москве.
           Низкие цены, поставки прямо от производителя.`
         }
-      ]
+      ],
+      htmlAttrs: {
+        lang: "ru"
+      }
     };
   }
 };
@@ -39,7 +44,7 @@ header {
   background-color: $project-bkg;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 720px) {
   header {
     padding: 10px 10px 10px 10px;
   }

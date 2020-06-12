@@ -14,6 +14,7 @@
         </Menu>
         <div class="search">
           <input
+            id="search"
             type="text"
             class="search-field"
             placeholder="Что искать?"
@@ -25,6 +26,7 @@
             :options="list"
             :onClose="toggleSearchMenu"
             :styleWidthObject="{ width: '100%'}"
+            field="name"
           />
         </div>
       </div>
@@ -173,6 +175,7 @@ export default {
     width: 100%;
     left: 0;
     z-index: 1;
+    padding: 8px 11px 10px 10px !important;
     background-color: $project-bkg;
     padding: 20px 35px 10px 50px;
     display: flex;
@@ -281,29 +284,25 @@ export default {
   }
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 720px) {
   .menu-block {
-    padding: 45px 0 10px 0;
+    padding: 20px 0 10px 0;
 
     .burger-title {
       display: none;
     }
 
     .burger {
-      width: 85px;
-      height: 75px;
       margin: 0;
+    }
 
-      &-row {
-        height: 10px;
-        background-color: white;
-        border-radius: 6px;
-      }
+    .products {
+      width: 100%;
     }
 
     .btn {
-      width: 105px;
-      height: 115px;
+      width: 40px;
+      height: 43px;
     }
 
     .search {
@@ -311,12 +310,8 @@ export default {
     }
 
     .cart {
-      min-width: 250px;
-      padding: 0 0 0 20px;
-
-      &-svg {
-        width: 60px;
-      }
+      min-width: 130px;
+      padding: 0 0 0 10px;
     }
   }
 }

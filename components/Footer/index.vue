@@ -132,7 +132,7 @@ export default {
   }
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 720px) {
   .footer {
     .row {
       flex-flow: column;
