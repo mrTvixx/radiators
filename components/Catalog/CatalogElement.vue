@@ -34,7 +34,7 @@ export default {
   }
 
   &__image {
-    height: 300px;
+    height: 290px;
   }
 
   &:hover {

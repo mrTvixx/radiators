@@ -96,12 +96,16 @@ export default {
   font-size: 1.24rem;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 1040px) {
   .company-block {
     &__menu {
       display: none;
     }
+  }
+}
 
+@media (max-width: 720px) {
+  .company-block {
     &__number {
       min-width: 125px;
     }

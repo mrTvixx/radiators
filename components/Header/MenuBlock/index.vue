@@ -21,6 +21,9 @@
             v-model="searchValue"
             @focus="search"
           />
+          <router-link to="/search">
+            <v-icon class="search__loop" name="search"></v-icon>
+          </router-link>
           <Menu
             :showMenu="list && list.length > 0"
             :options="list"
@@ -39,11 +42,19 @@
     <div :class="['sidebar', { 'sidebar--open': showBar }]">
       <div class="sidebar-menu">
         <div class="sidebar-header">
-          <b>Каталог</b>
+          <b>Каталог:</b>
           <div class="sidebar-close" @click="toggleMenu">X</div>
         </div>
         <ul>
           <li v-for="item in menuElementsList" :key="item.id">
+            <router-link :to="item.link">{{item.title}}</router-link>
+          </li>
+        </ul>
+        <div class="sidebar-header">
+          <b>Навигация:</b>
+        </div>
+        <ul>
+          <li v-for="item in navElemensList" :key="item.id">
             <router-link :to="item.link">{{item.title}}</router-link>
           </li>
         </ul>
@@ -59,7 +70,7 @@ import { mapGetters } from "vuex";
 import Menu from "../../DropMenu";
 import { GET_PRODUCTS } from "../../../store/actions.type";
 import { CLEAR_SEARCH_PRODUCTS } from "../../../store/mutations.type";
-import { catalog } from "../../../constants/links";
+import { catalog, links } from "../../../constants/links";
 
 export default {
   components: {
@@ -73,7 +84,8 @@ export default {
       searchElement: null,
       isBlockFixed: false,
       searchValue: "",
-      menuElementsList: catalog
+      menuElementsList: catalog,
+      navElemensList: links
     };
   },
   watch: {
@@ -92,7 +104,7 @@ export default {
       this.$store.dispatch(GET_PRODUCTS, { name: this.searchValue, limit: 5 });
     },
     toggleMenu() {
-      if (document.documentElement.clientWidth > 1000) {
+      if (document.documentElement.clientWidth > 1040) {
         this.showMenu = !this.showMenu;
       } else {
         this.showBar = !this.showBar;
@@ -133,7 +145,7 @@ export default {
   top: 0;
   left: -100%;
   height: 100%;
-  width: 80%;
+  width: 55%;
   z-index: 5;
   background-color: white;
   box-shadow: 0 0 15px -2px rgba(0, 0, 0, 0.2);
@@ -141,6 +153,10 @@ export default {
   display: flex;
   justify-content: space-between;
   font-size: 1rem;
+
+  &-menu {
+    width: 100%;
+  }
 
   * {
     font-size: 1.3rem;
@@ -153,9 +169,6 @@ export default {
 
   &--open {
     left: 0;
-  }
-
-  &-menu {
   }
 
   &-close {
@@ -175,7 +188,7 @@ export default {
     width: 100%;
     left: 0;
     z-index: 1;
-    padding: 8px 11px 10px 10px !important;
+    padding: 10px 35px 10px 50px;
     background-color: $project-bkg;
     padding: 20px 35px 10px 50px;
     display: flex;
@@ -209,6 +222,19 @@ export default {
     box-shadow: 0px 0px 0px 0.5px rgba(0, 0, 0, 0.2);
     border-radius: 0 5px 5px 0;
     width: calc(100% - 210px);
+    position: relative;
+
+    &__loop {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 25px;
+      height: 100%;
+      padding: 0 10px;
+      background-color: white;
+      border-radius: 0 5px 5px 0;
+      cursor: pointer;
+    }
 
     &-field {
       height: 100%;
@@ -226,7 +252,7 @@ export default {
 
   .btn {
     width: 210px;
-    height: 40px;
+    height: 43px;
     display: flex;
     cursor: pointer;
     justify-content: space-between;
@@ -284,10 +310,8 @@ export default {
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 1040px) {
   .menu-block {
-    padding: 20px 0 10px 0;
-
     .burger-title {
       display: none;
     }
@@ -296,17 +320,29 @@ export default {
       margin: 0;
     }
 
-    .products {
-      width: 100%;
-    }
-
-    .btn {
-      width: 40px;
-      height: 43px;
-    }
-
     .search {
       width: calc(100% - 30px);
+    }
+    .btn {
+      width: 40px;
+    }
+  }
+}
+
+@media (max-width: 720px) {
+  .sidebar {
+    width: 80%;
+  }
+
+  .menu-block {
+    padding: 20px 0 10px 0;
+
+    &--fixed {
+      padding: 8px 11px 10px 10px !important;
+    }
+
+    .products {
+      width: 100%;
     }
 
     .cart {

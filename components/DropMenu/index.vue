@@ -61,6 +61,7 @@ export default {
       color: $project-color;
       white-space: nowrap;
       font-size: 1.2rem;
+      overflow: hidden;
 
       a {
         display: inline-block;

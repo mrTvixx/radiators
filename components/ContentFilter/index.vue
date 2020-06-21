@@ -90,6 +90,10 @@
         </label>
       </div>
     </div>
+    <div class="row">
+      <button class="filter__apply-btn">Применить</button>
+      <button class="filter__clear-btn">Сбросить</button>
+    </div>
   </div>
 </template>
 
@@ -202,6 +206,9 @@ $producersCount: 9;
   box-shadow: 0 0 15px -2px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-flow: column;
+  height: 100%;
+  position: sticky;
+  top: 80px;
 
   .cart-svg {
     height: 20px;
@@ -209,6 +216,32 @@ $producersCount: 9;
 
     &--open {
       transform: rotate(180deg);
+    }
+  }
+
+  &__apply-btn {
+    border-radius: 5px;
+    height: 40px;
+    color: white;
+    cursor: pointer;
+    background-color: $project-red;
+
+    &:active {
+      box-shadow: inset 0 0 5px 20px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  &__clear-btn {
+    margin: 15px 0 0 0;
+    border-radius: 5px;
+    height: 40px;
+    color: $project-color;
+    cursor: pointer;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+
+    &:active {
+      box-shadow: inset 0 0 5px 0px rgba(0, 0, 0, 0.2);
     }
   }
 

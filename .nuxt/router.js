@@ -5,6 +5,7 @@ import scrollBehavior from './router.scrollBehavior.js'
 
 const _51b6eb76 = () => interopDefault(import('../pages/policy.vue' /* webpackChunkName: "pages/policy" */))
 const _7f12309d = () => interopDefault(import('../pages/radiator.vue' /* webpackChunkName: "pages/radiator" */))
+const _4dd01fbb = () => interopDefault(import('../pages/search.vue' /* webpackChunkName: "pages/search" */))
 const _2717a8e2 = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
 
 // TODO: remove in Nuxt 3
@@ -31,6 +32,10 @@ export const routerOptions = {
     path: "/radiator",
     component: _7f12309d,
     name: "radiator"
+  }, {
+    path: "/search",
+    component: _4dd01fbb,
+    name: "search"
   }, {
     path: "/",
     component: _2717a8e2,
