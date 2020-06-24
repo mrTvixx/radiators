@@ -84,7 +84,14 @@ export default {
       searchElement: null,
       isBlockFixed: false,
       searchValue: "",
-      menuElementsList: catalog,
+      menuElementsList: [
+        {
+          id: 99,
+          title: "Все товары",
+          link: "/search"
+        },
+        ...catalog
+      ],
       navElemensList: links
     };
   },

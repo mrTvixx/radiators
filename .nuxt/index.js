@@ -16,6 +16,7 @@ import nuxt_plugin_icon_56cb20d0 from 'nuxt_plugin_icon_56cb20d0' // Source: ../
 import nuxt_plugin_fragment_dd1679b2 from 'nuxt_plugin_fragment_dd1679b2' // Source: ../plugins/fragment (mode: 'client')
 import nuxt_plugin_lodash_536ea3a8 from 'nuxt_plugin_lodash_536ea3a8' // Source: ../plugins/lodash (mode: 'client')
 import nuxt_plugin_slider_3bdab910 from 'nuxt_plugin_slider_3bdab910' // Source: ../plugins/slider (mode: 'client')
+import nuxt_plugin_pagination_d793829e from 'nuxt_plugin_pagination_d793829e' // Source: ../plugins/pagination (mode: 'client')
 
 // Component: <ClientOnly>
 Vue.component(ClientOnly.name, ClientOnly)
@@ -191,6 +192,10 @@ async function createApp (ssrContext) {
 
   if (process.client && typeof nuxt_plugin_slider_3bdab910 === 'function') {
     await nuxt_plugin_slider_3bdab910(app.context, inject)
+  }
+
+  if (process.client && typeof nuxt_plugin_pagination_d793829e === 'function') {
+    await nuxt_plugin_pagination_d793829e(app.context, inject)
   }
 
   // If server-side, wait for async component to be resolved first

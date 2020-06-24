@@ -4,15 +4,14 @@
       <ContentFilter />
       <div class="search__block">
         <div class="search__filter">
-          <span class="filter__item filter__item--active">Все</span>
-          <span class="filter__item">Buderus</span>
-          <span class="filter__item">Kermi</span>
-          <span class="filter__item">Refar</span>
+          <span
+            v-for="item in manufacturers"
+            :key="item.id"
+            @click="setManufacturer(item.id)"
+            :class="['filter__item', { 'filter__item--active': item.id === manufacturer}]"
+          >{{item.name}}</span>
         </div>
-        <div v-if="fullProductsList && fullProductsList.length" class="search__list">
-          <ProductPreview v-for="item in fullProductsList" :key="item.id" :product="item" />
-        </div>
-        <div v-else>Ниче не найдено</div>
+        <ProductsList />
       </div>
     </div>
   </PageTemplate>
@@ -25,21 +24,48 @@ import { GET_FULL_PRODUCTS_LIST } from "../store/actions.type";
 import PageTemplate from "../components/PageTemplate";
 import ContentFilter from "../components/ContentFilter";
 import ProductPreview from "../components/ProductPreview";
+import ProductsList from "../components/ProductsList";
 
 export default {
   components: {
     PageTemplate,
     ProductPreview,
-    ContentFilter
+    ContentFilter,
+    ProductsList
+  },
+  data() {
+    return {
+      manufacturer: "",
+      manufacturers: [
+        {
+          id: "",
+          name: "Все"
+        },
+        {
+          id: 1,
+          name: "Kermi"
+        },
+        {
+          id: 2,
+          name: "Buderus"
+        },
+        {
+          id: 3,
+          name: "Refar"
+        }
+      ]
+    };
+  },
+  methods: {
+    setManufacturer(id) {
+      this.manufacturer = id;
+    }
   },
   computed: {
-    ...mapGetters(["reg", "fullProductsList"])
+    ...mapGetters(["searchValue", "fullProductsList"])
   },
   mounted() {
-    this.$store.dispatch(GET_FULL_PRODUCTS_LIST, {
-      name: this.reg || "",
-      productType: 0
-    });
+    this.$store.dispatch(GET_FULL_PRODUCTS_LIST, { productType: "" });
   }
 };
 </script>
@@ -50,7 +76,7 @@ export default {
 .filter {
   &__item {
     background-color: white;
-    color: #f12d05;
+    color: $project-red;
     border-radius: 15px;
     font-size: 18px;
     padding: 3px 20px;
@@ -70,16 +96,14 @@ export default {
   padding: 30px 0;
   display: flex;
 
-  &__block {
-    padding: 0 20px;
-    width: calc(100% - 320px);
+  &__filter {
+    height: 40px;
+    padding: 3px 0;
   }
 
-  &__list {
-    padding: 10px 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+  &__block {
+    padding: 0 20px;
+    width: calc(100% - 360px);
   }
 }
 </style>

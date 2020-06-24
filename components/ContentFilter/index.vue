@@ -91,8 +91,8 @@
       </div>
     </div>
     <div class="row">
-      <button class="filter__apply-btn">Применить</button>
-      <button class="filter__clear-btn">Сбросить</button>
+      <button @click="applyFilter" class="filter__apply-btn">Применить</button>
+      <button @click="clearFilter" class="filter__clear-btn">Сбросить</button>
     </div>
   </div>
 </template>

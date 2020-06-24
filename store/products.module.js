@@ -6,13 +6,21 @@ import {
   CLEAR_SEARCH_PRODUCTS,
   SAVE_PRODUCTS_LIST,
   CLEAR_PRODUCTS_LIST,
+  SAVE_SEARCH_VALUE,
 } from "./mutations.type";
 import { HTTP } from "../common/api.service";
 
-const getFormattedList = (arr, reg) => {
+const ELEMENT_PER_PAGE = 25;
+const getPageCount = (count) => {
+  const pages = Math.ceil(count / ELEMENT_PER_PAGE);
+  if (!Boolean(count % ELEMENT_PER_PAGE)) return pages - 1;
+  return pages;
+}
+
+const getFormattedList = (arr, searchValue) => {
   const newArr = arr.map((item) => ({
     ...item,
-    name: item.name.toLowerCase().replace(reg.toLowerCase(), `<b>${reg.toLowerCase()}</b>`),
+    name: item.name.toLowerCase().replace(searchValue.toLowerCase(), `<b>${searchValue.toLowerCase()}</b>`),
     link: `/product/${item.id}`
   }));
 
@@ -25,19 +33,25 @@ const state = {
   next: null,
   previous: null,
   count: 0,
-  reg: '',
+  searchValue: '',
   isLoading: false,
 };
 
 const getters = {
+  isLoading(state) {
+    return state.isLoading;
+  }, 
   list(state) {
     return state.list;
   },
-  reg(state) {
-    return state.reg;
+  searchValue(state) {
+    return state.searchValue;
   },
   fullProductsList(state) {
     return state.fullProductsList;
+  },
+  pageCount(state) {
+    return getPageCount(state.count);
   }
 };
 
@@ -56,20 +70,27 @@ const actions = {
     await HTTP.get(`/products?name=${name}&limit=${limit}`)
       .then(({ data }) => {
         commit(SAVE_SEARCH_PRODUCTS, {
-          reg: name,
+          searchValue: name,
           ...data
         });
       })
       .catch(err => alert(err));
   },
   async [GET_FULL_PRODUCTS_LIST]({ commit }, payload) {
-    const { name, productType } = payload;
-    await HTTP.get(`/products?name=${name}&type=${productType}`)
+    commit(CLEAR_PRODUCTS_LIST);
+    commit(START_FETCH);
+
+    const { name = '', productType = '', page = 1 } = payload;
+    let url = `/products?name=${name}&limit=${ELEMENT_PER_PAGE}`;
+    if (productType) url += `&type=${productType}`;
+    if (page > 1) url += `&offset=${(page - 1) * ELEMENT_PER_PAGE}`
+    await HTTP.get(url)
       .then(({ data }) => {
         commit(SAVE_PRODUCTS_LIST, {
-          reg: name,
+          searchValue: name,
           ...data
         });
+        commit(END_FETCH);
       })
       .catch(err => alert(err));
   }
@@ -82,26 +103,30 @@ const mutations = {
   [END_FETCH](state) {
     state.isLoading = false;
   },
-  [SAVE_SEARCH_PRODUCTS](state, { reg, ...data }) {
-    state.list = getFormattedList(data.results, reg);
+  [SAVE_SEARCH_PRODUCTS](state, { searchValue, ...data }) {
+    state.list = getFormattedList(data.results, searchValue);
   },
-  [SAVE_PRODUCTS_LIST](state, { reg, ...data }) {
+  [SAVE_SEARCH_VALUE](state, value) {
+    state.searchValue = value;
+  },
+  [SAVE_PRODUCTS_LIST](state, { searchValue, ...data }) {
     state.fullProductsList = data.results;
     state.next = data.next;
     state.previous = data.prev;
     state.count = data.count;
-    state.reg = reg;
+    state.searchValue = searchValue;
   },
   [CLEAR_SEARCH_PRODUCTS](state) {
     state.list = [];
-    state.reg = '';
+    state.searchValue = '';
+    state.fullProductsList = [];
   },
   [CLEAR_PRODUCTS_LIST](state) {
     state.fullProductsList = [];
     state.next = null;
     state.previous = null;
     state.count = 0;
-    state.reg = '';
+    state.searchValue = '';
   }
 };
 
