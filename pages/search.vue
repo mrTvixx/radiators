@@ -65,7 +65,7 @@ export default {
     ...mapGetters(["searchValue", "fullProductsList"])
   },
   mounted() {
-    this.$store.dispatch(GET_FULL_PRODUCTS_LIST, { productType: "" });
+    this.$store.dispatch(GET_FULL_PRODUCTS_LIST);
   }
 };
 </script>

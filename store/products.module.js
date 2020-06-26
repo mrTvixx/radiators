@@ -40,7 +40,7 @@ const state = {
 const getters = {
   isLoading(state) {
     return state.isLoading;
-  }, 
+  },
   list(state) {
     return state.list;
   },
@@ -76,14 +76,32 @@ const actions = {
       })
       .catch(err => alert(err));
   },
-  async [GET_FULL_PRODUCTS_LIST]({ commit }, payload) {
+  async [GET_FULL_PRODUCTS_LIST]({ commit }, payload = {}) {
     commit(CLEAR_PRODUCTS_LIST);
     commit(START_FETCH);
 
-    const { name = '', productType = '', page = 1 } = payload;
+    const {
+      name = '',
+      productType = null,
+      page = 1,
+      price = null,
+      os = null,
+      garant = null,
+      countries = null,
+      types = null,
+      producers = null,
+    } = payload;
+    console.log('here_payload', payload);
     let url = `/products?name=${name}&limit=${ELEMENT_PER_PAGE}`;
-    if (productType) url += `&type=${productType}`;
-    if (page > 1) url += `&offset=${(page - 1) * ELEMENT_PER_PAGE}`
+    if (productType !== null) url += `&type=${productType}`;
+    if (page > 1) url += `&offset=${(page - 1) * ELEMENT_PER_PAGE}`;
+    if (price) url += `&price=${price.min},${price.max}`;
+    if (garant) url += `&garant=${garant.min},${garant.max}`;
+    if (os) url += `&os=${os.min},${os.max}`;
+    if (countries && countries.length) url += `&countries=${countries.join(',')}`;
+    if (types && types.length) url += `&types=${types.join(',')}`;
+    if (producers && producers.length) url += `&producers=${producers.join(',')}`;
+
     await HTTP.get(url)
       .then(({ data }) => {
         commit(SAVE_PRODUCTS_LIST, {

@@ -7,7 +7,7 @@
     />
     <span class="product__manufacturer">{{ getManufacturName(product.manufacturer) }}</span>
     <b class="product__title">{{product.name}}</b>
-    {{product.priceNds | withPrice}}
+    {{product.price_nds | withPrice}}
     <button class="product__button">В корзину</button>
   </div>
 </template>

@@ -12,7 +12,7 @@
         р.
       </div>
     </div>
-    <div class="row">
+    <div v-if="currentPath === '/radiator'" class="row">
       <span class="title">
         <b>Межосевое расстояние:</b>
       </span>
@@ -36,12 +36,17 @@
         лет
       </div>
     </div>
-    <div class="row">
-      <span @click="showConnectType = !showConnectType" class="title btn">
+    <div v-if="currentPath === '/radiator'" class="row">
+      <span name="showConnectType" @click="toggleCollapse" class="title btn">
         Тип подключения:
-        <v-icon :class="['cart-svg', {'cart-svg--open': showConnectType}]" name="arrow-down"></v-icon>
+        <v-icon
+          :class="['cart-svg', {'cart-svg--open': toggled === 'showConnectType'}]"
+          name="arrow-down"
+        ></v-icon>
       </span>
-      <div :class="['collapse-content', { 'collapse-content--open-cn': showConnectType }]">
+      <div
+        :class="['collapse-content', { 'collapse-content--open-cn': toggled === 'showConnectType' }]"
+      >
         <label v-for="item in connectTypes" :key="item.id" :for="item.id + 'cn'">
           <input
             type="checkbox"
@@ -55,11 +60,16 @@
       </div>
     </div>
     <div class="row">
-      <span @click="showCountry = !showCountry" class="title btn">
+      <span name="showCountry" @click="toggleCollapse" class="title btn">
         Страна производитель:
-        <v-icon :class="['cart-svg', {'cart-svg--open': showCountry}]" name="arrow-down"></v-icon>
+        <v-icon
+          :class="['cart-svg', {'cart-svg--open': toggled === 'showCountry'}]"
+          name="arrow-down"
+        ></v-icon>
       </span>
-      <div :class="['collapse-content', { 'collapse-content--open-ct': showCountry }]">
+      <div
+        :class="['collapse-content', { 'collapse-content--open-ct': toggled === 'showCountry' }]"
+      >
         <label v-for="item in countries" :key="item.id" :for="item.id + 'ct'">
           <input
             type="checkbox"
@@ -73,11 +83,16 @@
       </div>
     </div>
     <div class="row">
-      <span @click="showProducers = !showProducers" class="title btn">
+      <span name="showProducers" @click="toggleCollapse" class="title btn">
         Поставщики:
-        <v-icon :class="['cart-svg', {'cart-svg--open': showProducers}]" name="arrow-down"></v-icon>
+        <v-icon
+          :class="['cart-svg', {'cart-svg--open': toggled === 'showProducers'}]"
+          name="arrow-down"
+        ></v-icon>
       </span>
-      <div :class="['collapse-content', { 'collapse-content--open-pr': showProducers }]">
+      <div
+        :class="['collapse-content', { 'collapse-content--open-pr': toggled === 'showProducers' }]"
+      >
         <label v-for="item in producers" :key="item.id" :for="item.id + 'pr'">
           <input
             type="checkbox"
@@ -98,19 +113,20 @@
 </template>
 
 <script>
+import { GET_FULL_PRODUCTS_LIST } from "../../store/actions.type";
+
 export default {
   components: {},
   data() {
     return {
+      currentPath: "",
       min: 0,
       max: 100000,
       minOs: 50,
       maxOs: 500,
       minGarant: 5,
       maxGarant: 50,
-      showConnectType: false,
-      showCountry: false,
-      showProducers: false,
+      toggled: "",
       selectedCountries: [],
       selectedTypes: [],
       selectedProducers: [],
@@ -189,6 +205,68 @@ export default {
         }
       ]
     };
+  },
+  mounted() {
+    this.currentPath = this.$route.path;
+  },
+  watch: {
+    min() {
+      if (Number(this.min) > Number(this.max)) this.max = this.min;
+    },
+    minOs() {
+      if (Number(this.minOs) > Number(this.maxOs)) this.maxOs = this.minOs;
+    },
+    minGarant() {
+      if (Number(this.minGarant) > Number(this.maxGarant))
+        this.maxGarant = this.minGarant;
+    }
+  },
+  methods: {
+    toggleCollapse({ target }) {
+      const name = target.getAttribute("name");
+
+      this.toggled = this.toggled === name ? "" : name;
+    },
+    clearFilter() {
+      this.min = 0;
+      this.max = 100000;
+      this.minOs = 50;
+      this.maxOs = 500;
+      this.minGarant = 5;
+      this.maxGarant = 50;
+      this.selectedCountries = [];
+      this.selectedTypes = [];
+      this.selectedProducers = [];
+
+      this.applyFilter();
+    },
+    applyFilter() {
+      let data = {
+        price: {
+          min: this.min || 0,
+          max: this.max || 100000
+        },
+        garant: {
+          min: this.minGarant || 5,
+          max: this.maxGarant || 50
+        },
+        countries: this.selectedCountries,
+        producers: this.selectedProducers
+      };
+
+      if (this.currentPath === "/radiator") {
+        data = {
+          ...data,
+          os: {
+            min: this.minOs || 50,
+            max: this.maxOs || 500
+          },
+          types: this.selectedTypes
+        };
+      }
+
+      this.$store.dispatch(GET_FULL_PRODUCTS_LIST, data);
+    }
   }
 };
 </script>
