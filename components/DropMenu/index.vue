@@ -4,7 +4,12 @@
       <slot></slot>
     </div>
     <ul class="dropdown-menu" v-if="showMenu" :style="styleWidthObject">
-      <li class="dropdown-menu__element" v-for="option in options" :key="option.id">
+      <li
+        @click="() => onLinkClick(option['originalName'])"
+        class="dropdown-menu__element"
+        v-for="option in options"
+        :key="option.id"
+      >
         <router-link :to="option.link" v-html="option[field || 'name']" />
       </li>
     </ul>
@@ -13,7 +18,14 @@
 //  допилить подсветку активной ссылки и закрытие при нажатии на активную ссылку 
 <script>
 export default {
-  props: ["field", "options", "showMenu", "onClose", "styleWidthObject"],
+  props: {
+    field: {},
+    options: {},
+    showMenu: {},
+    onClose: {},
+    onSelect: {},
+    styleWidthObject: {}
+  },
   mounted() {
     document.addEventListener("click", this.clickHandler);
   },
@@ -27,6 +39,9 @@ export default {
       if (!$el.contains(target) && this.showMenu) {
         this.onClose();
       }
+    },
+    onLinkClick(data) {
+      this.onClose();
     }
   }
 };

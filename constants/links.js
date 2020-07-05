@@ -39,7 +39,7 @@ export const links = [
 export const catalog = [
   {
     id: 0,
-    title: "Радиоторы",
+    title: "Радиаторы",
     link: "/radiator",
     img: RadiatorImage
   },

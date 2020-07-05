@@ -237,7 +237,8 @@ export default {
       this.selectedCountries = [];
       this.selectedTypes = [];
       this.selectedProducers = [];
-
+      this.toggled = "";
+ 
       this.applyFilter();
     },
     applyFilter() {
@@ -261,7 +262,8 @@ export default {
             min: this.minOs || 50,
             max: this.maxOs || 500
           },
-          types: this.selectedTypes
+          types: this.selectedTypes,
+          productType: 0
         };
       }
 

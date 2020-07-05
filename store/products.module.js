@@ -1,4 +1,8 @@
-import { GET_PRODUCTS, GET_FULL_PRODUCTS_LIST } from "./actions.type";
+import {
+  GET_PRODUCTS,
+  GET_FULL_PRODUCTS_LIST,
+  GET_PRODUCT_DATA,
+} from "./actions.type";
 import {
   START_FETCH,
   END_FETCH,
@@ -7,6 +11,12 @@ import {
   SAVE_PRODUCTS_LIST,
   CLEAR_PRODUCTS_LIST,
   SAVE_SEARCH_VALUE,
+  SAVE_PRODUCT_DATA,
+  CLEAR_PRODUCT_DATA,
+  ADD_TO_CART,
+  REMOVE_FROM_CART,
+  CHANGE_PRODUCT_COUNT,
+  CHECK_CART_DATA,
 } from "./mutations.type";
 import { HTTP } from "../common/api.service";
 
@@ -20,6 +30,7 @@ const getPageCount = (count) => {
 const getFormattedList = (arr, searchValue) => {
   const newArr = arr.map((item) => ({
     ...item,
+    originalName: item.name,
     name: item.name.toLowerCase().replace(searchValue.toLowerCase(), `<b>${searchValue.toLowerCase()}</b>`),
     link: `/product/${item.id}`
   }));
@@ -35,11 +46,16 @@ const state = {
   count: 0,
   searchValue: '',
   isLoading: false,
+  productData: {},
+  cart: [],
 };
 
 const getters = {
   isLoading(state) {
     return state.isLoading;
+  },
+  productData(state) {
+    return state.productData;
   },
   list(state) {
     return state.list;
@@ -52,6 +68,23 @@ const getters = {
   },
   pageCount(state) {
     return getPageCount(state.count);
+  },
+  cart(state) {
+    return state.cart;
+  },
+  cartCount(state) {
+    return state.cart.length;
+  },
+  cartIds(state) {
+    return state.cart.map((item) => item.id);
+  },
+  cartTotalPrice(state) {
+    if (!state.cart.length) return 0;
+    const totalPrice = state.cart.reduce((acc, item) => {
+      acc += Number(item.price_nds) * Number(item.count);
+      return acc;
+    }, 0);
+    return totalPrice;
   }
 };
 
@@ -76,6 +109,16 @@ const actions = {
       })
       .catch(err => alert(err));
   },
+  async [GET_PRODUCT_DATA]({ commit }, payload) {
+    commit(CLEAR_PRODUCT_DATA);
+    commit(START_FETCH);
+
+    await HTTP.get(`/products/${payload}`)
+      .then(({ data }) => {
+        commit(SAVE_PRODUCT_DATA, data);
+      })
+      .catch(err => alert(err));
+  },
   async [GET_FULL_PRODUCTS_LIST]({ commit }, payload = {}) {
     commit(CLEAR_PRODUCTS_LIST);
     commit(START_FETCH);
@@ -91,7 +134,7 @@ const actions = {
       types = null,
       producers = null,
     } = payload;
-    console.log('here_payload', payload);
+
     let url = `/products?name=${name}&limit=${ELEMENT_PER_PAGE}`;
     if (productType !== null) url += `&type=${productType}`;
     if (page > 1) url += `&offset=${(page - 1) * ELEMENT_PER_PAGE}`;
@@ -121,6 +164,12 @@ const mutations = {
   [END_FETCH](state) {
     state.isLoading = false;
   },
+  [SAVE_PRODUCT_DATA](state, data) {
+    state.productData = data;
+  },
+  [CLEAR_PRODUCT_DATA](state) {
+    state.productData = {};
+  },
   [SAVE_SEARCH_PRODUCTS](state, { searchValue, ...data }) {
     state.list = getFormattedList(data.results, searchValue);
   },
@@ -137,7 +186,6 @@ const mutations = {
   [CLEAR_SEARCH_PRODUCTS](state) {
     state.list = [];
     state.searchValue = '';
-    state.fullProductsList = [];
   },
   [CLEAR_PRODUCTS_LIST](state) {
     state.fullProductsList = [];
@@ -145,6 +193,46 @@ const mutations = {
     state.previous = null;
     state.count = 0;
     state.searchValue = '';
+  },
+  [ADD_TO_CART](state, product) {
+    const currentCart = state.cart;
+    const targetProduct = currentCart.find((item) => item.id === product.id);
+    if (targetProduct) return;
+    const newCart = [
+      ...currentCart,
+      {
+        ...product,
+        count: 1,
+      }
+    ];
+    
+    localStorage.setItem('cart', JSON.stringify(newCart));
+    state.cart = newCart;
+  },
+  [REMOVE_FROM_CART](state, productId) {
+    const currentCart = state.cart;
+    const newCart = currentCart.filter((item) => item.id !== productId);
+    
+    localStorage.setItem('cart', JSON.stringify(newCart));
+    state.cart = newCart;
+  },
+  [CHECK_CART_DATA](state) {
+    const cartData = localStorage.getItem('cart');
+    if (!cartData) return;
+    state.cart = JSON.parse(cartData);
+  },
+  [CHANGE_PRODUCT_COUNT](state, { id, value }) {
+    const currentCart = state.cart;
+    const newCart = currentCart.map((item) => {
+      const newItem = { ...item };
+      if (newItem.id === id) {
+        newItem.count = value;
+      }
+      return newItem;
+    });
+
+    localStorage.setItem('cart', JSON.stringify(newCart));
+    state.cart = newCart;
   }
 };
 

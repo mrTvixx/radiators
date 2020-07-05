@@ -33,10 +33,11 @@
           />
         </div>
       </div>
-      <div class="cart">
+      <router-link to="/cart" class="cart">
         <v-icon class="cart-svg" name="shopping-cart"></v-icon>
-        {{ summ | financFormat}}
-      </div>
+        {{ cartTotalPrice | financFormat}}
+        <span class="cart__count">{{cartCount}}</span>
+      </router-link>
     </div>
     <div v-if="isBlockFixed" class="blank-block" />
     <div :class="['sidebar', { 'sidebar--open': showBar }]">
@@ -69,7 +70,10 @@ import { mapGetters } from "vuex";
 
 import Menu from "../../DropMenu";
 import { GET_PRODUCTS } from "../../../store/actions.type";
-import { CLEAR_SEARCH_PRODUCTS } from "../../../store/mutations.type";
+import {
+  CLEAR_SEARCH_PRODUCTS,
+  CHECK_CART_DATA
+} from "../../../store/mutations.type";
 import { catalog, links } from "../../../constants/links";
 
 export default {
@@ -78,7 +82,6 @@ export default {
   },
   data() {
     return {
-      summ: 23540,
       showMenu: false,
       showBar: false,
       searchElement: null,
@@ -101,11 +104,11 @@ export default {
     }
   },
   filters: {
-    financFormat(value) {
+    financFormat(value = 0) {
       return `${value.toLocaleString("ru")}р.`;
     }
   },
-  computed: mapGetters(["list"]),
+  computed: mapGetters(["list", "cartCount", "cartTotalPrice"]),
   methods: {
     search() {
       this.$store.dispatch(GET_PRODUCTS, { name: this.searchValue, limit: 5 });
@@ -130,6 +133,7 @@ export default {
     this.debouncedSearch = _.debounce(this.search, 350);
   },
   mounted() {
+    this.$store.commit(CHECK_CART_DATA);
     document.addEventListener("scroll", this.changeSearchType);
     this.searchElement = document.documentElement;
   },
@@ -213,6 +217,18 @@ export default {
     display: flex;
     align-items: center;
     font-size: 1rem;
+    position: relative;
+
+    &__count {
+      position: absolute;
+      top: 0;
+      left: 0;
+      font-size: 13px;
+      background-color: $project-red;
+      color: white;
+      padding: 1px 4px;
+      border-radius: 50%;
+    }
 
     &--fixed {
       margin: 0 20px 0 20px;

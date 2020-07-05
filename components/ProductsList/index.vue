@@ -43,10 +43,14 @@ export default {
   computed: {
     ...mapGetters(["fullProductsList", "pageCount", "isLoading"])
   },
+  watch: {
+    fullProductsList() {
+      window.scrollTo(0, 0);
+    }
+  },
   methods: {
     handlePagination(page) {
       this.$store.dispatch(GET_FULL_PRODUCTS_LIST, { page });
-      window.scrollTo(0, 0);
     }
   }
 };

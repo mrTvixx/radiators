@@ -6,14 +6,19 @@
       :alt="product.image && product.image.name"
     />
     <span class="product__manufacturer">{{ getManufacturName(product.manufacturer) }}</span>
-    <b class="product__title">{{product.name}}</b>
-    {{product.price_nds | withPrice}}
-    <button class="product__button">В корзину</button>
+    <router-link :to="`/product/${product.id}`" class="product__title">{{product.name}}</router-link>
+    <b class="product__price">{{product.price_nds | withPrice}}</b>
+    <button
+      :class="['product__button', {'product__button--active': cartIds.includes(product .id)}]"
+      @click="() => addToCart(product)"
+    >{{getName()}}</button>
   </div>
 </template>
 
 <script>
 import { getManufacturName } from "../../utils";
+import { ADD_TO_CART, REMOVE_FROM_CART } from "../../store/mutations.type";
+import { mapGetters } from "vuex";
 
 export default {
   props: {
@@ -23,11 +28,22 @@ export default {
     }
   },
   methods: {
-    getManufacturName: getManufacturName
+    getManufacturName: getManufacturName,
+    addToCart({ id, price_nds, name, image }) {
+      if (this.cartIds.includes(this.product.id)) {
+        this.$store.commit(REMOVE_FROM_CART, id);
+      } else {
+        this.$store.commit(ADD_TO_CART, { id, price_nds, name, image });
+      }
+    },
+    getName() {
+      return this.cartIds.includes(this.product.id) ? "Удалить" : "В корзину";
+    }
   },
+  computed: mapGetters(["cartIds"]),
   filters: {
     withPrice(value) {
-      return `Цена: ${Math.floor(value).toLocaleString("ru-RU")}р.`;
+      return `Цена: ${Math.floor(value).toLocaleString("ru-RU")} ₽.`;
     }
   }
 };
@@ -45,6 +61,10 @@ export default {
   padding: 5px 10px;
   justify-content: space-between;
 
+  &__price {
+    padding: 4px 0;
+  }
+
   &__image {
     max-width: 100%;
     max-height: 235px;
@@ -57,6 +77,13 @@ export default {
 
   &__title {
     margin: 10px 0;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.1s;
+
+    &:hover {
+      color: $project-red;
+    }
   }
 
   &__button {
@@ -67,6 +94,11 @@ export default {
     background-color: white;
     margin: 10px 0;
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+
+    &--active {
+      color: white;
+      background-color: $project-red;
+    }
 
     &:active {
       box-shadow: inset 0 0 5px 20px rgba(0, 0, 0, 0.2);
