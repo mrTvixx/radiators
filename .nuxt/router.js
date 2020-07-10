@@ -8,7 +8,7 @@ const _11c35bf3 = () => interopDefault(import('../pages/cart.vue' /* webpackChun
 const _c1724bb4 = () => interopDefault(import('../pages/contacts.vue' /* webpackChunkName: "pages/contacts" */))
 const _7ab5dd47 = () => interopDefault(import('../pages/delivery.vue' /* webpackChunkName: "pages/delivery" */))
 const _3327c583 = () => interopDefault(import('../pages/payment.vue' /* webpackChunkName: "pages/payment" */))
-const _51b6eb76 = () => interopDefault(import('../pages/policy.vue' /* webpackChunkName: "pages/policy" */))
+const _2ed7b3f6 = () => interopDefault(import('../pages/privacy.vue' /* webpackChunkName: "pages/privacy" */))
 const _7f12309d = () => interopDefault(import('../pages/radiator.vue' /* webpackChunkName: "pages/radiator" */))
 const _7046197a = () => interopDefault(import('../pages/return.vue' /* webpackChunkName: "pages/return" */))
 const _4dd01fbb = () => interopDefault(import('../pages/search.vue' /* webpackChunkName: "pages/search" */))
@@ -53,9 +53,9 @@ export const routerOptions = {
     component: _3327c583,
     name: "payment"
   }, {
-    path: "/policy",
-    component: _51b6eb76,
-    name: "policy"
+    path: "/privacy",
+    component: _2ed7b3f6,
+    name: "privacy"
   }, {
     path: "/radiator",
     component: _7f12309d,

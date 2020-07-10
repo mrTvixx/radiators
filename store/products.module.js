@@ -144,7 +144,7 @@ const actions = {
     if (countries && countries.length) url += `&countries=${countries.join(',')}`;
     if (types && types.length) url += `&types=${types.join(',')}`;
     if (producers && producers.length) url += `&producers=${producers.join(',')}`;
-
+    // url += '/'
     await HTTP.get(url)
       .then(({ data }) => {
         commit(SAVE_PRODUCTS_LIST, {
@@ -205,14 +205,14 @@ const mutations = {
         count: 1,
       }
     ];
-    
+
     localStorage.setItem('cart', JSON.stringify(newCart));
     state.cart = newCart;
   },
   [REMOVE_FROM_CART](state, productId) {
     const currentCart = state.cart;
     const newCart = currentCart.filter((item) => item.id !== productId);
-    
+
     localStorage.setItem('cart', JSON.stringify(newCart));
     state.cart = newCart;
   },
