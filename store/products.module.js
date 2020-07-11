@@ -2,6 +2,7 @@ import {
   GET_PRODUCTS,
   GET_FULL_PRODUCTS_LIST,
   GET_PRODUCT_DATA,
+  SEND_ORDER,
 } from "./actions.type";
 import {
   START_FETCH,
@@ -106,6 +107,28 @@ const actions = {
           searchValue: name,
           ...data
         });
+      })
+      .catch(err => alert(err));
+  },
+  async [SEND_ORDER]({ commit, state }, payload) {
+    commit(START_FETCH);
+    const formData = new FormData();
+    formData.append(
+      'buy',
+      JSON.stringify(
+        state.cart.map((item) => ({
+          id: item.id,
+          count: item.count,
+          name: item.name
+        }))
+      ));
+    Object.keys(payload).forEach((key) => {
+      formData.append(key, payload[key]);
+    });
+
+    await HTTP.post(`/order/`, formData)
+      .then(({ data }) => {
+        console.log('here_data', data);
       })
       .catch(err => alert(err));
   },

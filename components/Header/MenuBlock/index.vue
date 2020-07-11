@@ -366,6 +366,7 @@ export default {
 
     .products {
       width: 100%;
+      margin: 0 6px 0 0;
     }
 
     .cart {

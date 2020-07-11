@@ -37,4 +37,15 @@ export default {
     width: calc(100% - 360px);
   }
 }
+
+@media (max-width: 720px) {
+  .radiators {
+    flex-flow: column;
+
+    &__list {
+      padding: unset;
+      width: 100%;
+    }
+  }
+}
 </style>

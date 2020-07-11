@@ -122,4 +122,14 @@ export default {
     justify-content: space-around;
   }
 }
+
+@media (max-width: 720px) {
+  .search {
+    flex-flow: column;
+
+    &__list {
+      padding: 50px 0 0;
+    }
+  }
+}
 </style>

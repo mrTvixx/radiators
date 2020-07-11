@@ -105,4 +105,10 @@ export default {
     }
   }
 }
+
+@media (max-width: 720px) {
+  .product {
+    width: 100%;
+  }
+}
 </style>

@@ -2,31 +2,36 @@
   <PageTemplate :path="[{link: '/cart', name: 'Корзина'}]">
     <div class="cart">
       <div class="cart__title">Корзина</div>
-      <div class="cart__list">
+      <div class="cart__info" v-if="!cart.length">Корзина пуста</div>
+      <div v-else class="cart__list">
         <div class="cart__element" v-for="item in cart" :key="item.id">
           <div
             class="cart__image"
             :style="{backgroundImage: `url(${item.image && item.image.file})`}"
           />
           <router-link :to="`/product/${item.id}`" class="cart__name">{{item.name}}</router-link>
-          <div class="cart__count">
-            <span @click="() => onCount({ id: item.id, value: Number(item.count) - 1})">-</span>
-            <input
-              type="number"
-              @input="({ target }) => onCount({ id: item.id, value: target.value})"
-              :value="item.count"
-            />
-            <span @click="() => onCount({ id: item.id, value: Number(item.count) + 1})">+</span>
+          <div class="cart__btn-container">
+            <div class="cart__count">
+              <span @click="() => onCount({ id: item.id, value: Number(item.count) - 1})">-</span>
+              <input
+                type="number"
+                @input="({ target }) => onCount({ id: item.id, value: target.value})"
+                :value="item.count"
+              />
+              <span @click="() => onCount({ id: item.id, value: Number(item.count) + 1})">+</span>
+            </div>
+            <div class="cart__price">{{(Number(item.price_nds) * Number(item.count)).toFixed(2)}} ₽.</div>
           </div>
-          <div class="cart__price">{{(Number(item.price_nds) * Number(item.count)).toFixed(2)}} ₽.</div>
-          <div class="cart__remove" @click="() => onRemove(item.id)">X</div>
+          <span @click="() => onRemove(item.id)">
+            <v-icon name="trash" class="cart__remove"></v-icon>
+          </span>
         </div>
         <div class="cart__final-price">
           <span>ИТОГО:</span>
           <span>{{ cartTotalPrice | financFormat}}</span>
         </div>
       </div>
-      <div class="cart__order">
+      <div v-if="cart.length" class="cart__order">
         <h2>
           <b>Оформление заказа</b>
         </h2>
@@ -142,6 +147,7 @@ import {
   REMOVE_FROM_CART,
   CHANGE_PRODUCT_COUNT
 } from "../store/mutations.type";
+import { SEND_ORDER } from "../store/actions.type";
 import PageTemplate from "../components/PageTemplate";
 
 export default {
@@ -189,13 +195,13 @@ export default {
         delivery: this.delivery,
         payment: this.payment,
         username: this.username,
-        phonenumber: this.phonenumber,
+        phone_number: this.phonenumber,
         email: this.email,
         comment: this.comment,
         file: this.file
       };
 
-      console.log(deliveryData);
+      this.$store.dispatch(SEND_ORDER, deliveryData);
     },
     onCount({ id, value }) {
       if (Number(value) < 1) {
@@ -214,6 +220,10 @@ export default {
 .cart {
   padding: 30px 0 0;
 
+  &__btn-container {
+    display: flex;
+  }
+
   &__final-price {
     display: flex;
     justify-content: flex-end;
@@ -227,6 +237,12 @@ export default {
         margin: 0 0 0 10px;
       }
     }
+  }
+
+  &__info {
+    padding: 50px 0 0px;
+    text-align: center;
+    font-size: 26px;
   }
 
   &__order {
@@ -325,9 +341,10 @@ export default {
   }
 
   &__remove {
-    font-size: 24px;
+    width: 24px;
     cursor: pointer;
     transition: 0.3s;
+    margin: 0 5px 0 0;
 
     &:hover {
       color: $project-red;
@@ -392,6 +409,54 @@ export default {
     background-size: contain;
     height: 120px;
     width: 120px;
+  }
+}
+
+@media (max-width: 720px) {
+  .cart {
+    &__element {
+      flex-flow: column;
+      height: 350px;
+      box-shadow: 0 0 14px -5px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+
+    &__remove {
+      position: absolute;
+      right: 5px;
+      top: 5px;
+      margin: unset;
+    }
+
+    &__image {
+      height: 100%;
+      width: 80%;
+    }
+
+    &__btn-container {
+      width: 100%;
+      padding: 10px 0 5px 0;
+    }
+
+    &__name {
+      width: 100%;
+      word-break: break-word;
+    }
+
+    .order {
+      &__input {
+        box-sizing: border-box;
+        width: 100%;
+      }
+
+      h3 {
+        font-size: 1em;
+      }
+
+      h2 {
+        font-size: 1.1em;
+      }
+    }
   }
 }
 </style>

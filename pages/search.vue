@@ -3,14 +3,15 @@
     <div class="search">
       <ContentFilter />
       <div class="search__block">
-        <div class="search__filter">
+        <!-- be use later -->
+        <!-- <div class="search__filter">
           <span
             v-for="item in manufacturers"
             :key="item.id"
             @click="setManufacturer(item.id)"
             :class="['filter__item', { 'filter__item--active': item.id === manufacturer}]"
           >{{item.name}}</span>
-        </div>
+        </div>-->
         <ProductsList />
       </div>
     </div>
@@ -104,6 +105,17 @@ export default {
   &__block {
     padding: 0 20px;
     width: calc(100% - 360px);
+  }
+}
+
+@media (max-width: 720px) {
+  .search {
+    flex-flow: column;
+
+    &__block {
+      width: unset;
+      padding: unset;
+    }
   }
 }
 </style>
