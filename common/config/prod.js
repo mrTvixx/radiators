@@ -1,4 +1,4 @@
 export default {
-  'apiUrl': 'http://213.189.216.164/api',
-  'hostUrl': 'http://213.189.216.164',
+  'apiUrl': 'hhttps://xn--b1adea3adnlz.xn--p1ai/api',
+  'hostUrl': 'hhttps://xn--b1adea3adnlz.xn--p1ai',
 };
