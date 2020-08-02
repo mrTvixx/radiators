@@ -1,12 +1,7 @@
 <template>
   <PageTemplate :path="[{link: '/product', name: `Товар | ${productData.name}`}]">
     <div class="product-page">
-      <div class="product-page__btn">
-        <div
-          class="product-page__image"
-          :style="{backgroundImage: `url(${productData.image && productData.image.file})`}"
-        />
-      </div>
+      <img class="product-page__image" :src="productData.image && productData.image.file" />
       <div class="product-page__content">
         <div class="content__title">{{productData.name}}</div>
         <div class="content__price">{{`Цена: ${getPrice(productData)} ₽.`}}</div>
@@ -105,7 +100,6 @@ export default {
 
   &__image {
     height: 360px;
-    min-width: 450px;
     background-repeat: no-repeat;
     background-size: contain;
   }
@@ -143,6 +137,35 @@ export default {
         font-size: 20px;
         font-weight: bold;
         margin: 10px 0 0;
+      }
+    }
+  }
+}
+
+@media (max-width: 1040px) {
+  .product-page {
+    display: flex;
+    flex-flow: column;
+
+    &__image {
+      max-width: 100%;
+      max-height: 235px;
+    }
+  }
+}
+
+@media (max-width: 720px) {
+  .product-page {
+    &__content {
+      .content {
+        &__info {
+          li {
+            flex-wrap: wrap;
+            span {
+              margin-bottom: unset;
+            }
+          }
+        }
       }
     }
   }

@@ -143,6 +143,7 @@ const actions = {
         commit(SAVE_ORDER_ID, data.id);
       })
       .catch(err => alert(err));
+    commit(END_FETCH);
   },
   async [GET_PRODUCT_DATA]({ commit }, payload) {
     commit(CLEAR_PRODUCT_DATA);
@@ -153,6 +154,7 @@ const actions = {
         commit(SAVE_PRODUCT_DATA, data);
       })
       .catch(err => alert(err));
+    commit(END_FETCH);
   },
   async [GET_ORDER]({ commit }, payload) {
     commit(CLEAR_ORDER_DATA);
@@ -163,6 +165,7 @@ const actions = {
         commit(SAVE_ORDER_DATA, data);
       })
       .catch(err => alert(err));
+    commit(END_FETCH);
   },
   async [GET_FULL_PRODUCTS_LIST]({ commit }, payload = {}) {
     commit(CLEAR_PRODUCTS_LIST);
@@ -196,9 +199,9 @@ const actions = {
           searchValue: name,
           ...data
         });
-        commit(END_FETCH);
       })
       .catch(err => alert(err));
+    commit(END_FETCH);
   }
 };
 

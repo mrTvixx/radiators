@@ -23,7 +23,6 @@
   display: block;
   width: 64px;
   height: 64px;
-  margin: 8px;
   border-radius: 50%;
   border: 6px solid $project-red;
   border-color: $project-red transparent $project-red transparent;

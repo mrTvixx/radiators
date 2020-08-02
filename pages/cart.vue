@@ -144,7 +144,10 @@
           <span class="order__info" title="Обязательно для заполнения">*</span> - обязательное к заполнению поле.
         </div>
         <div class="order__row">
-          <button :disabled="!isReady" @click="onCheckout" class="order__button">Оформить</button>
+          <Loader v-if="isLoading" />
+          <button v-else :disabled="!isReady" @click="onCheckout" class="order__button">
+            Оформить
+          </button>
         </div>
       </div>
     </div>
@@ -160,10 +163,12 @@ import {
 } from "../store/mutations.type";
 import { SEND_ORDER } from "../store/actions.type";
 import PageTemplate from "../components/PageTemplate";
+import Loader from "../components/Loader";
 
 export default {
   components: {
-    PageTemplate
+    PageTemplate,
+    Loader,
   },
   data() {
     return {
@@ -178,7 +183,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["cart", "cartTotalPrice", "orderId"]),
+    ...mapGetters(["cart", "cartTotalPrice", "orderId", "isLoading"]),
     isReady() {
       return this.phonenumber && this.username && this.policy;
     },
@@ -322,6 +327,10 @@ a {
 
       &__row {
         margin: 30px 0;
+
+        .container {
+          padding: 0;
+        }
 
         &--small-text {
           font-size: 13px;
