@@ -7,7 +7,7 @@
     />
     <span class="product__manufacturer">{{ getManufacturName(product.manufacturer) }}</span>
     <router-link :to="`/product/${product.id}`" class="product__title">{{product.name}}</router-link>
-    <b class="product__price">{{product.price_nds | withPrice}}</b>
+    <b class="product__price">{{`${getPrice(product)} ₽.`}}</b>
     <button
       :class="['product__button', {'product__button--active': cartIds.includes(product .id)}]"
       @click="() => addToCart(product)"
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { getManufacturName } from "../../utils";
+import { getManufacturName, getValidPrice } from "../../utils";
 import { ADD_TO_CART, REMOVE_FROM_CART } from "../../store/mutations.type";
 import { mapGetters } from "vuex";
 
@@ -29,23 +29,22 @@ export default {
   },
   methods: {
     getManufacturName: getManufacturName,
-    addToCart({ id, price_nds, name, image }) {
+    addToCart({ id, final_price, name, image }) {
       if (this.cartIds.includes(this.product.id)) {
         this.$store.commit(REMOVE_FROM_CART, id);
       } else {
-        this.$store.commit(ADD_TO_CART, { id, price_nds, name, image });
+        this.$store.commit(ADD_TO_CART, { id, final_price, name, image });
       }
+    },
+    getPrice({ final_price, category, manufacturer }) {
+      if (!final_price) return 0;
+      return getValidPrice(final_price);
     },
     getName() {
       return this.cartIds.includes(this.product.id) ? "Удалить" : "В корзину";
     }
   },
-  computed: mapGetters(["cartIds"]),
-  filters: {
-    withPrice(value) {
-      return `Цена: ${Math.floor(value).toLocaleString("ru-RU")} ₽.`;
-    }
-  }
+  computed: mapGetters(["cartIds"])
 };
 </script>
 

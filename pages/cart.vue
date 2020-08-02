@@ -2,7 +2,15 @@
   <PageTemplate :path="[{link: '/cart', name: 'Корзина'}]">
     <div class="cart">
       <div class="cart__title">Корзина</div>
-      <div class="cart__info" v-if="!cart.length">Корзина пуста</div>
+      <div class="cart__info-order" v-if="orderId">
+        <h2>Спасибо за заказ!</h2>
+        <h4>В ближайшее время с вами свяжется оператор для уточнения деталей заказа.</h4>
+        <h4>
+          Информация о заказе доступна по
+          <router-link :to="orderLink">ссылке</router-link>
+        </h4>
+      </div>
+      <div class="cart__info" v-else-if="!cart.length">Корзина пуста</div>
       <div v-else class="cart__list">
         <div class="cart__element" v-for="item in cart" :key="item.id">
           <div
@@ -20,7 +28,7 @@
               />
               <span @click="() => onCount({ id: item.id, value: Number(item.count) + 1})">+</span>
             </div>
-            <div class="cart__price">{{(Number(item.price_nds) * Number(item.count)).toFixed(2)}} ₽.</div>
+            <div class="cart__price">{{(Number(item.final_price) * Number(item.count)).toFixed(2)}} ₽.</div>
           </div>
           <span @click="() => onRemove(item.id)">
             <v-icon name="trash" class="cart__remove"></v-icon>
@@ -31,7 +39,7 @@
           <span>{{ cartTotalPrice | financFormat}}</span>
         </div>
       </div>
-      <div v-if="cart.length" class="cart__order">
+      <div v-if="cart.length && !orderId" class="cart__order">
         <h2>
           <b>Оформление заказа</b>
         </h2>
@@ -79,8 +87,8 @@
               name="delivery"
               @change="handleDalivery"
             />
-            <label for="delivery_1">Безналичный расчет</label>
-            <p>Вы можете оплатить заказ с помощью банковского перевода</p>
+            <label for="delivery_1">Самовывоз</label>
+            <p>Вы можете забрать товар самостоятельно с нашего склада</p>
           </div>
         </div>
         <div class="order__row">
@@ -106,8 +114,8 @@
               id="payment_1"
               @change="handlePayment"
             />
-            <label for="payment_1">Самовывоз</label>
-            <p>Вы можете забрать товар самостоятельно с нашего склада</p>
+            <label for="payment_1">Безналичный расчет</label>
+            <p>Вы можете оплатить заказ с помощью банковского перевода</p>
           </div>
         </div>
         <div class="order__row">
@@ -131,6 +139,9 @@
             <router-link to="/privacy">согласие на обработку</router-link>
             <span>моих персональных данных.</span>
           </label>
+        </div>
+        <div class="order__row order__row--small-text">
+          <span class="order__info" title="Обязательно для заполнения">*</span> - обязательное к заполнению поле.
         </div>
         <div class="order__row">
           <button :disabled="!isReady" @click="onCheckout" class="order__button">Оформить</button>
@@ -167,9 +178,12 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["cart", "cartTotalPrice"]),
+    ...mapGetters(["cart", "cartTotalPrice", "orderId"]),
     isReady() {
       return this.phonenumber && this.username && this.policy;
+    },
+    orderLink() {
+      return `/order/${this.orderId}`;
     }
   },
   filters: {
@@ -217,6 +231,15 @@ export default {
 <style lang="scss" scoped>
 @import "./constants/_default.scss";
 
+a {
+  text-decoration: underline;
+  transition: 0.3s;
+
+  &:hover {
+    color: $project-red;
+  }
+}
+
 .cart {
   padding: 30px 0 0;
 
@@ -231,7 +254,7 @@ export default {
 
     span {
       color: $project-color;
-      font-size: 26px;
+      font-size: 22px;
 
       &:last-child {
         margin: 0 0 0 10px;
@@ -288,6 +311,7 @@ export default {
           height: 100px;
           width: 450px;
           resize: none;
+          font-size: inherit;
         }
       }
 
@@ -299,16 +323,12 @@ export default {
       &__row {
         margin: 30px 0;
 
-        &:last-child {
-          display: flex;
+        &--small-text {
+          font-size: 13px;
         }
 
-        a {
-          text-decoration: underline;
-
-          &:hover {
-            color: $project-red;
-          }
+        &:last-child {
+          display: flex;
         }
 
         p {
@@ -334,6 +354,7 @@ export default {
     padding: 0 15px;
     width: 600px;
     word-break: break-word;
+    font-size: 18px;
 
     &:hover {
       color: $project-red;
@@ -383,7 +404,7 @@ export default {
   }
 
   &__price {
-    font-size: 24px;
+    font-size: 20px;
     width: 200px;
     text-align: end;
     padding: 0 10px;
@@ -421,6 +442,22 @@ export default {
       position: relative;
     }
 
+    &__final-price {
+      span {
+        font-size: 22px;
+      }
+    }
+
+    &__order {
+      h3 {
+        font-size: 1em;
+      }
+
+      h2 {
+        font-size: 1.1em;
+      }
+    }
+
     &__remove {
       position: absolute;
       right: 5px;
@@ -439,7 +476,7 @@ export default {
     }
 
     &__name {
-      width: 100%;
+      width: 90%;
       word-break: break-word;
     }
 
@@ -447,14 +484,6 @@ export default {
       &__input {
         box-sizing: border-box;
         width: 100%;
-      }
-
-      h3 {
-        font-size: 1em;
-      }
-
-      h2 {
-        font-size: 1.1em;
       }
     }
   }

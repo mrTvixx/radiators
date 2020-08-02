@@ -44,7 +44,7 @@
         </div>
       </div>
       <div v-if="currentPath === '/radiator'" class="row">
-        <span name="showConnectType" @click="toggleCollapse" class="title btn">
+        <span @click="() => toggleCollapse('showConnectType')" class="title btn">
           Тип подключения:
           <v-icon
             :class="['cart-svg', {'cart-svg--open': toggled === 'showConnectType'}]"
@@ -67,7 +67,7 @@
         </div>
       </div>
       <div class="row">
-        <span name="showCountry" @click="toggleCollapse" class="title btn">
+        <span @click="() => toggleCollapse('showCountry')" class="title btn">
           Страна производитель:
           <v-icon
             :class="['cart-svg', {'cart-svg--open': toggled === 'showCountry'}]"
@@ -88,7 +88,7 @@
         </div>
       </div>
       <div class="row">
-        <span name="showProducers" @click="toggleCollapse" class="title btn">
+        <span @click="() => toggleCollapse('showProducers')" class="title btn">
           Поставщики:
           <v-icon
             :class="['cart-svg', {'cart-svg--open': toggled === 'showProducers'}]"
@@ -125,6 +125,7 @@ export default {
   components: {},
   data() {
     return {
+      width: null,
       currentPath: "",
       showFilter: false,
       min: 0,
@@ -172,7 +173,7 @@ export default {
         },
         {
           id: 8,
-          name: "meibis"
+          name: "Meibis"
         }
       ],
       countries: [
@@ -215,6 +216,13 @@ export default {
   },
   mounted() {
     this.currentPath = this.$route.path;
+
+    this.$nextTick(() => {
+      this.width = document.documentElement.clientWidth;
+      window.addEventListener("resize", () => {
+        this.width = document.documentElement.clientWidth;
+      });
+    });
   },
   watch: {
     min() {
@@ -233,7 +241,7 @@ export default {
       return this.showFilter ? "Скрыть фильтр" : "Показать фильтр";
     },
     isMobile() {
-      const size = document.body.clientWidth < 721;
+      const size = this.width < 721;
       this.showFilter = !size;
       return size;
     }
@@ -242,9 +250,7 @@ export default {
     toggleFilter() {
       this.showFilter = !this.showFilter;
     },
-    toggleCollapse({ target }) {
-      const name = target.getAttribute("name");
-
+    toggleCollapse(name) {
       this.toggled = this.toggled === name ? "" : name;
     },
     clearFilter() {
@@ -262,6 +268,8 @@ export default {
       this.applyFilter();
     },
     applyFilter() {
+      if (this.isMobile) this.showFilter = false;
+
       let data = {
         price: {
           min: this.min || 0,
@@ -319,6 +327,7 @@ $producersCount: 9;
   flex-flow: column;
   justify-content: space-around;
   padding: 0 0 0 10px;
+  transition: .3s;
 
   &--open {
     max-height: 100vh;

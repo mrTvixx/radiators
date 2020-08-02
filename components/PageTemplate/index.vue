@@ -2,6 +2,7 @@
   <no-ssr>
     <fragment>
       <Header />
+      <CookieBanner />
       <main class="main">
         <div v-if="path && Boolean(path.length)" class="path">
           <a href="/" class="link">Главная</a>
@@ -22,11 +23,13 @@
 <script>
 import Header from "../Header";
 import Footer from "../Footer";
+import CookieBanner from "../CookieBanner";
 
 export default {
   components: {
     Header,
-    Footer
+    Footer,
+    CookieBanner
   },
   props: ["path"]
 };

@@ -118,11 +118,11 @@ export default {
       flex-wrap: wrap;
 
       &-element {
-        transition: 0.3s;
         padding: 0 35px 0 0;
         cursor: pointer;
         font-size: 1rem;
         min-width: 130px;
+        transition: 0.3s;
 
         &:hover {
           color: $project-red;

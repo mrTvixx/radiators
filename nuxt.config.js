@@ -13,5 +13,12 @@ module.exports = {
   },
   buildModules: [
     '@nuxtjs/dotenv',
-  ]
+  ],
+  link: [
+    {
+      rel: 'icon',
+      type: 'image/x-icon',
+      href: 'favicon.ico',
+    },
+  ],
 }

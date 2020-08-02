@@ -199,7 +199,6 @@ export default {
     width: 100%;
     left: 0;
     z-index: 1;
-    padding: 10px 35px 10px 50px;
     background-color: $project-bkg;
     padding: 20px 35px 10px 50px;
     display: flex;
@@ -329,6 +328,14 @@ export default {
         opacity: 0;
         border-color: transparent;
       }
+    }
+  }
+}
+
+@media (max-width: 1400px) { 
+  .menu-block {
+    &--fixed {
+      padding: 10px !important;
     }
   }
 }

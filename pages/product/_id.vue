@@ -1,5 +1,5 @@
 <template>
-  <PageTemplate>
+  <PageTemplate :path="[{link: '/product', name: `Товар | ${productData.name}`}]">
     <div class="product-page">
       <div class="product-page__btn">
         <div
@@ -9,7 +9,7 @@
       </div>
       <div class="product-page__content">
         <div class="content__title">{{productData.name}}</div>
-        <div class="content__price">{{`Цена: ${productData.price_nds || 0} ₽.`}}</div>
+        <div class="content__price">{{`Цена: ${getPrice(productData)} ₽.`}}</div>
         <div class="content__info" v-html="getProductInfoList(productData)" />
         <button
           :class="['product-page__button', {'product-page__button--active': cartIds.includes(productData.id)}]"
@@ -26,7 +26,7 @@ import Loader from "../../components/Loader";
 import { GET_PRODUCT_DATA } from "../../store/actions.type";
 import { ADD_TO_CART, REMOVE_FROM_CART } from "../../store/mutations.type";
 import PageTemplate from "../../components/PageTemplate";
-import { getProductInfoList } from "../../utils";
+import { getProductInfoList, getValidPrice } from "../../utils";
 
 export default {
   components: {
@@ -40,11 +40,15 @@ export default {
   },
   methods: {
     getProductInfoList: getProductInfoList,
-    addToCart({ id, price_nds, name, image }) {
+    getPrice({ final_price }) {
+      if (!final_price) return 0;
+      return getValidPrice(final_price)
+    },
+    addToCart({ id, final_price, name, image }) {
       if (this.cartIds.includes(this.productData.id)) {
         this.$store.commit(REMOVE_FROM_CART, id);
       } else {
-        this.$store.commit(ADD_TO_CART, { id, price_nds, name, image });
+        this.$store.commit(ADD_TO_CART, { id, final_price, name, image });
       }
     },
     getName() {
@@ -63,7 +67,7 @@ export default {
 @import "../../constants/_default.scss";
 
 .product-page {
-  margin: 50px 0;
+  margin: 30px 0;
   padding: 10px;
   color: #333;
   box-shadow: 0 0 14px -5px rgba(0, 0, 0, 0.3);

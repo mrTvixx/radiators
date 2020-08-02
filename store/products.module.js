@@ -3,6 +3,7 @@ import {
   GET_FULL_PRODUCTS_LIST,
   GET_PRODUCT_DATA,
   SEND_ORDER,
+  GET_ORDER,
 } from "./actions.type";
 import {
   START_FETCH,
@@ -18,6 +19,9 @@ import {
   REMOVE_FROM_CART,
   CHANGE_PRODUCT_COUNT,
   CHECK_CART_DATA,
+  SAVE_ORDER_ID,
+  CLEAR_ORDER_DATA,
+  SAVE_ORDER_DATA,
 } from "./mutations.type";
 import { HTTP } from "../common/api.service";
 
@@ -48,7 +52,9 @@ const state = {
   searchValue: '',
   isLoading: false,
   productData: {},
+  orderData: {},
   cart: [],
+  orderId: null,
 };
 
 const getters = {
@@ -74,18 +80,24 @@ const getters = {
     return state.cart;
   },
   cartCount(state) {
-    return state.cart.length;
+    return (state.cart || []).length;
   },
   cartIds(state) {
-    return state.cart.map((item) => item.id);
+    return (state.cart || []).map((item) => item.id);
   },
   cartTotalPrice(state) {
-    if (!state.cart.length) return 0;
+    if (!(state.cart || []).length) return 0;
     const totalPrice = state.cart.reduce((acc, item) => {
-      acc += Number(item.price_nds) * Number(item.count);
+      acc += Number(item.final_price) * Number(item.count);
       return acc;
     }, 0);
     return totalPrice;
+  },
+  orderId(state) {
+    return state.orderId;
+  },
+  orderData(state) {
+    return state.orderData;
   }
 };
 
@@ -128,7 +140,7 @@ const actions = {
 
     await HTTP.post(`/order/`, formData)
       .then(({ data }) => {
-        console.log('here_data', data);
+        commit(SAVE_ORDER_ID, data.id);
       })
       .catch(err => alert(err));
   },
@@ -139,6 +151,16 @@ const actions = {
     await HTTP.get(`/products/${payload}`)
       .then(({ data }) => {
         commit(SAVE_PRODUCT_DATA, data);
+      })
+      .catch(err => alert(err));
+  },
+  async [GET_ORDER]({ commit }, payload) {
+    commit(CLEAR_ORDER_DATA);
+    commit(START_FETCH);
+
+    await HTTP.get(`/order/${payload}`)
+      .then(({ data }) => {
+        commit(SAVE_ORDER_DATA, data);
       })
       .catch(err => alert(err));
   },
@@ -187,6 +209,12 @@ const mutations = {
   [END_FETCH](state) {
     state.isLoading = false;
   },
+  [SAVE_ORDER_DATA](state, data) {
+    state.orderData = data;
+  },
+  [CLEAR_ORDER_DATA](state) {
+    state.orderData = {};
+  },
   [SAVE_PRODUCT_DATA](state, data) {
     state.productData = data;
   },
@@ -198,6 +226,11 @@ const mutations = {
   },
   [SAVE_SEARCH_VALUE](state, value) {
     state.searchValue = value;
+  },
+  [SAVE_ORDER_ID](state, id) {
+    state.orderId = id;
+    state.cart = [];
+    localStorage.removeItem('cart');
   },
   [SAVE_PRODUCTS_LIST](state, { searchValue, ...data }) {
     state.fullProductsList = data.results;
@@ -231,6 +264,7 @@ const mutations = {
 
     localStorage.setItem('cart', JSON.stringify(newCart));
     state.cart = newCart;
+    state.orderId = null;
   },
   [REMOVE_FROM_CART](state, productId) {
     const currentCart = state.cart;
@@ -242,14 +276,14 @@ const mutations = {
   [CHECK_CART_DATA](state) {
     const cartData = localStorage.getItem('cart');
     if (!cartData) return;
-    state.cart = JSON.parse(cartData);
+    state.cart = JSON.parse(cartData || []);
   },
   [CHANGE_PRODUCT_COUNT](state, { id, value }) {
     const currentCart = state.cart;
     const newCart = currentCart.map((item) => {
       const newItem = { ...item };
       if (newItem.id === id) {
-        newItem.count = value;
+        newItem.count = Number(value);
       }
       return newItem;
     });
