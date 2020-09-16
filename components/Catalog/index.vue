@@ -45,10 +45,10 @@ export default {
   }
 
   &__list {
-    flex-wrap: wrap;
     padding: 10px 0 70px 0;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 270px);
+    justify-content: space-around;
   }
 }
 
@@ -63,8 +63,7 @@ export default {
 @media (max-width: 720px) {
   .catalog {
     &__list {
-      flex-flow: column;
-      align-items: center;
+      grid-template-columns: repeat(auto-fit, 100%);
     }
   }
 }

@@ -22,26 +22,33 @@ import {
   SAVE_ORDER_ID,
   CLEAR_ORDER_DATA,
   SAVE_ORDER_DATA,
+  SAVE_FILTERS_LIST,
+  CLEAR_FILTERS_LIST,
 } from "./mutations.type";
 import { HTTP } from "../common/api.service";
 
 const ELEMENT_PER_PAGE = 25;
 const getPageCount = (count) => {
   const pages = Math.ceil(count / ELEMENT_PER_PAGE);
-  if (!Boolean(count % ELEMENT_PER_PAGE)) return pages - 1;
+  if (!(count % ELEMENT_PER_PAGE)) return pages - 1;
   return pages;
-}
+};
 
 const getFormattedList = (arr, searchValue) => {
   const newArr = arr.map((item) => ({
     ...item,
     originalName: item.name,
-    name: item.name.toLowerCase().replace(searchValue.toLowerCase(), `<b>${searchValue.toLowerCase()}</b>`),
-    link: `/product/${item.id}`
+    name: item.name
+      .toLowerCase()
+      .replace(
+        searchValue.toLowerCase(),
+        `<b>${searchValue.toLowerCase()}</b>`
+      ),
+    link: `/product/${item.id}`,
   }));
 
   return newArr;
-}
+};
 
 const state = {
   list: [],
@@ -49,12 +56,13 @@ const state = {
   next: null,
   previous: null,
   count: 0,
-  searchValue: '',
+  searchValue: "",
   isLoading: false,
   productData: {},
   orderData: {},
   cart: [],
   orderId: null,
+  filtersList: null,
 };
 
 const getters = {
@@ -98,7 +106,7 @@ const getters = {
   },
   orderData(state) {
     return state.orderData;
-  }
+  },
 };
 
 // request example
@@ -117,23 +125,24 @@ const actions = {
       .then(({ data }) => {
         commit(SAVE_SEARCH_PRODUCTS, {
           searchValue: name,
-          ...data
+          ...data,
         });
       })
-      .catch(err => alert(err));
+      .catch((err) => alert(err));
   },
   async [SEND_ORDER]({ commit, state }, payload) {
     commit(START_FETCH);
     const formData = new FormData();
     formData.append(
-      'buy',
+      "buy",
       JSON.stringify(
         state.cart.map((item) => ({
           id: item.id,
           count: item.count,
-          name: item.name
+          name: item.name,
         }))
-      ));
+      )
+    );
     Object.keys(payload).forEach((key) => {
       formData.append(key, payload[key]);
     });
@@ -142,7 +151,7 @@ const actions = {
       .then(({ data }) => {
         commit(SAVE_ORDER_ID, data.id);
       })
-      .catch(err => alert(err));
+      .catch((err) => alert(err));
     commit(END_FETCH);
   },
   async [GET_PRODUCT_DATA]({ commit }, payload) {
@@ -153,7 +162,7 @@ const actions = {
       .then(({ data }) => {
         commit(SAVE_PRODUCT_DATA, data);
       })
-      .catch(err => alert(err));
+      .catch((err) => alert(err));
     commit(END_FETCH);
   },
   async [GET_ORDER]({ commit }, payload) {
@@ -164,15 +173,16 @@ const actions = {
       .then(({ data }) => {
         commit(SAVE_ORDER_DATA, data);
       })
-      .catch(err => alert(err));
+      .catch((err) => alert(err));
     commit(END_FETCH);
   },
-  async [GET_FULL_PRODUCTS_LIST]({ commit }, payload = {}) {
+  async [GET_FULL_PRODUCTS_LIST]({ commit, state }, payload) {
     commit(CLEAR_PRODUCTS_LIST);
     commit(START_FETCH);
+    const filters = { ...state.filtersList, ...(payload || {}) };
 
     const {
-      name = '',
+      name = "",
       productType = null,
       page = 1,
       price = null,
@@ -181,7 +191,7 @@ const actions = {
       countries = null,
       types = null,
       producers = null,
-    } = payload;
+    } = filters;
 
     let url = `/products?name=${name}&limit=${ELEMENT_PER_PAGE}`;
     if (productType !== null) url += `&type=${productType}`;
@@ -189,20 +199,23 @@ const actions = {
     if (price) url += `&price=${price.min},${price.max}`;
     if (garant) url += `&garant=${garant.min},${garant.max}`;
     if (os) url += `&os=${os.min},${os.max}`;
-    if (countries && countries.length) url += `&countries=${countries.join(',')}`;
-    if (types && types.length) url += `&types=${types.join(',')}`;
-    if (producers && producers.length) url += `&producers=${producers.join(',')}`;
+    if (countries && countries.length)
+      url += `&countries=${countries.join(",")}`;
+    if (types && types.length) url += `&types=${types.join(",")}`;
+    if (producers && producers.length)
+      url += `&producers=${producers.join(",")}`;
     // url += '/'
     await HTTP.get(url)
       .then(({ data }) => {
+        commit(SAVE_FILTERS_LIST, filters);
         commit(SAVE_PRODUCTS_LIST, {
           searchValue: name,
-          ...data
+          ...data,
         });
       })
-      .catch(err => alert(err));
+      .catch((err) => alert(err));
     commit(END_FETCH);
-  }
+  },
 };
 
 const mutations = {
@@ -233,7 +246,7 @@ const mutations = {
   [SAVE_ORDER_ID](state, id) {
     state.orderId = id;
     state.cart = [];
-    localStorage.removeItem('cart');
+    localStorage.removeItem("cart");
   },
   [SAVE_PRODUCTS_LIST](state, { searchValue, ...data }) {
     state.fullProductsList = data.results;
@@ -244,14 +257,20 @@ const mutations = {
   },
   [CLEAR_SEARCH_PRODUCTS](state) {
     state.list = [];
-    state.searchValue = '';
+    state.searchValue = "";
+  },
+  [SAVE_FILTERS_LIST](state, data) {
+    state.filtersList = data;
+  },
+  [CLEAR_FILTERS_LIST](state) {
+    state.filtersList = null;
   },
   [CLEAR_PRODUCTS_LIST](state) {
     state.fullProductsList = [];
     state.next = null;
     state.previous = null;
     state.count = 0;
-    state.searchValue = '';
+    state.searchValue = "";
   },
   [ADD_TO_CART](state, product) {
     const currentCart = state.cart;
@@ -262,10 +281,10 @@ const mutations = {
       {
         ...product,
         count: 1,
-      }
+      },
     ];
 
-    localStorage.setItem('cart', JSON.stringify(newCart));
+    localStorage.setItem("cart", JSON.stringify(newCart));
     state.cart = newCart;
     state.orderId = null;
   },
@@ -273,11 +292,11 @@ const mutations = {
     const currentCart = state.cart;
     const newCart = currentCart.filter((item) => item.id !== productId);
 
-    localStorage.setItem('cart', JSON.stringify(newCart));
+    localStorage.setItem("cart", JSON.stringify(newCart));
     state.cart = newCart;
   },
   [CHECK_CART_DATA](state) {
-    const cartData = localStorage.getItem('cart');
+    const cartData = localStorage.getItem("cart");
     if (!cartData) return;
     state.cart = JSON.parse(cartData || []);
   },
@@ -291,14 +310,14 @@ const mutations = {
       return newItem;
     });
 
-    localStorage.setItem('cart', JSON.stringify(newCart));
+    localStorage.setItem("cart", JSON.stringify(newCart));
     state.cart = newCart;
-  }
+  },
 };
 
 export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };

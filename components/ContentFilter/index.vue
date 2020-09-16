@@ -120,6 +120,7 @@
 
 <script>
 import { GET_FULL_PRODUCTS_LIST } from "../../store/actions.type";
+import { CLEAR_FILTERS_LIST } from "../../store/mutations.type";
 
 export default {
   components: {},
@@ -141,81 +142,89 @@ export default {
       producers: [
         {
           id: 0,
-          name: "Kermi"
+          name: "Kermi",
         },
         {
           id: 1,
-          name: "Buderus"
+          name: "Buderus",
         },
         {
           id: 2,
-          name: "Refar"
+          name: "Rifar",
         },
-        {
-          id: 3,
-          name: "Belux"
-        },
+        // {
+        //   id: 3,
+        //   name: "Bшlux",
+        // },
         {
           id: 4,
-          name: "Itap"
+          name: "Itap",
         },
         {
           id: 5,
-          name: "Herz"
+          name: "Herz",
         },
         {
           id: 6,
-          name: "Danfoss"
+          name: "Danfoss",
         },
-        {
-          id: 7,
-          name: "Rehau"
-        },
+        // {
+        //   id: 7,
+        //   name: "Rehau",
+        // },
         {
           id: 8,
-          name: "Meibis"
-        }
+          name: "Meibis",
+        },
       ],
       countries: [
         {
           id: 0,
-          name: "Россия"
+          name: "Россия",
         },
         {
           id: 1,
-          name: "Италия"
+          name: "Италия",
         },
         {
           id: 2,
-          name: "Германия"
+          name: "Германия",
         },
         {
           id: 3,
-          name: "Китай"
+          name: "Китай",
         },
         {
           id: 4,
-          name: "Австрия"
+          name: "Австрия",
         },
         {
           id: 5,
-          name: "Дания"
-        }
+          name: "Дания",
+        },
       ],
       connectTypes: [
         {
           id: 0,
-          name: "Нижнее"
+          name: "Нижнее",
         },
         {
           id: 1,
-          name: "Боковое"
-        }
-      ]
+          name: "Боковое",
+        },
+      ],
     };
   },
   mounted() {
     this.currentPath = this.$route.path;
+    const { type } = this.$route.query;
+    const newSelectedList = [`${type}`];
+
+    if (newSelectedList.length && type !== undefined) {
+      this.selectedProducers = newSelectedList;
+      this.toggled = "showProducers";
+      this.applyFilter();
+    }
 
     this.$nextTick(() => {
       this.width = document.documentElement.clientWidth;
@@ -223,6 +232,9 @@ export default {
         this.width = document.documentElement.clientWidth;
       });
     });
+  },
+  destroyed() {
+    this.$store.commit(CLEAR_FILTERS_LIST);
   },
   watch: {
     min() {
@@ -234,7 +246,7 @@ export default {
     minGarant() {
       if (Number(this.minGarant) > Number(this.maxGarant))
         this.maxGarant = this.minGarant;
-    }
+    },
   },
   computed: {
     filterStatus() {
@@ -244,7 +256,7 @@ export default {
       const size = this.width < 721;
       this.showFilter = !size;
       return size;
-    }
+    },
   },
   methods: {
     toggleFilter() {
@@ -273,14 +285,14 @@ export default {
       let data = {
         price: {
           min: this.min || 0,
-          max: this.max || 100000
+          max: this.max || 100000,
         },
         garant: {
           min: this.minGarant || 5,
-          max: this.maxGarant || 50
+          max: this.maxGarant || 50,
         },
         countries: this.selectedCountries,
-        producers: this.selectedProducers
+        producers: this.selectedProducers,
       };
 
       if (this.currentPath === "/radiator") {
@@ -288,16 +300,16 @@ export default {
           ...data,
           os: {
             min: this.minOs || 50,
-            max: this.maxOs || 500
+            max: this.maxOs || 500,
           },
           types: this.selectedTypes,
-          productType: 0
+          productType: 0,
         };
       }
 
       this.$store.dispatch(GET_FULL_PRODUCTS_LIST, data);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -327,7 +339,7 @@ $producersCount: 9;
   flex-flow: column;
   justify-content: space-around;
   padding: 0 0 0 10px;
-  transition: .3s;
+  transition: 0.3s;
 
   &--open {
     max-height: 100vh;
@@ -342,6 +354,7 @@ $producersCount: 9;
     transform: rotate(180deg);
   }
 }
+
 .filter {
   width: 300px;
   height: 100%;

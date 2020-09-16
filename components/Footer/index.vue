@@ -11,7 +11,7 @@
     <div class="row">
       <div class="footer__catalog">
         <span class="title">Каталог:</span>
-        <div class="footer__catalog-links">
+        <div class="footer__catalog-links footer__catalog-links--mob">
           <router-link
             class="footer__catalog-links-element"
             v-for="item in catalogList"
@@ -116,6 +116,7 @@ export default {
       height: 65px;
       display: flex;
       flex-wrap: wrap;
+      justify-content: space-between;
 
       &-element {
         padding: 0 35px 0 0;
@@ -145,6 +146,11 @@ export default {
 
       &-links {
         padding: 5px 0 50px 0;
+
+        &--mob {
+          flex-flow: column;
+          height: 110px;
+        }
       }
     }
   }

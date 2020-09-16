@@ -1,15 +1,54 @@
 <template>
-  <PageTemplate :path="[{link: '/product', name: `Товар | ${productData.name}`}]">
+  <PageTemplate
+    :path="[{ link: '/product', name: `Товар | ${productData.name}` }]"
+  >
     <div class="product-page">
-      <img class="product-page__image" :src="productData.image && productData.image.file" />
+      <img
+        class="product-page__image"
+        :src="productData.image && productData.image.file"
+      />
       <div class="product-page__content">
-        <div class="content__title">{{productData.name}}</div>
-        <div class="content__price">{{`Цена: ${getPrice(productData)} ₽.`}}</div>
+        <div class="content__title">
+          {{
+            `${productData.name} - ${getManufacturName(
+              productData.manufacturer
+            )}`
+          }}
+        </div>
+        <div class="content__price">
+          <b>{{ `Цена: ${getPrice(productData)} ₽.` }}</b>
+          {{ getOptPrice(productData) }}
+        </div>
+
         <div class="content__info" v-html="getProductInfoList(productData)" />
         <button
-          :class="['product-page__button', {'product-page__button--active': cartIds.includes(productData.id)}]"
+          :class="[
+            'product-page__button',
+            {
+              'product-page__button--active': cartIds.includes(productData.id),
+            },
+          ]"
           @click="() => addToCart(productData)"
-        >{{getName()}}</button>
+        >
+          {{ getName() }}
+        </button>
+        <div class="product-page__info">
+          <div v-if="productData.category === '0'">
+            <span>
+              <v-icon class="product-page__icon" name="info" />Рекомендуем Вам
+              ознакомиться с
+            </span>
+            <router-link
+              class="product-page__link"
+              :to="{
+                path: '/radiator',
+                query: { type: productData.manufacturer.key },
+              }"
+              >комплектующими</router-link
+            >
+            <span>для радиаторов данного производителя.</span>
+          </div>
+        </div>
       </div>
     </div>
   </PageTemplate>
@@ -17,44 +56,63 @@
 
 <script>
 import { mapGetters } from "vuex";
-import Loader from "../../components/Loader";
 import { GET_PRODUCT_DATA } from "../../store/actions.type";
 import { ADD_TO_CART, REMOVE_FROM_CART } from "../../store/mutations.type";
 import PageTemplate from "../../components/PageTemplate";
-import { getProductInfoList, getValidPrice } from "../../utils";
+import {
+  getProductInfoList,
+  getValidPrice,
+  getManufacturName,
+} from "../../utils";
 
 export default {
   components: {
-    PageTemplate
+    PageTemplate,
   },
   computed: {
     ...mapGetters(["productData", "cartIds"]),
     id() {
       return this.$route.params.id;
-    }
+    },
   },
   methods: {
-    getProductInfoList: getProductInfoList,
+    getManufacturName,
+    getProductInfoList,
     getPrice({ final_price }) {
       if (!final_price) return 0;
-      return getValidPrice(final_price)
+      return getValidPrice(final_price);
+    },
+    getOptPrice({ price_nds, category, manufacturer }) {
+      // 2 - rifar key
+      if (
+        Boolean(price_nds) &&
+        Number(category) === 0 &&
+        manufacturer.key === 2
+      )
+        return `(${getValidPrice(price_nds)}₽. от 4х шт.)`;
+      return "";
     },
     addToCart({ id, final_price, name, image }) {
       if (this.cartIds.includes(this.productData.id)) {
         this.$store.commit(REMOVE_FROM_CART, id);
       } else {
-        this.$store.commit(ADD_TO_CART, { id, final_price, name, image });
+        this.$store.commit(ADD_TO_CART, {
+          id,
+          final_price,
+          name,
+          image,
+        });
       }
     },
     getName() {
       return this.cartIds.includes(this.productData.id)
         ? "Удалить"
         : "В корзину";
-    }
+    },
   },
   mounted() {
     this.$store.dispatch(GET_PRODUCT_DATA, this.id);
-  }
+  },
 };
 </script>
 
@@ -69,6 +127,11 @@ export default {
   border-radius: 10px;
   display: flex;
   align-items: center;
+
+  &__icon {
+    width: 20px;
+    margin: 0 10px -4px 0;
+  }
 
   &__button {
     border-radius: 5px;
@@ -91,6 +154,15 @@ export default {
     }
   }
 
+  &__link {
+    transition: 0.3s;
+    text-decoration: underline;
+
+    &:hover {
+      color: $project-red;
+    }
+  }
+
   &__btn {
     display: flex;
     flex-flow: column;
@@ -102,6 +174,7 @@ export default {
     height: 360px;
     background-repeat: no-repeat;
     background-size: contain;
+    padding: 0 10px 0 0;
   }
 
   &__content {
@@ -135,7 +208,6 @@ export default {
 
       &__price {
         font-size: 20px;
-        font-weight: bold;
         margin: 10px 0 0;
       }
     }
@@ -161,6 +233,7 @@ export default {
         &__info {
           li {
             flex-wrap: wrap;
+
             span {
               margin-bottom: unset;
             }

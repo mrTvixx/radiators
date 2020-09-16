@@ -28,7 +28,7 @@ export default {
     ProductsList
   },
   mounted() {
-    this.$store.dispatch(GET_FULL_PRODUCTS_LIST, { productType: 0 });
+    // this.$store.dispatch(GET_FULL_PRODUCTS_LIST, { productType: 0 });
   }
 };
 </script>

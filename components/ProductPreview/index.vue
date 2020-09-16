@@ -7,7 +7,10 @@
     />
     <span class="product__manufacturer">{{ getManufacturName(product.manufacturer) }}</span>
     <router-link :to="`/product/${product.id}`" class="product__title">{{product.name}}</router-link>
-    <b class="product__price">{{`${getPrice(product)} ₽.`}}</b>
+    <span>
+      <b class="product__price">{{`${getPrice(product)} ₽.`}}</b>
+      {{getOptPrice(product)}}
+    </span>
     <button
       :class="['product__button', {'product__button--active': cartIds.includes(product .id)}]"
       @click="() => addToCart(product)"
@@ -24,8 +27,8 @@ export default {
   props: {
     product: {
       type: Object,
-      default: {}
-    }
+      default: {},
+    },
   },
   methods: {
     getManufacturName: getManufacturName,
@@ -36,15 +39,25 @@ export default {
         this.$store.commit(ADD_TO_CART, { id, final_price, name, image });
       }
     },
-    getPrice({ final_price, category, manufacturer }) {
+    getPrice({ final_price }) {
       if (!final_price) return 0;
       return getValidPrice(final_price);
     },
+    getOptPrice({ price_nds, category, manufacturer }) {
+      // 2 - rifar key
+      if (
+        Boolean(price_nds) &&
+        Number(category) === 0 &&
+        manufacturer.key === 2
+      )
+        return `(${getValidPrice(price_nds)}₽. от 4х шт.)`;
+      return "";
+    },
     getName() {
       return this.cartIds.includes(this.product.id) ? "Удалить" : "В корзину";
-    }
+    },
   },
-  computed: mapGetters(["cartIds"])
+  computed: mapGetters(["cartIds"]),
 };
 </script>
 

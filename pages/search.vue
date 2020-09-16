@@ -32,7 +32,7 @@ export default {
     PageTemplate,
     ProductPreview,
     ContentFilter,
-    ProductsList
+    ProductsList,
   },
   data() {
     return {
@@ -40,34 +40,34 @@ export default {
       manufacturers: [
         {
           id: "",
-          name: "Все"
+          name: "Все",
         },
         {
           id: 1,
-          name: "Kermi"
+          name: "Kermi",
         },
         {
           id: 2,
-          name: "Buderus"
+          name: "Buderus",
         },
         {
           id: 3,
-          name: "Refar"
-        }
-      ]
+          name: "Rifar",
+        },
+      ],
     };
   },
   methods: {
     setManufacturer(id) {
       this.manufacturer = id;
-    }
+    },
   },
   computed: {
-    ...mapGetters(["searchValue", "fullProductsList"])
+    ...mapGetters(["searchValue", "fullProductsList"]),
   },
   mounted() {
     this.$store.dispatch(GET_FULL_PRODUCTS_LIST);
-  }
+  },
 };
 </script>
 

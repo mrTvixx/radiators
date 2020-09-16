@@ -1,6 +1,6 @@
 <template>
-  <PageTemplate :path="[{ link: '/components', name: 'Запорно регулирующая арматура' }]">
-    <div class="components" style="flex-flow: column">
+  <PageTemplate :path="[{ link: '/accessories', name: 'Комплектующие' }]">
+    <div class="protect" style="flex-flow: column">
       <div>
         <h2>Раздел находится в стадии наполнения.</h2>
       </div>
@@ -34,7 +34,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.components {
+.protect {
   padding: 30px 0;
   display: flex;
 
@@ -45,7 +45,7 @@ export default {
 }
 
 @media (max-width: 720px) {
-  .components {
+  .protect {
     flex-flow: column;
 
     &__list {

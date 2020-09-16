@@ -1,7 +1,8 @@
 <template>
   <PageTemplate>
     <fragment>
-      <Slider />
+      <!-- maybe be use in future -->
+      <!-- <Slider /> -->
       <Catalog />
     </fragment>
   </PageTemplate>
@@ -9,15 +10,15 @@
 
 <script>
 import PageTemplate from "../components/PageTemplate";
-import Slider from "../components/Slider";
+// import Slider from "../components/Slider";
 import Catalog from "../components/Catalog";
 
 export default {
   components: {
-    Slider,
+    // Slider,
     Catalog,
-    PageTemplate
-  }
+    PageTemplate,
+  },
 };
 </script>
 
