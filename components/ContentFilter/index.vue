@@ -1,11 +1,22 @@
 <template>
   <fragment>
-    <span v-if="isMobile" name="showCountry" @click="toggleFilter" class="title btn">
-      {{filterStatus}}
-      <v-icon :class="['cart-svg', {'cart-svg--open': showFilter}]" name="arrow-down"></v-icon>
+    <span
+      v-if="isMobile"
+      name="showCountry"
+      @click="toggleFilter"
+      class="title btn"
+    >
+      {{ filterStatus }}
+      <v-icon
+        :class="['cart-svg', { 'cart-svg--open': showFilter }]"
+        name="arrow-down"
+      ></v-icon>
     </span>
     <div
-      :class="['filter', { 'collapse-content--open': showFilter, 'collapse-content': isMobile }]"
+      :class="[
+        'filter',
+        { 'collapse-content--open': showFilter, 'collapse-content': isMobile },
+      ]"
     >
       <div class="row">
         <span class="title">
@@ -19,7 +30,7 @@
           р.
         </div>
       </div>
-      <div v-if="currentPath === '/radiator'" class="row">
+      <div v-if="currentPath.includes('radiator')" class="row">
         <span class="title">
           <b>Межосевое расстояние:</b>
         </span>
@@ -37,24 +48,47 @@
         </span>
         <div class="content">
           От
-          <input type="number" v-model="minGarant" :min="minGarant" :max="maxGarant" />
+          <input
+            type="number"
+            v-model="minGarant"
+            :min="minGarant"
+            :max="maxGarant"
+          />
           до
-          <input type="number" v-model="maxGarant" :min="minGarant" :max="maxGarant" />
+          <input
+            type="number"
+            v-model="maxGarant"
+            :min="minGarant"
+            :max="maxGarant"
+          />
           лет
         </div>
       </div>
-      <div v-if="currentPath === '/radiator'" class="row">
-        <span @click="() => toggleCollapse('showConnectType')" class="title btn">
+      <div v-if="currentPath.includes('radiator')" class="row">
+        <span
+          @click="() => toggleCollapse('showConnectType')"
+          class="title btn"
+        >
           Тип подключения:
           <v-icon
-            :class="['cart-svg', {'cart-svg--open': toggled === 'showConnectType'}]"
+            :class="[
+              'cart-svg',
+              { 'cart-svg--open': toggled === 'showConnectType' },
+            ]"
             name="arrow-down"
           ></v-icon>
         </span>
         <div
-          :class="['collapse-content', { 'collapse-content--open': toggled === 'showConnectType' }]"
+          :class="[
+            'collapse-content',
+            { 'collapse-content--open': toggled === 'showConnectType' },
+          ]"
         >
-          <label v-for="item in connectTypes" :key="item.id" :for="item.id + 'cn'">
+          <label
+            v-for="item in connectTypes"
+            :key="item.id"
+            :for="item.id + 'cn'"
+          >
             <input
               type="checkbox"
               v-model="selectedTypes"
@@ -70,11 +104,19 @@
         <span @click="() => toggleCollapse('showCountry')" class="title btn">
           Страна производитель:
           <v-icon
-            :class="['cart-svg', {'cart-svg--open': toggled === 'showCountry'}]"
+            :class="[
+              'cart-svg',
+              { 'cart-svg--open': toggled === 'showCountry' },
+            ]"
             name="arrow-down"
           ></v-icon>
         </span>
-        <div :class="['collapse-content', { 'collapse-content--open': toggled === 'showCountry' }]">
+        <div
+          :class="[
+            'collapse-content',
+            { 'collapse-content--open': toggled === 'showCountry' },
+          ]"
+        >
           <label v-for="item in countries" :key="item.id" :for="item.id + 'ct'">
             <input
               type="checkbox"
@@ -91,12 +133,18 @@
         <span @click="() => toggleCollapse('showProducers')" class="title btn">
           Поставщики:
           <v-icon
-            :class="['cart-svg', {'cart-svg--open': toggled === 'showProducers'}]"
+            :class="[
+              'cart-svg',
+              { 'cart-svg--open': toggled === 'showProducers' },
+            ]"
             name="arrow-down"
           ></v-icon>
         </span>
         <div
-          :class="['collapse-content', { 'collapse-content--open': toggled === 'showProducers' }]"
+          :class="[
+            'collapse-content',
+            { 'collapse-content--open': toggled === 'showProducers' },
+          ]"
         >
           <label v-for="item in producers" :key="item.id" :for="item.id + 'pr'">
             <input
@@ -111,7 +159,9 @@
         </div>
       </div>
       <div class="row">
-        <button @click="applyFilter" class="filter__apply-btn">Применить</button>
+        <button @click="applyFilter" class="filter__apply-btn">
+          Применить
+        </button>
         <button @click="clearFilter" class="filter__clear-btn">Сбросить</button>
       </div>
     </div>
@@ -295,7 +345,7 @@ export default {
         producers: this.selectedProducers,
       };
 
-      if (this.currentPath === "/radiator") {
+      if (this.currentPath.includes("radiator")) {
         data = {
           ...data,
           os: {
