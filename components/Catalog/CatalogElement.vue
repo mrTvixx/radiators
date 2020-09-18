@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  props: ["title", "link", "image"]
+  props: ["title", "link", "image"],
 };
 </script>
 
@@ -34,7 +34,7 @@ export default {
   }
 
   &__image {
-    height: 290px;
+    height: 250px;
   }
 
   &:hover {

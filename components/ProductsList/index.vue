@@ -46,6 +46,7 @@ export default {
   watch: {
     fullProductsList() {
       window.scrollTo(0, 0);
+      this.page = 1;
     }
   },
   methods: {

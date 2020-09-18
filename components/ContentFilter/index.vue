@@ -226,6 +226,10 @@ export default {
           id: 8,
           name: "Meibis",
         },
+        {
+          id: 9,
+          name: "Axis",
+        },
       ],
       countries: [
         {
@@ -272,7 +276,6 @@ export default {
 
     if (newSelectedList.length && type !== undefined) {
       this.selectedProducers = newSelectedList;
-      this.toggled = "showProducers";
       this.applyFilter();
     }
 
@@ -408,6 +411,8 @@ $producersCount: 9;
 .filter {
   width: 300px;
   height: 100%;
+  max-height: 80vh;
+  overflow: auto;
   border-radius: 5px;
   padding: 0 10px;
   box-shadow: 0 0 15px -2px rgba(0, 0, 0, 0.2);
