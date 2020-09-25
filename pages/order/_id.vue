@@ -50,7 +50,7 @@
         <ul>
           <li v-for="item in orderData.order" :key="item.id">
             <router-link :to="`/product/${item.product.id}`">{{item.product.name}}</router-link>
-            - {{item.count}} шт. x {{getPrice(item.product)}}
+            - {{item.count}} шт. x {{getPrice(item)}}
           </li>
           <li class="order-cart__total-sum">
             <b>Итого:</b>{{getTotalSum(orderData.order)}}
@@ -63,7 +63,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-import Loader from "../../components/Loader";
 import PageTemplate from "../../components/PageTemplate";
 import { GET_ORDER } from "../../store/actions.type";
 
@@ -80,16 +79,16 @@ export default {
     }
   },
   methods: {
-    getPrice({ final_price }) {
-      if (!final_price) return 0;
-      return `${getValidPrice(final_price)} ₽.`
+    getPrice({ price }) {
+      if (!price) return 0;
+      return `${getValidPrice(price)} ₽.`
     },
     getTotalSum(data = []) {
       const sum = data.reduce((acc, item) => {
-        acc += Number(item.product.final_price * item.count);
+        acc += Number(item.price * item.count);
         return acc;
       }, 0);
-      return ` ${sum || 0} ₽.`;
+      return ` ${getValidPrice(sum || 0)} ₽.`;
     }
   },
   mounted() {

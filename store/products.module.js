@@ -24,6 +24,7 @@ import {
   SAVE_ORDER_DATA,
   SAVE_FILTERS_LIST,
   CLEAR_FILTERS_LIST,
+  SET_PAGINATION_PAGE,
 } from "./mutations.type";
 import { HTTP } from "../common/api.service";
 
@@ -63,6 +64,7 @@ const state = {
   cart: [],
   orderId: null,
   filtersList: null,
+  paginationPage: 1,
 };
 
 const getters = {
@@ -96,7 +98,8 @@ const getters = {
   cartTotalPrice(state) {
     if (!(state.cart || []).length) return 0;
     const totalPrice = state.cart.reduce((acc, item) => {
-      acc += Number(item.final_price) * Number(item.count);
+      const price = item.count > 4 && item.price_nds ? item.price_nds : item.final_price;
+      acc += Number(price) * Number(item.count);
       return acc;
     }, 0);
     return totalPrice;
@@ -106,6 +109,9 @@ const getters = {
   },
   orderData(state) {
     return state.orderData;
+  },
+  page(state) {
+    return state.paginationPage;
   },
 };
 
@@ -140,6 +146,7 @@ const actions = {
           id: item.id,
           count: item.count,
           name: item.name,
+          price: item.count > 4 && item.price_nds ? Number(item.price_nds) : Number(item.final_price),
         }))
       )
     );
@@ -271,6 +278,9 @@ const mutations = {
     state.previous = null;
     state.count = 0;
     state.searchValue = "";
+  },
+  [SET_PAGINATION_PAGE](state, page) {
+    state.paginationPage = page;
   },
   [ADD_TO_CART](state, product) {
     const currentCart = state.cart;

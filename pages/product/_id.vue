@@ -92,16 +92,18 @@ export default {
         return `(${getValidPrice(price_nds)}₽. от 4х шт.)`;
       return "";
     },
-    addToCart({ id, final_price, name, image }) {
+    addToCart({ id, final_price, name, image, price_nds, manufacturer }) {
       if (this.cartIds.includes(this.productData.id)) {
         this.$store.commit(REMOVE_FROM_CART, id);
       } else {
-        this.$store.commit(ADD_TO_CART, {
+        const data = {
           id,
           final_price,
           name,
           image,
-        });
+        };
+        if (manufacturer.key === 2) data.price_nds = price_nds;
+        this.$store.commit(ADD_TO_CART, data);
       }
     },
     getName() {

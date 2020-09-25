@@ -170,7 +170,7 @@
 
 <script>
 import { GET_FULL_PRODUCTS_LIST } from "../../store/actions.type";
-import { CLEAR_FILTERS_LIST } from "../../store/mutations.type";
+import { CLEAR_FILTERS_LIST, SET_PAGINATION_PAGE } from "../../store/mutations.type";
 
 export default {
   components: {},
@@ -307,6 +307,7 @@ export default {
     },
     isMobile() {
       const size = this.width < 721;
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.showFilter = !size;
       return size;
     },
@@ -347,6 +348,8 @@ export default {
         countries: this.selectedCountries,
         producers: this.selectedProducers,
       };
+
+      this.$store.commit(SET_PAGINATION_PAGE, 1);
 
       if (this.currentPath.includes("radiator")) {
         data = {

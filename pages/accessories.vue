@@ -1,16 +1,10 @@
 <template>
   <PageTemplate :path="[{ link: '/accessories', name: 'Комплектующие' }]">
-    <div class="protect" style="flex-flow: column">
-      <div>
-        <h2>Раздел находится в стадии наполнения.</h2>
-      </div>
-      <div>
-        <h3>Спасибо за понимание!</h3>
-      </div>
-      <!-- <ContentFilter />
-      <div class="radiators__list">
+    <div class="protect">
+      <ContentFilter />
+      <div class="protect__list">
         <ProductsList />
-      </div>-->
+      </div>
     </div>
   </PageTemplate>
 </template>
@@ -28,7 +22,7 @@ export default {
     ProductsList
   },
   mounted() {
-    // this.$store.dispatch(GET_FULL_PRODUCTS_LIST, { productType: 0 });
+    this.$store.dispatch(GET_FULL_PRODUCTS_LIST, { productType: 2 });
   }
 };
 </script>

@@ -8,8 +8,8 @@
     <span class="product__manufacturer">{{ getManufacturName(product.manufacturer) }}</span>
     <router-link :to="`/product/${product.id}`" class="product__title">{{product.name}}</router-link>
     <span>
-      <b class="product__price">{{`${getPrice(product)} ₽.`}}</b>
-      {{getOptPrice(product)}}
+      <div><b>Розничная:</b>{{` ${getPrice(product)}₽.`}}</div>
+      <div><b>Оптовая:{{` ${getOptPrice(product)}₽. `}}</b>от 4х шт.</div>
     </span>
     <button
       :class="['product__button', {'product__button--active': cartIds.includes(product .id)}]"
@@ -27,16 +27,23 @@ export default {
   props: {
     product: {
       type: Object,
-      default: {},
+      default: () => {},
     },
   },
   methods: {
     getManufacturName: getManufacturName,
-    addToCart({ id, final_price, name, image }) {
+    addToCart({ id, final_price, name, image, price_nds, manufacturer }) {
       if (this.cartIds.includes(this.product.id)) {
         this.$store.commit(REMOVE_FROM_CART, id);
       } else {
-        this.$store.commit(ADD_TO_CART, { id, final_price, name, image });
+        const data = {
+          id,
+          final_price,
+          name,
+          image,
+        };
+        if (manufacturer.key === 2) data.price_nds = price_nds;
+        this.$store.commit(ADD_TO_CART, data);
       }
     },
     getPrice({ final_price }) {
@@ -50,7 +57,7 @@ export default {
         Number(category) === 0 &&
         manufacturer.key === 2
       )
-        return `(${getValidPrice(price_nds)}₽. от 4х шт.)`;
+        return getValidPrice(price_nds);
       return "";
     },
     getName() {

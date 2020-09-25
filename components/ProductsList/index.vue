@@ -7,7 +7,7 @@
     <div v-else class="search__info">Ничего не найдено</div>
     <div class="search__pagination">
       <paginate
-        v-model="page"
+        v-model="paginationPage"
         v-if="fullProductsList.length"
         page-class="pagination__page"
         active-class="pagination__page--active"
@@ -29,24 +29,27 @@ import { mapGetters } from "vuex";
 import ProductPreview from "../ProductPreview";
 import Loader from "../Loader";
 import { GET_FULL_PRODUCTS_LIST } from "../../store/actions.type";
+import { SET_PAGINATION_PAGE } from "../../store/mutations.type";
 
 export default {
-  data() {
-    return {
-      page: 1
-    };
-  },
   components: {
     ProductPreview,
     Loader
   },
   computed: {
-    ...mapGetters(["fullProductsList", "pageCount", "isLoading"])
+    ...mapGetters(["fullProductsList", "pageCount", "isLoading", "page"]),
+    paginationPage: {
+      get() {
+        return this.page;
+      },
+      set(value) {
+        this.$store.commit(SET_PAGINATION_PAGE, value);
+      }
+    }
   },
   watch: {
     fullProductsList() {
       window.scrollTo(0, 0);
-      this.page = 1;
     }
   },
   methods: {

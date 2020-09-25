@@ -28,7 +28,7 @@
               />
               <span @click="() => onCount({ id: item.id, value: Number(item.count) + 1})">+</span>
             </div>
-            <div class="cart__price">{{(Number(item.final_price) * Number(item.count)).toFixed(2)}} ₽.</div>
+            <div class="cart__price">{{getPrice(item)}} ₽.</div>
           </div>
           <span @click="() => onRemove(item.id)">
             <v-icon name="trash" class="cart__remove"></v-icon>
@@ -197,6 +197,11 @@ export default {
     }
   },
   methods: {
+    getPrice(item) {
+      const price = item.count > 4 && item.price_nds ? item.price_nds : item.final_price;
+      console.log('price :>> ', price);
+      return (Number(price) * Number(item.count)).toFixed(2);
+    },
     onRemove(id) {
       this.$store.commit(REMOVE_FROM_CART, id);
     },
