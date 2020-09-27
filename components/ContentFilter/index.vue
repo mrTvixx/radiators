@@ -42,7 +42,7 @@
           мм.
         </div>
       </div>
-      <div class="row">
+      <!-- <div class="row">
         <span class="title">
           <b>Гарантия:</b>
         </span>
@@ -63,7 +63,7 @@
           />
           лет
         </div>
-      </div>
+      </div> -->
       <div v-if="currentPath.includes('radiator')" class="row">
         <span
           @click="() => toggleCollapse('showConnectType')"
@@ -181,7 +181,7 @@ export default {
       showFilter: false,
       min: 0,
       max: 100000,
-      minOs: 50,
+      minOs: 0,
       maxOs: 500,
       minGarant: 5,
       maxGarant: 50,
@@ -206,26 +206,26 @@ export default {
         //   id: 3,
         //   name: "Bшlux",
         // },
-        {
-          id: 4,
-          name: "Itap",
-        },
-        {
-          id: 5,
-          name: "Herz",
-        },
-        {
-          id: 6,
-          name: "Danfoss",
-        },
+        // {
+        //   id: 4,
+        //   name: "Itap",
+        // },
+        // {
+        //   id: 5,
+        //   name: "Herz",
+        // },
+        // {
+        //   id: 6,
+        //   name: "Danfoss",
+        // },
         // {
         //   id: 7,
         //   name: "Rehau",
         // },
-        {
-          id: 8,
-          name: "Meibis",
-        },
+        // {
+        //   id: 8,
+        //   name: "Meibis",
+        // },
         {
           id: 9,
           name: "Axis",
@@ -269,6 +269,16 @@ export default {
       ],
     };
   },
+  props: {
+    selectedManufacturer: {
+      type: Number,
+      default: null,
+    },
+    clearManufacturer: {
+      type: Function,
+      default: () => null,
+    }
+  },
   mounted() {
     this.currentPath = this.$route.path;
     const { type } = this.$route.query;
@@ -300,6 +310,13 @@ export default {
       if (Number(this.minGarant) > Number(this.maxGarant))
         this.maxGarant = this.minGarant;
     },
+    selectedManufacturer() {
+      if (this.selectedManufacturer === null) this.clearFilter();
+      if (this.selectedManufacturer !== null) {
+        this.selectedProducers = [`${this.selectedManufacturer}`];
+        this.applyFilter();
+      }
+    }
   },
   computed: {
     filterStatus() {
@@ -319,10 +336,15 @@ export default {
     toggleCollapse(name) {
       this.toggled = this.toggled === name ? "" : name;
     },
+    getType(path) {
+      if (path.includes('radiator')) return 0;
+      if (path.includes('accessories')) return 2;
+      return -1;
+    },
     clearFilter() {
       this.min = 0;
       this.max = 100000;
-      this.minOs = 50;
+      this.minOs = 0;
       this.maxOs = 500;
       this.minGarant = 5;
       this.maxGarant = 50;
@@ -330,6 +352,8 @@ export default {
       this.selectedTypes = [];
       this.selectedProducers = [];
       this.toggled = "";
+
+      this.clearManufacturer();
 
       this.applyFilter();
     },
@@ -350,18 +374,15 @@ export default {
       };
 
       this.$store.commit(SET_PAGINATION_PAGE, 1);
-
-      if (this.currentPath.includes("radiator")) {
-        data = {
-          ...data,
-          os: {
-            min: this.minOs || 50,
-            max: this.maxOs || 500,
-          },
-          types: this.selectedTypes,
-          productType: 0,
-        };
-      }
+      data = {
+        ...data,
+        os: {
+          min: this.minOs || 0,
+          max: this.maxOs || 500,
+        },
+        types: this.selectedTypes,
+        productType: this.getType(this.currentPath),
+      };
 
       this.$store.dispatch(GET_FULL_PRODUCTS_LIST, data);
     },
@@ -396,9 +417,10 @@ $producersCount: 9;
   justify-content: space-around;
   padding: 0 0 0 10px;
   transition: 0.3s;
+  max-height: 0px !important;
 
   &--open {
-    max-height: 100vh;
+    max-height: 100vh !important;
   }
 }
 
@@ -481,6 +503,7 @@ $producersCount: 9;
   .filter {
     position: unset;
     width: unset;
+    overflow: hidden;
   }
 }
 </style>

@@ -41,7 +41,7 @@
             <router-link
               class="product-page__link"
               :to="{
-                path: '/radiator',
+                path: '/accessories',
                 query: { type: productData.manufacturer.key },
               }"
               >комплектующими</router-link
@@ -92,7 +92,15 @@ export default {
         return `(${getValidPrice(price_nds)}₽. от 4х шт.)`;
       return "";
     },
-    addToCart({ id, final_price, name, image, price_nds, manufacturer }) {
+    addToCart({
+      id,
+      final_price,
+      name,
+      image,
+      price_nds,
+      manufacturer,
+      category,
+      }) {
       if (this.cartIds.includes(this.productData.id)) {
         this.$store.commit(REMOVE_FROM_CART, id);
       } else {
@@ -101,6 +109,7 @@ export default {
           final_price,
           name,
           image,
+          category,
         };
         if (manufacturer.key === 2) data.price_nds = price_nds;
         this.$store.commit(ADD_TO_CART, data);
@@ -173,7 +182,8 @@ export default {
   }
 
   &__image {
-    height: 360px;
+    max-width: 450px;
+    width: 100%;
     background-repeat: no-repeat;
     background-size: contain;
     padding: 0 10px 0 0;
@@ -222,8 +232,9 @@ export default {
     flex-flow: column;
 
     &__image {
-      max-width: 100%;
-      max-height: 235px;
+      max-width: 450px;
+      max-height: 600px;
+      padding: 0 0 15px 0;
     }
   }
 }

@@ -22,7 +22,9 @@ export default {
     ProductsList
   },
   mounted() {
-    this.$store.dispatch(GET_FULL_PRODUCTS_LIST, { productType: 2 });
+    this.currentPath = this.$route.path;
+    const { type } = this.$route.query;
+    if (type === undefined) this.$store.dispatch(GET_FULL_PRODUCTS_LIST, { productType: 2 });
   }
 };
 </script>

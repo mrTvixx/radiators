@@ -6,10 +6,11 @@
       :alt="product.image && product.image.name"
     />
     <span class="product__manufacturer">{{ getManufacturName(product.manufacturer) }}</span>
-    <router-link :to="`/product/${product.id}`" class="product__title">{{product.name}}</router-link>
+    <div v-if="product.category === '2'" class="product__title">{{product.name}}</div>
+    <router-link v-else :to="`/product/${product.id}`" class="product__title">{{product.name}}</router-link>
     <span>
       <div><b>Розничная:</b>{{` ${getPrice(product)}₽.`}}</div>
-      <div><b>Оптовая:{{` ${getOptPrice(product)}₽. `}}</b>от 4х шт.</div>
+      <div v-if="product.manufacturer.key === 2 && product.category === '0'"><b>Оптовая:{{` ${getOptPrice(product)}₽. `}}</b>от 4х шт.</div>
     </span>
     <button
       :class="['product__button', {'product__button--active': cartIds.includes(product .id)}]"
@@ -32,7 +33,15 @@ export default {
   },
   methods: {
     getManufacturName: getManufacturName,
-    addToCart({ id, final_price, name, image, price_nds, manufacturer }) {
+    addToCart({
+      id,
+      final_price,
+      name,
+      image,
+      price_nds,
+      manufacturer,
+      category,
+      }) {
       if (this.cartIds.includes(this.product.id)) {
         this.$store.commit(REMOVE_FROM_CART, id);
       } else {
@@ -41,6 +50,7 @@ export default {
           final_price,
           name,
           image,
+          category,
         };
         if (manufacturer.key === 2) data.price_nds = price_nds;
         this.$store.commit(ADD_TO_CART, data);
@@ -87,6 +97,7 @@ export default {
   &__image {
     max-width: 100%;
     max-height: 235px;
+    height: 100%;
   }
 
   &__manufacturer {

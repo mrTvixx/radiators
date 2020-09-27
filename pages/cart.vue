@@ -17,7 +17,8 @@
             class="cart__image"
             :style="{backgroundImage: `url(${item.image && item.image.file})`}"
           />
-          <router-link :to="`/product/${item.id}`" class="cart__name">{{item.name}}</router-link>
+          <div v-if="item.category === '2'" class="cart__name">{{item.name}}</div>
+          <router-link v-else :to="`/product/${item.id}`" class="cart__name">{{item.name}}</router-link>
           <div class="cart__btn-container">
             <div class="cart__count">
               <span @click="() => onCount({ id: item.id, value: Number(item.count) - 1})">-</span>
@@ -199,7 +200,6 @@ export default {
   methods: {
     getPrice(item) {
       const price = item.count > 4 && item.price_nds ? item.price_nds : item.final_price;
-      console.log('price :>> ', price);
       return (Number(price) * Number(item.count)).toFixed(2);
     },
     onRemove(id) {
