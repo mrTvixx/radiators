@@ -2,13 +2,14 @@
   <PageTemplate
     :path="[{ link: '/product', name: `Товар | ${productData.name}` }]"
   >
-    <div class="product-page">
+    <div class="product-page" itemscope itemtype="http://schema.org/Product">
       <img
+        itemprop="image"
         class="product-page__image"
         :src="productData.image && productData.image.file"
       />
       <div class="product-page__content">
-        <div class="content__title">
+        <div class="content__title" itemprop="name">
           {{
             `${productData.name} - ${getManufacturName(
               productData.manufacturer
@@ -18,6 +19,10 @@
         <div class="content__price">
           <b>{{ `Цена: ${getPrice(productData)} ₽.` }}</b>
           {{ getOptPrice(productData) }}
+        </div>
+        <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+          <meta itemprop="price" :content="getSchemaPrice(productData)">
+          <meta itemprop="priceCurrency" content="RUB">
         </div>
 
         <div class="content__info" v-html="getProductInfoList(productData)" />
@@ -91,6 +96,17 @@ export default {
       )
         return `(${getValidPrice(price_nds)}₽. от 4х шт.)`;
       return "";
+    },
+    getSchemaPrice({ price_nds, final_price, category, manufacturer }) {
+      // 2 - rifar key
+      if (!final_price) return 0;
+      if (
+        Boolean(price_nds) &&
+        Number(category) === 0 &&
+        manufacturer.key === 2
+      )
+        return getValidPrice(price_nds);
+      return getValidPrice(final_price);
     },
     addToCart({
       id,
