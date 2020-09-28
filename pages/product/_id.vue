@@ -78,11 +78,28 @@ export default {
       "image": [(this.productData.image || {}).file],
       offers: {
         "@type": "Offer",
-        "priceCurrency": "USD",
+        "priceCurrency": "RUB",
         "price": this.getSchemaPrice(this.productData),
       },
       name: this.productData.name,
-      description: `${this.productData.name} - ${getManufacturName(this.productData.manufacturer)} по самой низкой цене, только в магазине ДомВТепле.`
+      description: `${this.productData.name} - ${getManufacturName(this.productData.manufacturer)} по самой выгодной цене, только в магазине ДомВТепле.`
+    };
+  },
+  head() {
+    return {
+      title: this.productData.name,
+      meta: [
+        { charset: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        {
+          hid: "description",
+          name: "description",
+          content: `${this.productData.name} - ${getManufacturName(this.productData.manufacturer)} по самой выгодной цене, только в магазине ДомВТепле.`
+        }
+      ],
+      htmlAttrs: {
+        lang: "ru"
+      }
     };
   },
   methods: {
