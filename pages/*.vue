@@ -8,6 +8,16 @@
   </div>
 </template>
 
+<script>
+export default {
+  head() {
+    return {
+      title: "ДомВТепле",
+    };
+  },
+}
+</script>
+
 <style lang="scss">
 @import "./constants/_default.scss";
 

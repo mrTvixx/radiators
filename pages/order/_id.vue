@@ -78,6 +78,11 @@ export default {
       return this.$route.params.id;
     }
   },
+  head() {
+    return {
+      title: "Заказ",
+    };
+  },
   methods: {
     getPrice({ price }) {
       if (!price) return 0;

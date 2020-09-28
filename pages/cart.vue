@@ -183,6 +183,11 @@ export default {
       policy: true
     };
   },
+  head() {
+    return {
+      title: "Корзина",
+    };
+  },
   computed: {
     ...mapGetters(["cart", "cartTotalPrice", "orderId", "isLoading"]),
     isReady() {

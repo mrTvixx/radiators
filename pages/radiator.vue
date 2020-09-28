@@ -29,6 +29,11 @@ export default {
     ContentFilter,
     ProductsList
   },
+  head() {
+    return {
+      title: "Радиаторы",
+    };
+  },
   data() {
     return {
       manufacturer: null,

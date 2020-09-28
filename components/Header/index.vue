@@ -16,18 +16,10 @@ export default {
   },
   head() {
     return {
-      title: "ДомВТепле",
       link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
       meta: [
         { charset: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
-        {
-          hid: "description",
-          name: "description",
-          content: `
-          Купить радиаторы, системы защиты от протечек воды, трубы и комплекующие в Москве.
-          Низкие цены, поставки прямо от производителя.`
-        }
       ],
       htmlAttrs: {
         lang: "ru"

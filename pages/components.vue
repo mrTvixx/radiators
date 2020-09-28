@@ -27,6 +27,11 @@ export default {
     ContentFilter,
     ProductsList
   },
+  head() {
+    return {
+      title: "Запорно регулирующая арматура",
+    };
+  },
   mounted() {
     // this.$store.dispatch(GET_FULL_PRODUCTS_LIST, { productType: 0 });
   }

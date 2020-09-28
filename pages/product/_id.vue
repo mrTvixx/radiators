@@ -89,17 +89,12 @@ export default {
     return {
       title: this.productData.name,
       meta: [
-        { charset: "utf-8" },
-        { name: "viewport", content: "width=device-width, initial-scale=1" },
         {
           hid: "description",
           name: "description",
           content: `${this.productData.name} - ${getManufacturName(this.productData.manufacturer)} по самой выгодной цене, только в магазине ДомВТепле.`
         }
       ],
-      htmlAttrs: {
-        lang: "ru"
-      }
     };
   },
   methods: {

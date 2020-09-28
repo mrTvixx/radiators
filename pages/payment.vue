@@ -23,5 +23,10 @@ export default {
   components: {
     PageTemplate,
   },
+  head() {
+    return {
+      title: "Оплата",
+    };
+  },
 };
 </script>

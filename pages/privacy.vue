@@ -74,7 +74,12 @@ import PageTemplate from "../components/PageTemplate";
 export default {
   components: {
     PageTemplate
-  }
+  },
+  head() {
+    return {
+      title: "Пользовательское соглашение",
+    };
+  },
 };
 </script>
 

@@ -14,6 +14,11 @@ import PageTemplate from "../components/PageTemplate";
 export default {
   components: {
     PageTemplate
-  }
+  },
+  head() {
+    return {
+      title: "Гарантия",
+    };
+  },
 };
 </script>

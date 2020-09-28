@@ -27,6 +27,11 @@ export default {
     ContentFilter,
     ProductsList
   },
+  head() {
+    return {
+      title: "Трубы и фитинги",
+    };
+  },
   mounted() {
     // this.$store.dispatch(GET_FULL_PRODUCTS_LIST, { productType: 0 });
   }

@@ -25,5 +25,10 @@ export default {
   components: {
     PageTemplate,
   },
+  head() {
+    return {
+      title: "Контакты",
+    };
+  },
 };
 </script>

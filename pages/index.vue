@@ -19,6 +19,11 @@ export default {
     Catalog,
     PageTemplate,
   },
+  head() {
+    return {
+      title: "ДомВТепле",
+    };
+  },
 };
 </script>
 

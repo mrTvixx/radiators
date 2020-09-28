@@ -21,6 +21,11 @@ export default {
     ContentFilter,
     ProductsList
   },
+  head() {
+    return {
+      title: "Комплектующие",
+    };
+  },
   mounted() {
     this.currentPath = this.$route.path;
     const { type } = this.$route.query;
