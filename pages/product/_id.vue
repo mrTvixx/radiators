@@ -8,6 +8,10 @@
         class="product-page__image"
         :src="productData.image && productData.image.file"
       />
+      <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+        <meta itemprop="price" :content="getSchemaPrice(productData)">
+        <meta itemprop="priceCurrency" content="RUB">
+      </div>
       <div class="product-page__content">
         <div class="content__title" itemprop="name">
           {{
@@ -19,10 +23,6 @@
         <div class="content__price">
           <b>{{ `Цена: ${getPrice(productData)} ₽.` }}</b>
           {{ getOptPrice(productData) }}
-        </div>
-        <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-          <meta itemprop="price" :content="getSchemaPrice(productData)">
-          <meta itemprop="priceCurrency" content="RUB">
         </div>
 
         <div class="content__info" v-html="getProductInfoList(productData)" />
