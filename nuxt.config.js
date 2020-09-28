@@ -7,6 +7,7 @@ module.exports = {
     { ssr: false, src: '~plugins/lodash' },
     { ssr: false, src: '~plugins/slider' },
     { ssr: false, src: '~plugins/pagination' },
+    { ssr: false, src: '~plugins/jsonld' },
   ],
   build: {
     extractCSS: true,

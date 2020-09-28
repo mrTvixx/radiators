@@ -2,21 +2,13 @@
   <PageTemplate
     :path="[{ link: '/product', name: `Товар | ${productData.name}` }]"
   >
-    <div class="product-page" itemscope itemtype="http://schema.org/Product">
+    <div class="product-page" >
       <img
-        itemprop="image"
         class="product-page__image"
         :src="productData.image && productData.image.file"
       />
-      <span style="display: none" itemprop="description">
-          {{`${productData.name} - ${getManufacturName(productData.manufacturer)} по самой низкой цене, только в магазине ДомВТепле.`}}
-      </span>
-      <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-        <meta itemprop="price" :content="getSchemaPrice(productData)">
-        <meta itemprop="priceCurrency" content="RUB">
-      </div>
-      <div class="product-page__content">
-        <div class="content__title" itemprop="name">
+      <d class="product-page__content">
+        <div class="content__title">
           {{`${productData.name} - ${getManufacturName(productData.manufacturer)}`}}
         </div>
         <div class="content__price">
@@ -53,7 +45,7 @@
             <span>для радиаторов данного производителя.</span>
           </div>
         </div>
-      </div>
+      </d>
     </div>
   </PageTemplate>
 </template>
@@ -78,6 +70,20 @@ export default {
     id() {
       return this.$route.params.id;
     },
+  },
+  jsonld() {
+    return {
+      '@context': 'http://schema.org',
+      '@type': 'Product',
+      "image": [(this.productData.image || {}).file],
+      offers: {
+        "@type": "Offer",
+        "priceCurrency": "USD",
+        "price": this.getSchemaPrice(this.productData),
+      },
+      name: this.productData.name,
+      description: `${this.productData.name} - ${getManufacturName(this.productData.manufacturer)} по самой низкой цене, только в магазине ДомВТепле.`
+    };
   },
   methods: {
     getManufacturName,
