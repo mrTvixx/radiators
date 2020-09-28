@@ -8,17 +8,16 @@
         class="product-page__image"
         :src="productData.image && productData.image.file"
       />
+      <span style="display: none" itemprop="description">
+          {{`${productData.name} - ${getManufacturName(productData.manufacturer)} по самой низкой цене, только в магазине ДомВТепле.`}}
+      </span>
       <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
         <meta itemprop="price" :content="getSchemaPrice(productData)">
         <meta itemprop="priceCurrency" content="RUB">
       </div>
       <div class="product-page__content">
         <div class="content__title" itemprop="name">
-          {{
-            `${productData.name} - ${getManufacturName(
-              productData.manufacturer
-            )}`
-          }}
+          {{`${productData.name} - ${getManufacturName(productData.manufacturer)}`}}
         </div>
         <div class="content__price">
           <b>{{ `Цена: ${getPrice(productData)} ₽.` }}</b>
