@@ -6,7 +6,7 @@
         <sup>00</sup>-20
         <sup>00</sup>
       </span>
-      <a href="tel:+79459999999" class="footer__phone">+7 945 999 99 99</a>
+      <a href="tel:+74994443465" class="footer__phone">+7 499 444 34 65</a>
     </div>
     <div class="row">
       <div class="footer__catalog">

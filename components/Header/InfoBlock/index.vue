@@ -14,7 +14,7 @@
       >{{item.title}}</router-link>
     </nav>
     <span class="company-block__number">
-      <a href="tel:+79459999999" class="phone">+7 945 999 99 99</a>
+      <a href="tel:+74994443465" class="phone">+7 499 444 34 65</a>
       <span class="info">
         Ежедневно с 9
         <sup>00</sup>-20
