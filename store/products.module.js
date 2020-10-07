@@ -189,9 +189,7 @@ const actions = {
     const filters = { ...state.filtersList, ...(payload || {}) };
 
     const {
-      name = "",
       productType = null,
-      page = 1,
       price = null,
       os = null,
       garant = null,
@@ -200,9 +198,9 @@ const actions = {
       producers = null,
     } = filters;
 
-    let url = `/products?name=${name}&limit=${ELEMENT_PER_PAGE}`;
+    let url = `/products?name=${state.searchValue || ""}&limit=${ELEMENT_PER_PAGE}`;
     if (productType !== null) url += `&type=${productType}`;
-    if (page > 1) url += `&offset=${(page - 1) * ELEMENT_PER_PAGE}`;
+    if (state.paginationPagepage > 1) url += `&offset=${(state.paginationPage - 1) * ELEMENT_PER_PAGE}`;
     if (price) url += `&price=${price.min},${price.max}`;
     if (garant) url += `&garant=${garant.min},${garant.max}`;
     if (os) url += `&os=${os.min},${os.max}`;
@@ -245,6 +243,7 @@ const mutations = {
     state.productData = {};
   },
   [SAVE_SEARCH_PRODUCTS](state, { searchValue, ...data }) {
+    state.searchValue = searchValue;
     state.list = getFormattedList(data.results, searchValue);
   },
   [SAVE_SEARCH_VALUE](state, value) {
@@ -255,16 +254,14 @@ const mutations = {
     state.cart = [];
     localStorage.removeItem("cart");
   },
-  [SAVE_PRODUCTS_LIST](state, { searchValue, ...data }) {
+  [SAVE_PRODUCTS_LIST](state, { ...data }) {
     state.fullProductsList = data.results;
     state.next = data.next;
     state.previous = data.prev;
     state.count = data.count;
-    state.searchValue = searchValue;
   },
   [CLEAR_SEARCH_PRODUCTS](state) {
     state.list = [];
-    state.searchValue = "";
   },
   [SAVE_FILTERS_LIST](state, data) {
     state.filtersList = data;
@@ -277,7 +274,6 @@ const mutations = {
     state.next = null;
     state.previous = null;
     state.count = 0;
-    state.searchValue = "";
   },
   [SET_PAGINATION_PAGE](state, page) {
     state.paginationPage = page;

@@ -18,12 +18,13 @@
             type="text"
             class="search-field"
             placeholder="Что искать?"
-            v-model="searchValue"
+            v-model="searchV"
             @focus="search"
+            @keyup.enter="goTo"
           />
-          <router-link to="/search">
+          <span @click="goTo">
             <v-icon class="search__loop" name="search"></v-icon>
-          </router-link>
+          </span>
           <Menu
             :showMenu="list && list.length > 0"
             :options="list"
@@ -69,10 +70,12 @@ import _ from "lodash";
 import { mapGetters } from "vuex";
 
 import Menu from "../../DropMenu";
-import { GET_PRODUCTS } from "../../../store/actions.type";
+import { GET_PRODUCTS, GET_FULL_PRODUCTS_LIST } from "../../../store/actions.type";
 import {
   CLEAR_SEARCH_PRODUCTS,
-  CHECK_CART_DATA
+  CHECK_CART_DATA,
+  SAVE_SEARCH_VALUE,
+  SET_PAGINATION_PAGE,
 } from "../../../store/mutations.type";
 import { catalog, links } from "../../../constants/links";
 
@@ -86,7 +89,6 @@ export default {
       showBar: false,
       searchElement: null,
       isBlockFixed: false,
-      searchValue: "",
       menuElementsList: [
         {
           id: 99,
@@ -99,19 +101,37 @@ export default {
     };
   },
   watch: {
-    searchValue() {
+    searchV() {
       this.debouncedSearch();
-    }
+    },
   },
   filters: {
     financFormat(value = 0) {
       return `${value.toLocaleString("ru")}р.`;
     }
   },
-  computed: mapGetters(["list", "cartCount", "cartTotalPrice"]),
+  computed: {
+    ...mapGetters(["list", "cartCount", "cartTotalPrice", "searchValue"]),
+    searchV: {
+      get() {
+        return this.searchValue;
+      },
+      set(newValue) {
+        this.$store.commit(SAVE_SEARCH_VALUE, newValue);
+      }
+    }
+  },
   methods: {
+    goTo() {
+      const { path } = this.$route;
+      const pages = [/radiator/, /accessories/];
+      this.$store.commit(CLEAR_SEARCH_PRODUCTS);
+      this.$store.commit(SET_PAGINATION_PAGE, 1);
+      this.$store.dispatch(GET_FULL_PRODUCTS_LIST);
+      if (!pages.some(item => item.test(path))) this.$router.push('/search');
+    },
     search() {
-      this.$store.dispatch(GET_PRODUCTS, { name: this.searchValue, limit: 5 });
+      this.$store.dispatch(GET_PRODUCTS, { name: this.searchV, limit: 5 });
     },
     toggleMenu() {
       if (document.documentElement.clientWidth > 1040) {

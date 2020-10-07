@@ -7,7 +7,7 @@
         class="product-page__image"
         :src="productData.image && productData.image.file"
       />
-      <d class="product-page__content">
+      <div class="product-page__content">
         <div class="content__title">
           {{`${productData.name} - ${getManufacturName(productData.manufacturer)}`}}
         </div>
@@ -45,7 +45,7 @@
             <span>для радиаторов данного производителя.</span>
           </div>
         </div>
-      </d>
+      </div>
     </div>
   </PageTemplate>
 </template>

@@ -24,14 +24,19 @@
 import Header from "../Header";
 import Footer from "../Footer";
 import CookieBanner from "../CookieBanner";
-
+import { SAVE_SEARCH_VALUE, SET_PAGINATION_PAGE } from "../../store/mutations.type";
 export default {
   components: {
     Header,
     Footer,
     CookieBanner
   },
-  props: ["path"]
+  props: ["path"],
+  destroyed() {
+    if (!this.path) return;
+    this.$store.commit(SAVE_SEARCH_VALUE, '');
+    this.$store.commit(SET_PAGINATION_PAGE, 1);
+  },
 };
 </script>
 

@@ -15,7 +15,6 @@
     </ul>
   </div>
 </template>
-//  допилить подсветку активной ссылки и закрытие при нажатии на активную ссылку 
 <script>
 export default {
   props: {
@@ -36,11 +35,11 @@ export default {
     clickHandler(event) {
       const { target } = event;
       const { $el } = this;
-      if (!$el.contains(target) && this.showMenu) {
+      if (!$el.contains(target) && this.showMenu && target.id !== 'search') {
         this.onClose();
       }
     },
-    onLinkClick(data) {
+    onLinkClick() {
       this.onClose();
     }
   }

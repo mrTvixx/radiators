@@ -155,6 +155,20 @@
               class="check"
             />
             {{ item.name }}
+            <ul v-if="item.childrens.length" class="check__block">
+              <li v-for="ch in item.childrens" :key="ch.id" >
+                <label :for="ch.id + 'pr'">
+                  <input
+                    type="checkbox"
+                    v-model="selectedSubTypes"
+                    :id="ch.id + 'pr'"
+                    :value="ch.id"
+                    class="check__sub"
+                  />
+                  {{ ch.name }}
+                </label>
+              </li>
+            </ul>
           </label>
         </div>
       </div>
@@ -170,7 +184,11 @@
 
 <script>
 import { GET_FULL_PRODUCTS_LIST } from "../../store/actions.type";
-import { CLEAR_FILTERS_LIST, SET_PAGINATION_PAGE } from "../../store/mutations.type";
+import {
+  CLEAR_FILTERS_LIST,
+  SET_PAGINATION_PAGE,
+  SAVE_SEARCH_VALUE,
+} from "../../store/mutations.type";
 
 export default {
   components: {},
@@ -188,23 +206,52 @@ export default {
       toggled: "",
       selectedCountries: [],
       selectedTypes: [],
+      selectedSubTypes: [],
       selectedProducers: [],
       producers: [
         {
           id: 0,
           name: "Kermi",
+          childrens: [],
         },
         {
           id: 1,
           name: "Buderus",
+          childrens: [],
         },
         {
           id: 2,
           name: "Rifar",
+          childrens: [
+            {
+              id: 21,
+              name: 'Base',
+            },
+            {
+              id: 22,
+              name: 'Base Ventil',
+            },
+            {
+              id: 23,
+              name: 'Monolit',
+            },
+            {
+              id: 24,
+              name: 'Monolit Ventil',
+            },
+            {
+              id: 25,
+              name: 'Supremo',
+            },
+            {
+              id: 26,
+              name: 'Supremo Ventil',
+            }
+          ],
         },
         // {
         //   id: 3,
-        //   name: "Bшlux",
+        //   name: "Belux",
         // },
         // {
         //   id: 4,
@@ -229,6 +276,7 @@ export default {
         {
           id: 9,
           name: "Axis",
+          childrens: [],
         },
       ],
       countries: [
@@ -274,6 +322,10 @@ export default {
       type: Number,
       default: null,
     },
+    setManufacturerList: {
+      type: Function,
+      default: () => null,
+    },
     clearManufacturer: {
       type: Function,
       default: () => null,
@@ -310,9 +362,15 @@ export default {
       if (Number(this.minGarant) > Number(this.maxGarant))
         this.maxGarant = this.minGarant;
     },
+    selectedSubTypes() {
+      if (this.selectedSubTypes.length) {
+        this.selectedProducers = this.selectedProducers.filter((item) => item !== 2);
+      }
+    },
     selectedManufacturer() {
       if (this.selectedManufacturer === null) this.clearFilter();
       if (this.selectedManufacturer !== null) {
+        this.toggled = 'showProducers';
         this.selectedProducers = [`${this.selectedManufacturer}`];
         this.applyFilter();
       }
@@ -359,7 +417,6 @@ export default {
     },
     applyFilter() {
       if (this.isMobile) this.showFilter = false;
-
       let data = {
         price: {
           min: this.min || 0,
@@ -370,10 +427,11 @@ export default {
           max: this.maxGarant || 50,
         },
         countries: this.selectedCountries,
-        producers: this.selectedProducers,
+        producers: [...this.selectedProducers, ...this.selectedSubTypes],
       };
-
+      if (this.selectedProducers.includes(2)) data.producers = [...data.producers, 21, 22, 23, 24, 25, 26]
       this.$store.commit(SET_PAGINATION_PAGE, 1);
+      this.$store.commit(SAVE_SEARCH_VALUE, '');
       data = {
         ...data,
         os: {
@@ -395,6 +453,11 @@ export default {
 $countriesCount: 6;
 $connectsCount: 2;
 $producersCount: 9;
+
+ul {
+  margin: 5px 0;
+  padding: 0 0 0 20px;
+}
 
 .btn {
   cursor: pointer;
