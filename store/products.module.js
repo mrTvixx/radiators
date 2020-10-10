@@ -200,7 +200,7 @@ const actions = {
 
     let url = `/products?name=${state.searchValue || ""}&limit=${ELEMENT_PER_PAGE}`;
     if (productType !== null) url += `&type=${productType}`;
-    if (state.paginationPagepage > 1) url += `&offset=${(state.paginationPage - 1) * ELEMENT_PER_PAGE}`;
+    if (state.paginationPage > 1) url += `&offset=${(state.paginationPage - 1) * ELEMENT_PER_PAGE}`;
     if (price) url += `&price=${price.min},${price.max}`;
     if (garant) url += `&garant=${garant.min},${garant.max}`;
     if (os) url += `&os=${os.min},${os.max}`;

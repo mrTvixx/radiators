@@ -50,6 +50,9 @@ export default {
   watch: {
     fullProductsList() {
       window.scrollTo(0, 0);
+    },
+    paginationPage() {
+      console.log('this.paginationPage :>> ', this.paginationPage);
     }
   },
   methods: {

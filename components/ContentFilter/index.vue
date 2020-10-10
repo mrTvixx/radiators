@@ -363,15 +363,21 @@ export default {
         this.maxGarant = this.minGarant;
     },
     selectedSubTypes() {
-      if (this.selectedSubTypes.length) {
+      if (this.selectedSubTypes.length && this.selectedSubTypes.length !== 6) {
         this.selectedProducers = this.selectedProducers.filter((item) => item !== 2);
+      }
+    },
+    selectedProducers() {
+      if (this.selectedProducers.includes(2)) {
+        this.selectedSubTypes = this.producers[2].childrens.map((item) => item.id);
       }
     },
     selectedManufacturer() {
       if (this.selectedManufacturer === null) this.clearFilter();
       if (this.selectedManufacturer !== null) {
         this.toggled = 'showProducers';
-        this.selectedProducers = [`${this.selectedManufacturer}`];
+        this.selectedSubTypes = [];
+        this.selectedProducers = [this.selectedManufacturer];
         this.applyFilter();
       }
     }
@@ -409,6 +415,7 @@ export default {
       this.selectedCountries = [];
       this.selectedTypes = [];
       this.selectedProducers = [];
+      this.selectedSubTypes = [];
       this.toggled = "";
 
       this.clearManufacturer();
