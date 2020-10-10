@@ -10,7 +10,7 @@
     <router-link v-else :to="`/product/${product.id}`" class="product__title">{{product.name}}</router-link>
     <span>
       <div><b>Розничная:</b>{{` ${getPrice(product)}₽.`}}</div>
-      <div v-if="product.manufacturer.key === 2 && product.category === '0'"><b>Оптовая:{{` ${getOptPrice(product)}₽. `}}</b>от 4х шт.</div>
+      <div v-if="[2,21,22,23,24,25,26].includes(product.manufacturer.key) && product.category === '0'"><b>Оптовая:{{` ${getOptPrice(product)}₽. `}}</b>от 4х шт.</div>
     </span>
     <button
       :class="['product__button', {'product__button--active': cartIds.includes(product .id)}]"
@@ -52,7 +52,7 @@ export default {
           image,
           category,
         };
-        if (manufacturer.key === 2) data.price_nds = price_nds;
+        if ([2,21,22,23,24,25,26].includes(manufacturer.key)) data.price_nds = price_nds;
         this.$store.commit(ADD_TO_CART, data);
       }
     },
@@ -65,7 +65,7 @@ export default {
       if (
         Boolean(price_nds) &&
         Number(category) === 0 &&
-        manufacturer.key === 2
+        [2,21,22,23,24,25,26].includes(manufacturer.key)
       )
         return getValidPrice(price_nds);
       return "";

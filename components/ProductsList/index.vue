@@ -51,13 +51,10 @@ export default {
     fullProductsList() {
       window.scrollTo(0, 0);
     },
-    paginationPage() {
-      console.log('this.paginationPage :>> ', this.paginationPage);
-    }
   },
   methods: {
-    handlePagination(page) {
-      this.$store.dispatch(GET_FULL_PRODUCTS_LIST, { page });
+    handlePagination() {
+      this.$store.dispatch(GET_FULL_PRODUCTS_LIST);
     }
   }
 };

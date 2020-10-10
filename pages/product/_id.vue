@@ -109,7 +109,7 @@ export default {
       if (
         Boolean(price_nds) &&
         Number(category) === 0 &&
-        manufacturer.key === 2
+        [2,21,22,23,24,25,26].includes(manufacturer.key)
       )
         return `(${getValidPrice(price_nds)}₽. от 4х шт.)`;
       return "";
@@ -120,7 +120,7 @@ export default {
       if (
         Boolean(price_nds) &&
         Number(category) === 0 &&
-        manufacturer.key === 2
+        [2,21,22,23,24,25,26].includes(manufacturer.key)
       )
         return getValidPrice(price_nds);
       return getValidPrice(final_price);
@@ -144,7 +144,7 @@ export default {
           image,
           category,
         };
-        if (manufacturer.key === 2) data.price_nds = price_nds;
+        if ([2,21,22,23,24,25,26].includes(manufacturer.key)) data.price_nds = price_nds;
         this.$store.commit(ADD_TO_CART, data);
       }
     },
