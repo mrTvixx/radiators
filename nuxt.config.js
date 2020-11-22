@@ -8,6 +8,8 @@ module.exports = {
     { ssr: false, src: '~plugins/slider' },
     { ssr: false, src: '~plugins/pagination' },
     { ssr: false, src: '~plugins/jsonld' },
+    { ssr: false, src: '~plugins/modals' },
+    { ssr: false, src: '~plugins/telInput' },
   ],
   build: {
     extractCSS: true,

@@ -10,12 +10,12 @@
 
 <script>
 import PageTemplate from "../components/PageTemplate";
-// import Slider from "../components/Slider";
+import Slider from "../components/Slider";
 import Catalog from "../components/Catalog";
 
 export default {
   components: {
-    // Slider,
+    Slider,
     Catalog,
     PageTemplate,
   },

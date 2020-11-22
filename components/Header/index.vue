@@ -2,30 +2,30 @@
   <header>
     <InfoBlock />
     <MenuBlock />
+    <CallModal />
   </header>
 </template>
 
 <script>
 import InfoBlock from "./InfoBlock";
 import MenuBlock from "./MenuBlock";
+import CallModal from "./CallModal";
 
 export default {
   components: {
     InfoBlock,
-    MenuBlock
+    MenuBlock,
+    CallModal,
   },
   head() {
     return {
-      link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
-      meta: [
-        { charset: "utf-8" },
-        { name: "viewport", content: "width=device-width, initial-scale=1" },
-      ],
+      link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+      meta: [{ charset: "utf-8" }, { name: "viewport", content: "width=device-width, initial-scale=1" }],
       htmlAttrs: {
-        lang: "ru"
-      }
+        lang: "ru",
+      },
     };
-  }
+  },
 };
 </script>
 
@@ -37,11 +37,10 @@ header {
   background-color: $project-bkg;
 }
 
-
-@media (max-width: 1400px) { 
-    header {
-      padding: 10px;
-    }
+@media (max-width: 1400px) {
+  header {
+    padding: 10px;
+  }
 }
 
 @media (max-width: 720px) {

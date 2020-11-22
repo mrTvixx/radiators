@@ -34,7 +34,7 @@
     </div>
     <hr />
     <div class="row">
-      <div class="year">2020</div>
+      <div class="year">2012 - 2020</div>
     </div>
   </footer>
 </template>

@@ -32,7 +32,7 @@
       </div>
       <div v-if="currentPath.includes('radiator')" class="row">
         <span class="title">
-          <b>Межосевое расстояние:</b>
+          <b>Высота:</b>
         </span>
         <div class="content">
           От

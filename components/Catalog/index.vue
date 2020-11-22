@@ -11,20 +11,20 @@
         :alt="item.title"
       />
     </section>
-    <CatalogText />
+    <ShortCatalogText />
   </div>
 </template>
 
 <script>
 import CatalogElement from "./CatalogElement";
-import CatalogText from "./CatalogText";
+import ShortCatalogText from "./ShortCatalogText";
 
 import { catalog } from "../../constants/links";
 
 export default {
   components: {
     CatalogElement,
-    CatalogText
+    ShortCatalogText
   },
   data() {
     return {

@@ -1,43 +1,29 @@
 <template>
   <fragment>
-    <div :class="['menu-block', {'menu-block--fixed': isBlockFixed}]" id="menu-block">
+    <div :class="['menu-block', { 'menu-block--fixed': isBlockFixed }]" id="menu-block">
       <div class="products">
         <Menu field="title" :showMenu="showMenu" :options="menuElementsList" :onClose="toggleMenu">
           <button @click="toggleMenu" type="button" class="btn">
-            <div :class="['burger', {'burger--active': showMenu}]">
-              <div :class="['burger-row', {'burger-row--hide': showMenu}]"></div>
+            <div :class="['burger', { 'burger--active': showMenu }]">
+              <div :class="['burger-row', { 'burger-row--hide': showMenu }]"></div>
               <div class="burger-row"></div>
-              <div :class="['burger-row', {'burger-row--hide': showMenu}]"></div>
+              <div :class="['burger-row', { 'burger-row--hide': showMenu }]"></div>
             </div>
             <span class="burger-title">Каталог товаров</span>
           </button>
         </Menu>
         <div class="search">
-          <input
-            id="search"
-            type="text"
-            class="search-field"
-            placeholder="Что искать?"
-            v-model="searchV"
-            @focus="search"
-            @keyup.enter="goTo"
-          />
+          <input id="search" type="text" class="search-field" placeholder="Поиск" v-model="searchV" @focus="search" @keyup.enter="goTo" />
           <span @click="goTo">
             <v-icon class="search__loop" name="search"></v-icon>
           </span>
-          <Menu
-            :showMenu="list && list.length > 0"
-            :options="list"
-            :onClose="toggleSearchMenu"
-            :styleWidthObject="{ width: '100%'}"
-            field="name"
-          />
+          <Menu :showMenu="list && list.length > 0" :options="list" :onClose="toggleSearchMenu" :styleWidthObject="{ width: '100%' }" field="name" />
         </div>
       </div>
       <router-link to="/cart" class="cart">
         <v-icon class="cart-svg" name="shopping-cart"></v-icon>
-        {{ cartTotalPrice | financFormat}}
-        <span class="cart__count">{{cartCount}}</span>
+        <span class="cart__total">{{ cartTotalPrice | financFormat }}</span>
+        <span class="cart__count">{{ cartCount }}</span>
       </router-link>
     </div>
     <div v-if="isBlockFixed" class="blank-block" />
@@ -49,7 +35,7 @@
         </div>
         <ul>
           <li v-for="item in menuElementsList" :key="item.id">
-            <router-link :to="item.link">{{item.title}}</router-link>
+            <router-link :to="item.link">{{ item.title }}</router-link>
           </li>
         </ul>
         <div class="sidebar-header">
@@ -57,7 +43,7 @@
         </div>
         <ul>
           <li v-for="item in navElemensList" :key="item.id">
-            <router-link :to="item.link">{{item.title}}</router-link>
+            <router-link :to="item.link">{{ item.title }}</router-link>
           </li>
         </ul>
       </div>
@@ -71,17 +57,12 @@ import { mapGetters } from "vuex";
 
 import Menu from "../../DropMenu";
 import { GET_PRODUCTS, GET_FULL_PRODUCTS_LIST } from "../../../store/actions.type";
-import {
-  CLEAR_SEARCH_PRODUCTS,
-  CHECK_CART_DATA,
-  SAVE_SEARCH_VALUE,
-  SET_PAGINATION_PAGE,
-} from "../../../store/mutations.type";
+import { CLEAR_SEARCH_PRODUCTS, CHECK_CART_DATA, SAVE_SEARCH_VALUE, SET_PAGINATION_PAGE } from "../../../store/mutations.type";
 import { catalog, links } from "../../../constants/links";
 
 export default {
   components: {
-    Menu
+    Menu,
   },
   data() {
     return {
@@ -93,11 +74,11 @@ export default {
         {
           id: 99,
           title: "Все товары",
-          link: "/search"
+          link: "/search",
         },
-        ...catalog
+        ...catalog,
       ],
-      navElemensList: links
+      navElemensList: links,
     };
   },
   watch: {
@@ -108,7 +89,7 @@ export default {
   filters: {
     financFormat(value = 0) {
       return `${value.toLocaleString("ru")}р.`;
-    }
+    },
   },
   computed: {
     ...mapGetters(["list", "cartCount", "cartTotalPrice", "searchValue"]),
@@ -118,8 +99,8 @@ export default {
       },
       set(newValue) {
         this.$store.commit(SAVE_SEARCH_VALUE, newValue);
-      }
-    }
+      },
+    },
   },
   methods: {
     goTo() {
@@ -128,7 +109,7 @@ export default {
       this.$store.commit(CLEAR_SEARCH_PRODUCTS);
       this.$store.commit(SET_PAGINATION_PAGE, 1);
       this.$store.dispatch(GET_FULL_PRODUCTS_LIST);
-      if (!pages.some(item => item.test(path))) this.$router.push('/search');
+      if (!pages.some((item) => item.test(path))) this.$router.push("/search");
     },
     search() {
       this.$store.dispatch(GET_PRODUCTS, { name: this.searchV, limit: 5 });
@@ -147,7 +128,7 @@ export default {
       if (this.searchElement) {
         this.isBlockFixed = this.searchElement.scrollTop > 65;
       }
-    }
+    },
   },
   created() {
     this.debouncedSearch = _.debounce(this.search, 350);
@@ -159,7 +140,7 @@ export default {
   },
   destroyed() {
     document.removeEventListener("scroll", this.changeSearchType);
-  }
+  },
 };
 </script>
 
@@ -352,7 +333,7 @@ export default {
   }
 }
 
-@media (max-width: 1400px) { 
+@media (max-width: 1400px) {
   .menu-block {
     &--fixed {
       padding: 10px !important;
@@ -397,8 +378,12 @@ export default {
     }
 
     .cart {
-      min-width: 130px;
+      min-width: 40px;
       padding: 0 0 0 10px;
+
+      &__total {
+        display: none;
+      }
     }
   }
 }

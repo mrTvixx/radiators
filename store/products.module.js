@@ -4,6 +4,7 @@ import {
   GET_PRODUCT_DATA,
   SEND_ORDER,
   GET_ORDER,
+  SEND_CALL,
 } from "./actions.type";
 import {
   START_FETCH,
@@ -127,14 +128,21 @@ const actions = {
       commit(CLEAR_SEARCH_PRODUCTS);
       return;
     }
+    commit(SAVE_SEARCH_VALUE, name)
     await HTTP.get(`/products?name=${name}&limit=${limit}`)
       .then(({ data }) => {
         commit(SAVE_SEARCH_PRODUCTS, {
-          searchValue: name,
           ...data,
         });
       })
       .catch((err) => alert(err));
+  },
+  async [SEND_CALL]({ commit }, { onSuccess, ...data}) {
+    commit(START_FETCH);
+    await HTTP.post(`/call/`, data)
+      .then(() => onSuccess())
+      .catch((err) => alert(err));
+    commit(END_FETCH);
   },
   async [SEND_ORDER]({ commit, state }, payload) {
     commit(START_FETCH);
@@ -213,8 +221,8 @@ const actions = {
     await HTTP.get(url)
       .then(({ data }) => {
         commit(SAVE_FILTERS_LIST, filters);
+        commit(SAVE_SEARCH_VALUE, name);
         commit(SAVE_PRODUCTS_LIST, {
-          searchValue: name,
           ...data,
         });
       })
@@ -242,9 +250,8 @@ const mutations = {
   [CLEAR_PRODUCT_DATA](state) {
     state.productData = {};
   },
-  [SAVE_SEARCH_PRODUCTS](state, { searchValue, ...data }) {
-    state.searchValue = searchValue;
-    state.list = getFormattedList(data.results, searchValue);
+  [SAVE_SEARCH_PRODUCTS](state, { ...data }) {
+    state.list = getFormattedList(data.results, state.searchValue);
   },
   [SAVE_SEARCH_VALUE](state, value) {
     state.searchValue = value;

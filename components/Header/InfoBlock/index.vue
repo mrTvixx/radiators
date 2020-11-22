@@ -6,13 +6,12 @@
       <span>Тепле</span>
     </router-link>
     <nav class="company-block__menu">
-      <router-link
-        v-for="item in linksList"
-        :key="item.id"
-        class="company-block__menu-item"
-        :to="item.link"
-      >{{item.title}}</router-link>
+      <router-link v-for="item in linksList" :key="item.id" class="company-block__menu-item" :to="item.link">{{ item.title }}</router-link>
     </nav>
+    <div class="company-block__get-call" @click="call">
+      <v-icon class="company-block__svg" name="phone-call"></v-icon>
+      <span class="company-block__get-call-text">Заказать звонок</span>
+    </div>
     <span class="company-block__number">
       <a href="tel:+74994443465" class="phone">+7 499 444 34 65</a>
       <span class="info">
@@ -21,17 +20,27 @@
         <sup>00</sup>
       </span>
     </span>
+    <CallModal :withoutAutoOpen="true" ref="callModal" />
   </div>
 </template>
 
 <script>
 import { links } from "../../../constants/links";
+import CallModal from "../CallModal";
 
 export default {
+  components: {
+    CallModal,
+  },
   data() {
     return {
-      linksList: links
+      linksList: links,
     };
+  },
+  methods: {
+    call() {
+      this.$refs.callModal.$refs.call.open();
+    },
   },
 };
 </script>
@@ -43,6 +52,17 @@ export default {
   padding: 10px 0 0 0;
   display: flex;
   justify-content: space-between;
+
+  &__get-call {
+    font-size: 20px;
+    cursor: pointer;
+    width: 350px;
+    padding: 15px 5px 0;
+  }
+
+  &__svg {
+    width: 18px;
+  }
 
   .red {
     color: $project-red;
@@ -59,7 +79,8 @@ export default {
   &__number {
     display: flex;
     flex-flow: column;
-    min-width: 156px;
+    min-width: 175px;
+    text-align: end;
   }
 
   &__logo {
@@ -108,6 +129,16 @@ export default {
   .company-block {
     &__number {
       min-width: 125px;
+    }
+
+    &__get-call {
+      padding: 10px 10px 0;
+      display: flex;
+      justify-content: flex-end;
+
+      &-text {
+        display: none;
+      }
     }
 
     .info {
