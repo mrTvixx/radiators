@@ -11,7 +11,7 @@
       </div>
     </sweet-modal>
 
-    <sweet-modal class="sweet-modal-is-visible" ref="call" :hideCloseButton="true" :enableMobileFullscreen="false">
+    <sweet-modal title="Заказать звонок" class="sweet-modal-is-visible" ref="call" :hideCloseButton="true" :enableMobileFullscreen="false">
       <div class="close-icon" @click="onCallClose">x</div>
       <div v-if="isLoading" class="call__loader">
         <Loader />
