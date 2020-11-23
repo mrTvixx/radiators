@@ -1,23 +1,10 @@
 <template>
   <fragment>
-    <span
-      v-if="isMobile"
-      name="showCountry"
-      @click="toggleFilter"
-      class="title btn"
-    >
+    <span v-if="isMobile" name="showCountry" @click="toggleFilter" class="title btn">
       {{ filterStatus }}
-      <v-icon
-        :class="['cart-svg', { 'cart-svg--open': showFilter }]"
-        name="arrow-down"
-      ></v-icon>
+      <v-icon :class="['cart-svg', { 'cart-svg--open': showFilter }]" name="arrow-down"></v-icon>
     </span>
-    <div
-      :class="[
-        'filter',
-        { 'collapse-content--open': showFilter, 'collapse-content': isMobile },
-      ]"
-    >
+    <div :class="['filter', { 'collapse-content--open': showFilter, 'collapse-content': isMobile }]">
       <div class="row">
         <span class="title">
           <b>Цена:</b>
@@ -65,37 +52,13 @@
         </div>
       </div> -->
       <div v-if="currentPath.includes('radiator')" class="row">
-        <span
-          @click="() => toggleCollapse('showConnectType')"
-          class="title btn"
-        >
+        <span @click="() => toggleCollapse('showConnectType')" class="title btn">
           Тип подключения:
-          <v-icon
-            :class="[
-              'cart-svg',
-              { 'cart-svg--open': toggled === 'showConnectType' },
-            ]"
-            name="arrow-down"
-          ></v-icon>
+          <v-icon :class="['cart-svg', { 'cart-svg--open': toggled === 'showConnectType' }]" name="arrow-down"></v-icon>
         </span>
-        <div
-          :class="[
-            'collapse-content',
-            { 'collapse-content--open': toggled === 'showConnectType' },
-          ]"
-        >
-          <label
-            v-for="item in connectTypes"
-            :key="item.id"
-            :for="item.id + 'cn'"
-          >
-            <input
-              type="checkbox"
-              v-model="selectedTypes"
-              :id="item.id + 'cn'"
-              :value="item.id"
-              class="check"
-            />
+        <div :class="['collapse-content', { 'collapse-content--open': toggled === 'showConnectType' }]">
+          <label v-for="item in connectTypes" :key="item.id" :for="item.id + 'cn'">
+            <input type="checkbox" v-model="selectedTypes" :id="item.id + 'cn'" :value="item.id" class="check" />
             {{ item.name }}
           </label>
         </div>
@@ -103,28 +66,11 @@
       <div class="row">
         <span @click="() => toggleCollapse('showCountry')" class="title btn">
           Страна производитель:
-          <v-icon
-            :class="[
-              'cart-svg',
-              { 'cart-svg--open': toggled === 'showCountry' },
-            ]"
-            name="arrow-down"
-          ></v-icon>
+          <v-icon :class="['cart-svg', { 'cart-svg--open': toggled === 'showCountry' }]" name="arrow-down"></v-icon>
         </span>
-        <div
-          :class="[
-            'collapse-content',
-            { 'collapse-content--open': toggled === 'showCountry' },
-          ]"
-        >
+        <div :class="['collapse-content', { 'collapse-content--open': toggled === 'showCountry' }]">
           <label v-for="item in countries" :key="item.id" :for="item.id + 'ct'">
-            <input
-              type="checkbox"
-              v-model="selectedCountries"
-              :id="item.id + 'ct'"
-              :value="item.id"
-              class="check"
-            />
+            <input type="checkbox" v-model="selectedCountries" :id="item.id + 'ct'" :value="item.id" class="check" />
             {{ item.name }}
           </label>
         </div>
@@ -132,39 +78,16 @@
       <div class="row">
         <span @click="() => toggleCollapse('showProducers')" class="title btn">
           Поставщики:
-          <v-icon
-            :class="[
-              'cart-svg',
-              { 'cart-svg--open': toggled === 'showProducers' },
-            ]"
-            name="arrow-down"
-          ></v-icon>
+          <v-icon :class="['cart-svg', { 'cart-svg--open': toggled === 'showProducers' }]" name="arrow-down"></v-icon>
         </span>
-        <div
-          :class="[
-            'collapse-content',
-            { 'collapse-content--open': toggled === 'showProducers' },
-          ]"
-        >
+        <div :class="['collapse-content', { 'collapse-content--open': toggled === 'showProducers' }]">
           <label v-for="item in producers" :key="item.id" :for="item.id + 'pr'">
-            <input
-              type="checkbox"
-              v-model="selectedProducers"
-              :id="item.id + 'pr'"
-              :value="item.id"
-              class="check"
-            />
+            <input type="checkbox" v-model="selectedProducers" :id="item.id + 'pr'" :value="item.id" class="check" />
             {{ item.name }}
             <ul v-if="item.childrens.length" class="check__block">
-              <li v-for="ch in item.childrens" :key="ch.id" >
+              <li v-for="ch in item.childrens" :key="ch.id">
                 <label :for="ch.id + 'pr'">
-                  <input
-                    type="checkbox"
-                    v-model="selectedSubTypes"
-                    :id="ch.id + 'pr'"
-                    :value="ch.id"
-                    class="check__sub"
-                  />
+                  <input type="checkbox" v-model="selectedSubTypes" :id="ch.id + 'pr'" :value="ch.id" class="check__sub" />
                   {{ ch.name }}
                 </label>
               </li>
@@ -173,9 +96,7 @@
         </div>
       </div>
       <div class="row">
-        <button @click="applyFilter" class="filter__apply-btn">
-          Применить
-        </button>
+        <button @click="applyFilter" class="filter__apply-btn">Применить</button>
         <button @click="clearFilter" class="filter__clear-btn">Сбросить</button>
       </div>
     </div>
@@ -184,11 +105,7 @@
 
 <script>
 import { GET_FULL_PRODUCTS_LIST } from "../../store/actions.type";
-import {
-  CLEAR_FILTERS_LIST,
-  SET_PAGINATION_PAGE,
-  SAVE_SEARCH_VALUE,
-} from "../../store/mutations.type";
+import { CLEAR_FILTERS_LIST, SET_PAGINATION_PAGE, SAVE_SEARCH_VALUE } from "../../store/mutations.type";
 
 export default {
   components: {},
@@ -225,28 +142,36 @@ export default {
           childrens: [
             {
               id: 21,
-              name: 'Base',
+              name: "Base",
             },
             {
               id: 22,
-              name: 'Base Ventil',
+              name: "Base Ventil",
             },
             {
               id: 23,
-              name: 'Monolit',
+              name: "Monolit",
             },
             {
               id: 24,
-              name: 'Monolit Ventil',
+              name: "Monolit Ventil",
             },
             {
               id: 25,
-              name: 'Supremo',
+              name: "Supremo",
             },
             {
               id: 26,
-              name: 'Supremo Ventil',
-            }
+              name: "Supremo Ventil",
+            },
+            {
+              id: 27,
+              name: "Alum",
+            },
+            {
+              id: 28,
+              name: "Alum Ventil",
+            },
           ],
         },
         // {
@@ -329,7 +254,7 @@ export default {
     clearManufacturer: {
       type: Function,
       default: () => null,
-    }
+    },
   },
   mounted() {
     this.currentPath = this.$route.path;
@@ -359,8 +284,7 @@ export default {
       if (Number(this.minOs) > Number(this.maxOs)) this.maxOs = this.minOs;
     },
     minGarant() {
-      if (Number(this.minGarant) > Number(this.maxGarant))
-        this.maxGarant = this.minGarant;
+      if (Number(this.minGarant) > Number(this.maxGarant)) this.maxGarant = this.minGarant;
     },
     selectedSubTypes() {
       if (this.selectedSubTypes.length && this.selectedSubTypes.length !== 6) {
@@ -375,12 +299,12 @@ export default {
     selectedManufacturer() {
       if (this.selectedManufacturer === null) this.clearFilter();
       if (this.selectedManufacturer !== null) {
-        this.toggled = 'showProducers';
+        this.toggled = "showProducers";
         this.selectedSubTypes = [];
         this.selectedProducers = [this.selectedManufacturer];
         this.applyFilter();
       }
-    }
+    },
   },
   computed: {
     filterStatus() {
@@ -401,8 +325,8 @@ export default {
       this.toggled = this.toggled === name ? "" : name;
     },
     getType(path) {
-      if (path.includes('radiator')) return 0;
-      if (path.includes('accessories')) return 2;
+      if (path.includes("radiator")) return 0;
+      if (path.includes("accessories")) return 2;
       return -1;
     },
     clearFilter() {
@@ -436,9 +360,9 @@ export default {
         countries: this.selectedCountries,
         producers: [...this.selectedProducers, ...this.selectedSubTypes],
       };
-      if (this.selectedProducers.includes(2)) data.producers = [...data.producers, 21, 22, 23, 24, 25, 26]
+      if (this.selectedProducers.includes(2)) data.producers = [...data.producers, 21, 22, 23, 24, 25, 26];
       this.$store.commit(SET_PAGINATION_PAGE, 1);
-      this.$store.commit(SAVE_SEARCH_VALUE, '');
+      this.$store.commit(SAVE_SEARCH_VALUE, "");
       data = {
         ...data,
         os: {

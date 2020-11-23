@@ -23,3 +23,7 @@ body {
 *:focus {
   outline: unset;
 }
+
+.sweet-modal.is-visible {
+  width: 96%;
+}

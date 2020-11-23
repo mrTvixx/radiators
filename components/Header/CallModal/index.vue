@@ -1,6 +1,7 @@
 <template>
   <div>
-    <sweet-modal ref="modal" blocking>
+    <sweet-modal class="sweet-modal-is-visible" ref="modal" blocking :hideCloseButton="true" :enableMobileFullscreen="false">
+      <div class="close-icon" @click="onModalClose">x</div>
       <h3>Добро пожаловать на сайт магазина ДомВТепле!</h3>
       <p>Мы предоставляем широкий выбор товаров для отопления!</p>
       <p>Также вы можете заказать звонок, и наши специалисты помогут вам с подбором нужного оборудования (бесплатная консультация).</p>
@@ -10,7 +11,8 @@
       </div>
     </sweet-modal>
 
-    <sweet-modal ref="call">
+    <sweet-modal class="sweet-modal-is-visible" ref="call" :hideCloseButton="true" :enableMobileFullscreen="false">
+      <div class="close-icon" @click="onCallClose">x</div>
       <div v-if="isLoading" class="call__loader">
         <Loader />
       </div>
@@ -35,7 +37,8 @@
       <button :disabled="!isValid" class="call__button" @click="onSend">Отправить</button>
     </sweet-modal>
 
-    <sweet-modal ref="success" icon="success">
+    <sweet-modal class="sweet-modal-is-visible" ref="success" icon="success" :hideCloseButton="true" :enableMobileFullscreen="false">
+      <div class="close-icon" @click="onSuccClose">x</div>
       <h3>Спасибо!</h3>
       <h4>В ближайшее время с вами свяжутся наши специалисты.</h4>
     </sweet-modal>
@@ -81,6 +84,19 @@ export default {
       this.$refs.modal.close();
       localStorage.setItem("isCall", true);
     },
+    onCallClose() {
+      this.$refs.call.close();
+    },
+    onSuccClose() {
+      this.$refs.success.close();
+    },
+    onModalClose() {
+      this.$refs.modal.close();
+    },
+    onContinue() {
+      this.$refs.modal.close();
+      localStorage.setItem("isCall", true);
+    },
     onCall() {
       this.$refs.modal.close();
       this.$refs.call.open();
@@ -104,19 +120,20 @@ export default {
 
 <style lang="scss" scoped>
 @import "./constants/_default.scss";
-
+.close-icon {
+  position: absolute;
+  top: 0;
+  right: 0px;
+  padding: 8px 17px;
+  font-size: 20px;
+  cursor: pointer;
+}
 a {
   text-decoration: underline !important;
   transition: 0.3s;
 
   &:hover {
     color: $project-red;
-  }
-}
-.sweet-action-close {
-  &:hover,
-  :active {
-    background-color: $project-red !important;
   }
 }
 .call {

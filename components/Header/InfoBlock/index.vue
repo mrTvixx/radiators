@@ -12,6 +12,7 @@
       <v-icon class="company-block__svg" name="phone-call"></v-icon>
       <span class="company-block__get-call-text">Заказать звонок</span>
     </div>
+    <CallModal :withoutAutoOpen="true" ref="callModal" />
     <span class="company-block__number">
       <a href="tel:+74994443465" class="phone">+7 499 444 34 65</a>
       <span class="info">
@@ -20,7 +21,6 @@
         <sup>00</sup>
       </span>
     </span>
-    <CallModal :withoutAutoOpen="true" ref="callModal" />
   </div>
 </template>
 
@@ -132,9 +132,8 @@ export default {
     }
 
     &__get-call {
-      padding: 10px 10px 0;
-      display: flex;
-      justify-content: flex-end;
+      width: unset;
+      padding: 10px 0 0 20px;
 
       &-text {
         display: none;

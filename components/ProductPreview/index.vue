@@ -1,21 +1,17 @@
 <template>
   <div class="product">
-    <img
-      class="product__image"
-      :src="product.image && product.image.file"
-      :alt="product.image && product.image.name"
-    />
+    <img class="product__image" :src="product.image && product.image.file" :alt="product.image && product.image.name" />
     <span class="product__manufacturer">{{ getManufacturName(product.manufacturer) }}</span>
-    <div v-if="product.category === '2'" class="product__title">{{product.name}}</div>
-    <router-link v-else :to="`/product/${product.id}`" class="product__title">{{product.name}}</router-link>
+    <div v-if="product.category === '2'" class="product__title">{{ product.name }}</div>
+    <router-link v-else :to="`/product/${product.id}`" class="product__title">{{ product.name }}</router-link>
     <span>
-      <div><b>Розничная:</b>{{` ${getPrice(product)}₽.`}}</div>
-      <div v-if="[2,21,22,23,24,25,26].includes(product.manufacturer.key) && product.category === '0'"><b>Оптовая:{{` ${getOptPrice(product)}₽. `}}</b>от 4х шт.</div>
+      <div><b>Розничная:</b>{{ ` ${getPrice(product)}₽.` }}</div>
+      <div v-if="[2, 21, 22, 23, 24, 25, 26, 27, 28].includes(product.manufacturer.key) && product.category === '0'">
+        <b>Оптовая:{{ ` ${getOptPrice(product)}₽. ` }}</b
+        >от 4х шт.
+      </div>
     </span>
-    <button
-      :class="['product__button', {'product__button--active': cartIds.includes(product .id)}]"
-      @click="() => addToCart(product)"
-    >{{getName()}}</button>
+    <button :class="['product__button', { 'product__button--active': cartIds.includes(product.id) }]" @click="() => addToCart(product)">{{ getName() }}</button>
   </div>
 </template>
 
@@ -33,15 +29,7 @@ export default {
   },
   methods: {
     getManufacturName: getManufacturName,
-    addToCart({
-      id,
-      final_price,
-      name,
-      image,
-      price_nds,
-      manufacturer,
-      category,
-      }) {
+    addToCart({ id, final_price, name, image, price_nds, manufacturer, category }) {
       if (this.cartIds.includes(this.product.id)) {
         this.$store.commit(REMOVE_FROM_CART, id);
       } else {
@@ -52,7 +40,7 @@ export default {
           image,
           category,
         };
-        if ([2,21,22,23,24,25,26].includes(manufacturer.key)) data.price_nds = price_nds;
+        if ([2, 21, 22, 23, 24, 25, 26, 27, 28].includes(manufacturer.key)) data.price_nds = price_nds;
         this.$store.commit(ADD_TO_CART, data);
       }
     },
@@ -62,12 +50,7 @@ export default {
     },
     getOptPrice({ price_nds, category, manufacturer }) {
       // 2 - rifar key
-      if (
-        Boolean(price_nds) &&
-        Number(category) === 0 &&
-        [2,21,22,23,24,25,26].includes(manufacturer.key)
-      )
-        return getValidPrice(price_nds);
+      if (Boolean(price_nds) && Number(category) === 0 && [2, 21, 22, 23, 24, 25, 26, 27, 28].includes(manufacturer.key)) return getValidPrice(price_nds);
       return "";
     },
     getName() {
