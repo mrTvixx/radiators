@@ -27,3 +27,9 @@ body {
 .sweet-modal.is-visible {
   width: 96%;
 }
+
+@media (max-width: 720px) {
+  .sweet-modal.is-visible {
+    height: 100%;
+  }
+}
