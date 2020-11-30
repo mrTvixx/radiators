@@ -17,7 +17,7 @@
           р.
         </div>
       </div>
-      <div v-if="currentPath.includes('radiator')" class="row">
+      <!-- <div v-if="currentPath.includes('radiator')" class="row">
         <span class="title">
           <b>Высота:</b>
         </span>
@@ -29,7 +29,7 @@
           мм.
         </div>
       </div>
-      <!-- <div class="row">
+      <div class="row">
         <span class="title">
           <b>Гарантия:</b>
         </span>
@@ -255,6 +255,22 @@ export default {
       type: Function,
       default: () => null,
     },
+    clearType: {
+      type: Function,
+      default: () => null,
+    },
+    selectedType: {
+      type: Number,
+      default: null,
+    },
+    clearHeight: {
+      type: Function,
+      default: () => null,
+    },
+    selectedHeight: {
+      type: Number,
+      default: null,
+    },
   },
   mounted() {
     this.currentPath = this.$route.path;
@@ -295,6 +311,12 @@ export default {
       if (this.selectedProducers.includes(2)) {
         this.selectedSubTypes = this.producers[2].childrens.map((item) => item.id);
       }
+    },
+    selectedType() {
+      this.applyFilter();
+    },
+    selectedHeight() {
+      this.applyFilter();
     },
     selectedManufacturer() {
       if (this.selectedManufacturer === null) this.clearFilter();
@@ -343,6 +365,8 @@ export default {
       this.toggled = "";
 
       this.clearManufacturer();
+      this.clearType();
+      this.clearHeight();
 
       this.applyFilter();
     },
@@ -359,8 +383,10 @@ export default {
         },
         countries: this.selectedCountries,
         producers: [...this.selectedProducers, ...this.selectedSubTypes],
+        rediatorType: this.selectedType,
+        height: this.selectedHeight,
       };
-      if (this.selectedProducers.includes(2)) data.producers = [...data.producers, 21, 22, 23, 24, 25, 26];
+      if (this.selectedProducers.includes(2)) data.producers = [...data.producers, 21, 22, 23, 24, 25, 26, 27, 28];
       this.$store.commit(SET_PAGINATION_PAGE, 1);
       this.$store.commit(SAVE_SEARCH_VALUE, "");
       data = {

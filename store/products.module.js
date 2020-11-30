@@ -204,10 +204,14 @@ const actions = {
       countries = null,
       types = null,
       producers = null,
+      rediatorType = null,
+      height = null,
     } = filters;
 
     let url = `/products?name=${state.searchValue || ""}&limit=${ELEMENT_PER_PAGE}`;
     if (productType !== null) url += `&type=${productType}`;
+    if (rediatorType !== null) url += `&radiatorType=${rediatorType},${rediatorType === 12 ? 21 : rediatorType}`;
+    if (height !== null) url += `&height=${height},${height}`;
     if (state.paginationPage > 1) url += `&offset=${(state.paginationPage - 1) * ELEMENT_PER_PAGE}`;
     if (price) url += `&price=${price.min},${price.max}`;
     if (garant) url += `&garant=${garant.min},${garant.max}`;

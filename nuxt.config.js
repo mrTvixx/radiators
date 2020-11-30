@@ -10,6 +10,23 @@ module.exports = {
     { ssr: false, src: '~plugins/jsonld' },
     { ssr: false, src: '~plugins/modals' },
     { ssr: false, src: '~plugins/telInput' },
+    { src: '~plugins/ga.js', mode: 'client' },
+  ],
+  modules: [
+    [
+      '@nuxtjs/yandex-metrika',
+      {
+        id: '69462898',
+        webvisor: true,
+        clickmap:true,
+        useCDN:false,
+        trackLinks:true,
+        accurateTrackBounce:true,
+      }
+    ],
+  ],
+  buildModules: [
+    '@nuxtjs/google-analytics'
   ],
   build: {
     extractCSS: true,
