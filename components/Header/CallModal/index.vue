@@ -1,6 +1,7 @@
 <template>
   <div>
-    <sweet-modal class="sweet-modal-is-visible" ref="modal" blocking :hideCloseButton="true" :enableMobileFullscreen="false">
+    <!-- может быть использую потом -->
+    <!-- <sweet-modal class="sweet-modal-is-visible" ref="modal" blocking :hideCloseButton="true" :enableMobileFullscreen="false">
       <div class="close-icon" @click="onModalClose">x</div>
       <h3>Добро пожаловать на сайт магазина ДомВТепле!</h3>
       <p>Мы предоставляем широкий выбор товаров для отопления!</p>
@@ -9,20 +10,37 @@
         <button class="modal__button modal__button--red" @click="onCall">Заказать звонок</button>
         <button class="modal__button" @click="onContinue">Продолжить</button>
       </div>
-    </sweet-modal>
+    </sweet-modal> -->
 
-    <sweet-modal title="Заказать звонок" class="sweet-modal-is-visible" ref="call" :hideCloseButton="true" :enableMobileFullscreen="false">
+    <sweet-modal
+      title="Заказать звонок"
+      class="sweet-modal-is-visible"
+      ref="call"
+      :hideCloseButton="true"
+      :enableMobileFullscreen="false"
+    >
       <div class="close-icon" @click="onCallClose">x</div>
       <div v-if="isLoading" class="call__loader">
         <Loader />
       </div>
       <div class="call__row">
         <h3>Номер телефона</h3>
-        <vue-tel-input :dynamicPlaceholder="true" :onlyCountries="['RU']" v-model="phone" style="border: 1px solid rgba(0, 0, 0, 0.1); padding: 3px 0" class="call__input" />
+        <vue-tel-input
+          placeholder="+7 (xxx) xxx xx xx"
+          :onlyCountries="['RU']"
+          v-model="phone"
+          style="border: 1px solid rgba(0, 0, 0, 0.1); padding: 3px 0"
+          class="call__input"
+        />
       </div>
       <div class="call__row">
         <h3>Имя</h3>
-        <input type="text" v-model="name" style="border: 1px solid rgba(0, 0, 0, 0.1)" class="call__input" />
+        <input
+          type="text"
+          v-model="name"
+          style="border: 1px solid rgba(0, 0, 0, 0.1)"
+          class="call__input"
+        />
       </div>
       <div class="call__row call__policy">
         <div class="order__row">
@@ -37,7 +55,13 @@
       <button :disabled="!isValid" class="call__button" @click="onSend">Отправить</button>
     </sweet-modal>
 
-    <sweet-modal class="sweet-modal-is-visible" ref="success" icon="success" :hideCloseButton="true" :enableMobileFullscreen="false">
+    <sweet-modal
+      class="sweet-modal-is-visible"
+      ref="success"
+      icon="success"
+      :hideCloseButton="true"
+      :enableMobileFullscreen="false"
+    >
       <div class="close-icon" @click="onSuccClose">x</div>
       <h3>Спасибо!</h3>
       <h4>В ближайшее время с вами свяжутся наши специалисты.</h4>
@@ -67,8 +91,9 @@ export default {
     };
   },
   mounted() {
-    const isCall = localStorage.getItem("isCall");
-    if (!isCall && !this.withoutAutoOpen) this.$refs.modal.open();
+    // может быть позже
+    // const isCall = localStorage.getItem("isCall");
+    // if (!isCall && !this.withoutAutoOpen) this.$refs.modal.open();
   },
   computed: {
     ...mapGetters(["isLoading"]),

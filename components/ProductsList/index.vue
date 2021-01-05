@@ -34,7 +34,7 @@ import { SET_PAGINATION_PAGE } from "../../store/mutations.type";
 export default {
   components: {
     ProductPreview,
-    Loader
+    Loader,
   },
   computed: {
     ...mapGetters(["fullProductsList", "pageCount", "isLoading", "page"]),
@@ -44,8 +44,8 @@ export default {
       },
       set(value) {
         this.$store.commit(SET_PAGINATION_PAGE, value);
-      }
-    }
+      },
+    },
   },
   watch: {
     fullProductsList() {
@@ -55,8 +55,8 @@ export default {
   methods: {
     handlePagination() {
       this.$store.dispatch(GET_FULL_PRODUCTS_LIST);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -132,7 +132,7 @@ export default {
     flex-flow: column;
 
     &__list {
-      padding: 50px 0 0;
+      padding: 30px 0 0;
     }
   }
 }

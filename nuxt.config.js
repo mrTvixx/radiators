@@ -10,6 +10,7 @@ module.exports = {
     { ssr: false, src: '~plugins/jsonld' },
     { ssr: false, src: '~plugins/modals' },
     { ssr: false, src: '~plugins/telInput' },
+    { ssr: false, src: '~plugins/tooltip' },
     { src: '~plugins/ga.js', mode: 'client' },
   ],
   modules: [

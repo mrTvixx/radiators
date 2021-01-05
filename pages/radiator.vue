@@ -1,33 +1,91 @@
 <template>
   <PageTemplate :path="[{ link: '/radiator', name: 'Радиаторы' }]">
     <div class="radiators">
-      <ContentFilter :clearManufacturer="clearManufacturer" :selectedManufacturer="manufacturer" :clearType="clearType" :selectedType="type" :clearHeight="clearHeight" :selectedHeight="height" />
+      <ContentFilter
+        :clearManufacturer="clearManufacturer"
+        :selectedManufacturer="manufacturer"
+        :clearType="clearType"
+        :selectedType="type"
+        :clearHeight="clearHeight"
+        :selectedHeight="height"
+      />
       <div class="radiators__list">
         <div class="radiators__filter">
-          <span v-for="item in manufacturers" :key="item.id" @click="setManufacturer(item.id)" :class="['filter__item', { 'filter__item--active': item.id === manufacturer }]">{{ item.name }}</span>
+          <span
+            v-for="item in manufacturers"
+            :key="item.id"
+            @click="setManufacturer(item.id)"
+            :class="[
+              'filter__item',
+              { 'filter__item--active': item.id === manufacturer },
+            ]"
+            >{{ item.name }}</span
+          >
         </div>
-        <div :class="['radiators__filter', { 'radiators__filter--disable': manufacturer === 2 }]">
-          <span v-for="item in types" :key="item.id" @click="setType(item.id)" :class="['filter__item', { 'filter__item--active': item.id === type }]">{{ item.name }}</span>
+        <div
+          :class="[
+            'radiators__filter',
+            { 'radiators__filter--disable': manufacturer === 2 },
+          ]"
+        >
+          <span
+            v-for="item in types"
+            :key="item.id"
+            @click="setType(item.id)"
+            :class="['filter__item', { 'filter__item--active': item.id === type }]"
+            >{{ item.name }}</span
+          >
         </div>
         <div class="radiators__filter radiators__filter--last">
-          <span v-for="item in heights" :key="item.id" @click="setHeight(item.id)" :class="['filter__item', 'filter__item--last', { 'filter__item--active': item.id === height }]">{{ item.name }}</span>
+          <span
+            v-for="item in heights"
+            :key="item.id"
+            @click="setHeight(item.id)"
+            :class="[
+              'filter__item',
+              'filter__item--last',
+              { 'filter__item--active': item.id === height },
+            ]"
+            >{{ item.name }}</span
+          >
         </div>
         <div class="radiators__mobile-filter">
           <label> Поставщик: </label>
           <select :value="manufacturer" @change="setManufacturer">
-            <option :selected="item.id === null" v-for="item in manufacturers" :value="item.id" :key="item.id">{{ item.name }}</option>
+            <option
+              :selected="item.id === null"
+              v-for="item in manufacturers"
+              :value="item.id"
+              :key="item.id"
+            >
+              {{ item.name }}
+            </option>
           </select>
         </div>
         <div class="radiators__mobile-filter">
           <label> Тип: </label>
           <select :disabled="manufacturer === 2" :value="type" @change="setType">
-            <option :selected="item.id === null" v-for="item in types" :value="item.id" :key="item.id">{{ item.name }}</option>
+            <option
+              :selected="item.id === null"
+              v-for="item in types"
+              :value="item.id"
+              :key="item.id"
+            >
+              {{ item.name }}
+            </option>
           </select>
         </div>
         <div class="radiators__mobile-filter">
           <label> Высота: </label>
           <select :value="height" @change="setHeight">
-            <option :selected="item.id === null" v-for="item in heights" :value="item.id" :key="item.id">{{ item.name }}</option>
+            <option
+              :selected="item.id === null"
+              v-for="item in heights"
+              :value="item.id"
+              :key="item.id"
+            >
+              {{ item.name }}
+            </option>
           </select>
         </div>
         <ProductsList />
@@ -230,7 +288,7 @@ export default {
     flex-flow: column;
 
     &__mobile-filter {
-      max-width: 75%;
+      max-width: 100%;
       display: flex;
       justify-content: space-between;
       padding: 5px 0;

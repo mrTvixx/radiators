@@ -6,11 +6,25 @@
       <span>Тепле</span>
     </router-link>
     <nav class="company-block__menu">
-      <router-link v-for="item in linksList" :key="item.id" class="company-block__menu-item" :to="item.link">{{ item.title }}</router-link>
+      <router-link
+        v-for="item in linksList"
+        :key="item.id"
+        class="company-block__menu-item"
+        :to="item.link"
+        >{{ item.title }}</router-link
+      >
     </nav>
-    <div class="company-block__get-call" @click="call">
+    <div
+      v-tooltip="{
+        content: 'Нужны помощь? <br /> Закажи звонок.',
+        show: isTooltip,
+        trigger: 'none',
+      }"
+      class="company-block__get-call"
+      @click="call"
+    >
       <v-icon class="company-block__svg" name="phone-call"></v-icon>
-      <span class="company-block__get-call-text">Заказать звонок</span>
+      <span name="callText" class="company-block__get-call-text">Заказать звонок </span>
     </div>
     <CallModal :withoutAutoOpen="true" ref="callModal" />
     <span class="company-block__number">
@@ -35,10 +49,22 @@ export default {
   data() {
     return {
       linksList: links,
+      isTooltip: false,
     };
+  },
+  mounted() {
+    const isCall = localStorage.getItem("isCall");
+    const currentDate = new Date().getDate();
+    if (String(isCall) === String(currentDate)) return;
+    this.isTooltip = true;
+    setTimeout(() => {
+      localStorage.setItem("isCall", currentDate);
+      this.isTooltip = false;
+    }, 5000);
   },
   methods: {
     call() {
+      this.isTooltip = false;
       this.$refs.callModal.$refs.call.open();
     },
   },
