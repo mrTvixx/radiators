@@ -26,8 +26,9 @@
         :key="item.id"
         class="company-block__menu-item"
         :to="item.link"
-        >{{ item.title }}</router-link
       >
+        {{ item.title }}
+      </router-link>
     </nav>
     <div
       v-if="width > 1040"
@@ -45,7 +46,17 @@
     <CallModal :withoutAutoOpen="true" ref="callModal" />
     <span class="company-block__number">
       <a href="tel:+74994443465" class="contact">+7 499 444 34 65</a>
-      <a href="mailto:info@домвтепле.рф">info@домвтепле.рф</a>
+      <a
+        @click="onEmailClick"
+        href="mailto:info@домвтепле.рф"
+        v-tooltip.left="{
+          content: 'Скопировано',
+          show: showCopyTooltip,
+          trigger: 'none',
+        }"
+      >
+        info@домвтепле.рф
+      </a>
       <span class="info">
         Ежедневно с 9
         <sup>00</sup>-20
@@ -68,6 +79,7 @@ export default {
       linksList: links,
       isTooltip: false,
       width: 0,
+      showCopyTooltip: false,
     };
   },
   mounted() {
@@ -90,6 +102,13 @@ export default {
     call() {
       this.isTooltip = false;
       this.$refs.callModal.$refs.call.open();
+    },
+    onEmailClick() {
+      this.$clipboard("info@домвтепле.рф");
+      this.showCopyTooltip = true;
+      setTimeout(() => {
+        this.showCopyTooltip = false;
+      }, 1500);
     },
   },
 };
@@ -209,6 +228,10 @@ export default {
         font-size: 16px !important;
         display: block;
       }
+    }
+
+    .red {
+      font-size: 1.8rem;
     }
 
     &__svg {
