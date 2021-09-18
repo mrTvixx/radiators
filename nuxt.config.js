@@ -12,6 +12,7 @@ module.exports = {
     { ssr: false, src: '~plugins/telInput' },
     { ssr: false, src: '~plugins/tooltip' },
     { ssr: false, src: '~plugins/clipboard' },
+    { ssr: false, src: '~plugins/popover' },
     { src: '~plugins/ga.js', mode: 'client' },
   ],
   modules: [

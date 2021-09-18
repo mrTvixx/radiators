@@ -6,21 +6,24 @@
         :selectedManufacturer="manufacturer"
         :clearType="clearType"
         :selectedType="type"
+        :selectSavedType="selectSavedType"
+        :selectSavedHeight="selectSavedHeight"
         :clearHeight="clearHeight"
         :selectedHeight="height"
+        :setManufacturer="setManufacturer"
       />
       <div class="radiators__list">
         <div class="radiators__filter">
           <span
-            v-for="item in manufacturers"
+            v-for="item in manufacturersList"
             :key="item.id"
-            @click="setManufacturer(item.id)"
+            @click="setManufacturer(item.key)"
             :class="[
               'filter__item',
-              { 'filter__item--active': item.id === manufacturer },
-            ]"
-            >{{ item.name }}</span
-          >
+              { 'filter__item--active': item.key === manufacturer },
+            ]">
+              {{ item.name }}
+            </span>
         </div>
         <div
           :class="[
@@ -53,9 +56,9 @@
           <label> Поставщик: </label>
           <select :value="manufacturer" @change="setManufacturer">
             <option
-              :selected="item.id === null"
-              v-for="item in manufacturers"
-              :value="item.id"
+              :selected="item.key === null"
+              v-for="item in manufacturersList"
+              :value="item.key"
               :key="item.id"
             >
               {{ item.name }}
@@ -96,6 +99,7 @@
 
 <script>
 import _ from "lodash";
+import { mapGetters } from "vuex";
 import PageTemplate from "../components/PageTemplate";
 import ContentFilter from "../components/ContentFilter";
 import ProductsList from "../components/ProductsList";
@@ -117,26 +121,11 @@ export default {
       manufacturer: null,
       type: null,
       height: null,
-      manufacturers: [
+      manufacturersList: [
         {
-          id: null,
+          id: -1,
+          key: null,
           name: "Поставщик",
-        },
-        {
-          id: 0,
-          name: "Kermi",
-        },
-        {
-          id: 1,
-          name: "Buderus",
-        },
-        {
-          id: 2,
-          name: "Rifar",
-        },
-        {
-          id: 9,
-          name: "Axis",
         },
       ],
       types: [
@@ -197,6 +186,11 @@ export default {
       ],
     };
   },
+  watch: {
+    manufacturers() {
+      this.manufacturersList = [...this.manufacturersList, ...this.manufacturers];
+    },
+  },
   methods: {
     setManufacturer(data) {
       data = typeof data !== "object" ? data : _.get(data, "target.value");
@@ -214,6 +208,14 @@ export default {
     clearType() {
       this.type = null;
     },
+    selectSavedType(type) {
+      // set type from url
+      this.type = type;
+    },
+    selectSavedHeight(height) {
+      // set height from url
+      this.height = height;
+    },
     setHeight(data) {
       data = typeof data !== "object" ? data : _.get(data, "target.value");
       this.height = data ? Number(data) : data;
@@ -224,8 +226,11 @@ export default {
   },
   mounted() {
     this.currentPath = this.$route.path;
-    const { type } = this.$route.query;
-    if (!type) this.$store.dispatch(GET_FULL_PRODUCTS_LIST, { productType: 0 });
+    const { query } = this.$route;
+    if (!Object.keys(query).length) this.$store.dispatch(GET_FULL_PRODUCTS_LIST, { productType: 0 });
+  },
+  computed: {
+    ...mapGetters(["manufacturers"]),
   },
 };
 </script>

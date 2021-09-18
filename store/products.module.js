@@ -5,6 +5,8 @@ import {
   SEND_ORDER,
   GET_ORDER,
   SEND_CALL,
+  GET_CATALOG_LIST,
+  GET_PROJECT_SETTINGS,
 } from "./actions.type";
 import {
   START_FETCH,
@@ -26,6 +28,8 @@ import {
   SAVE_FILTERS_LIST,
   CLEAR_FILTERS_LIST,
   SET_PAGINATION_PAGE,
+  SAVE_MANUFACTURERS_LIST,
+  SAVE_CATALOG_LIST,
 } from "./mutations.type";
 import { HTTP } from "../common/api.service";
 
@@ -66,6 +70,8 @@ const state = {
   orderId: null,
   filtersList: null,
   paginationPage: 1,
+  manufacturers: [],
+  catalogList: [],
 };
 
 const getters = {
@@ -114,6 +120,12 @@ const getters = {
   page(state) {
     return state.paginationPage;
   },
+  manufacturers(state) {
+    return state.manufacturers;
+  },
+  catalogList(state) {
+    return state.catalogList;
+  },
 };
 
 // request example
@@ -122,6 +134,44 @@ const getters = {
 //   .catch(err => alert(err));
 
 const actions = {
+  async [GET_PROJECT_SETTINGS]({ commit }) {
+    commit(START_FETCH);
+    await HTTP.get(`/project_settings/`)
+      .then(({ data }) => {
+        const list = data?.manufacturers || []
+        const manufacturers = []
+
+        list.forEach((item) => {
+          const newItem = { ...item }
+          if (newItem.parent) return
+
+          manufacturers.push({
+            id: newItem.id,
+            key: newItem.key,
+            name: newItem.name,
+            childrens: []
+          })
+        })
+
+        list.forEach((item) => {
+          const newItem = { ...item }
+          if (!newItem.parent) return
+
+          const parent = manufacturers.find((item) => item.id === newItem.parent)
+          if (!parent) return
+
+          parent.childrens.push({
+            id: newItem.id,
+            key: newItem.key,
+            name: newItem.sub_type,
+          })
+        })
+
+        commit(SAVE_MANUFACTURERS_LIST, manufacturers)
+      })
+      .catch((err) => alert(err));
+    commit(END_FETCH);
+  },
   async [GET_PRODUCTS]({ commit }, payload) {
     const { name, limit } = payload;
     if (!name) {
@@ -191,6 +241,15 @@ const actions = {
       .catch((err) => alert(err));
     commit(END_FETCH);
   },
+  async [GET_CATALOG_LIST]({ commit }) {
+    commit(START_FETCH);
+    await HTTP.get(`/catalog/`)
+      .then(({ data }) => {
+        commit(SAVE_CATALOG_LIST, data.results);
+      })
+      .catch((err) => alert(err));
+    commit(END_FETCH);
+  },
   async [GET_FULL_PRODUCTS_LIST]({ commit, state }, payload) {
     commit(CLEAR_PRODUCTS_LIST);
     commit(START_FETCH);
@@ -206,10 +265,12 @@ const actions = {
       producers = null,
       rediatorType = null,
       height = null,
+      color = null,
     } = filters;
 
     let url = `/products?name=${state.searchValue || ""}&limit=${ELEMENT_PER_PAGE}`;
     if (productType !== null) url += `&type=${productType}`;
+    if (color) url += `&color=${color}`;
     if (rediatorType !== null) url += `&radiatorType=${rediatorType},${rediatorType === 12 ? 21 : rediatorType}`;
     if (height !== null) url += `&height=${height},${height}`;
     if (state.paginationPage > 1) url += `&offset=${(state.paginationPage - 1) * ELEMENT_PER_PAGE}`;
@@ -236,6 +297,9 @@ const actions = {
 };
 
 const mutations = {
+  [SAVE_MANUFACTURERS_LIST](state, data) {
+    state.manufacturers = data
+  },
   [START_FETCH](state) {
     state.isLoading = true;
   },
@@ -316,6 +380,9 @@ const mutations = {
     const cartData = localStorage.getItem("cart");
     if (!cartData) return;
     state.cart = JSON.parse(cartData || []);
+  },
+  [SAVE_CATALOG_LIST](state, data) {
+    state.catalogList = data;
   },
   [CHANGE_PRODUCT_COUNT](state, { id, value }) {
     const currentCart = state.cart;

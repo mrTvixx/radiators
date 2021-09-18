@@ -69,10 +69,12 @@
 <script>
 import { links } from "../../../constants/links";
 import CallModal from "../CallModal";
+import CompactMenu from "../../CompactMenu";
 
 export default {
   components: {
     CallModal,
+    CompactMenu,
   },
   data() {
     return {
@@ -117,12 +119,17 @@ export default {
 <style lang="scss" scoped>
 @import "./constants/_default.scss";
 
+.company-block__menu-nav {
+  // width: 100%;
+}
+
 .company-block {
   padding: 10px 0 0 0;
   display: flex;
   justify-content: space-between;
 
   &__get-call {
+    white-space: nowrap;
     font-size: 20px;
     cursor: pointer;
     width: 350px;
@@ -187,6 +194,7 @@ export default {
       padding: 0 15px 0 0;
       color: $project-color;
       transition: 0.3s;
+      white-space: nowrap;
 
       &:hover {
         color: $project-red;

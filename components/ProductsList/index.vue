@@ -16,7 +16,6 @@
         prev-class="pagination__prev"
         next-class="pagination__next"
         :page-count="pageCount"
-        :click-handler="handlePagination"
         prev-text="<<"
         next-text=">>"
       />
@@ -50,11 +49,6 @@ export default {
   watch: {
     fullProductsList() {
       window.scrollTo(0, 0);
-    },
-  },
-  methods: {
-    handlePagination() {
-      this.$store.dispatch(GET_FULL_PRODUCTS_LIST);
     },
   },
 };

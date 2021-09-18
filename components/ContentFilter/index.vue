@@ -2,9 +2,17 @@
   <fragment>
     <span v-if="isMobile" name="showCountry" @click="toggleFilter" class="title btn">
       {{ filterStatus }}
-      <v-icon :class="['cart-svg', { 'cart-svg--open': showFilter }]" name="arrow-down"></v-icon>
+      <v-icon
+        :class="['cart-svg', { 'cart-svg--open': showFilter }]"
+        name="arrow-down"
+      ></v-icon>
     </span>
-    <div :class="['filter', { 'collapse-content--open': showFilter, 'collapse-content': isMobile }]">
+    <div
+      :class="[
+        'filter',
+        { 'collapse-content--open': showFilter, 'collapse-content': isMobile },
+      ]"
+    >
       <div class="row">
         <span class="title">
           <b>Цена:</b>
@@ -17,60 +25,54 @@
           р.
         </div>
       </div>
-      <!-- <div v-if="currentPath.includes('radiator')" class="row">
-        <span class="title">
-          <b>Высота:</b>
-        </span>
-        <div class="content">
-          От
-          <input type="number" v-model="minOs" :min="minOs" :max="maxOs" />
-          до
-          <input type="number" v-model="maxOs" :min="minOs" :max="maxOs" />
-          мм.
-        </div>
-      </div>
-      <div class="row">
-        <span class="title">
-          <b>Гарантия:</b>
-        </span>
-        <div class="content">
-          От
-          <input
-            type="number"
-            v-model="minGarant"
-            :min="minGarant"
-            :max="maxGarant"
-          />
-          до
-          <input
-            type="number"
-            v-model="maxGarant"
-            :min="minGarant"
-            :max="maxGarant"
-          />
-          лет
-        </div>
-      </div> -->
       <div v-if="currentPath.includes('radiator')" class="row">
-        <span @click="() => toggleCollapse('showConnectType')" class="title btn">
-          Тип подключения:
-          <v-icon :class="['cart-svg', { 'cart-svg--open': toggled === 'showConnectType' }]" name="arrow-down"></v-icon>
+        <span @click="() => toggleCollapse('showColors')" class="title btn">
+          Цвет:
+          <v-icon
+            :class="['cart-svg', { 'cart-svg--open': toggled.includes('showColors') }]"
+            name="arrow-down"
+          ></v-icon>
         </span>
-        <div :class="['collapse-content', { 'collapse-content--open': toggled === 'showConnectType' }]">
-          <label v-for="item in connectTypes" :key="item.id" :for="item.id + 'cn'">
-            <input type="checkbox" v-model="selectedTypes" :id="item.id + 'cn'" :value="item.id" class="check" />
+        <div
+          :class="[
+            'collapse-content',
+            { 'collapse-content--open': toggled.includes('showColors') },
+          ]"
+        >
+          <label v-for="item in colorTypes" :key="item.id" :for="item.id + 'cl'">
+            <input
+              type="radio"
+              v-model="selectedColor"
+              :id="item.id + 'cl'"
+              :value="item.id"
+              class="check"
+            />
             {{ item.name }}
           </label>
         </div>
       </div>
-      <div class="row">
-        <span @click="() => toggleCollapse('showCountry')" class="title btn">
-          Страна производитель:
-          <v-icon :class="['cart-svg', { 'cart-svg--open': toggled === 'showCountry' }]" name="arrow-down"></v-icon>
+      <div v-if="currentPath.includes('radiator')" class="row">
+        <span @click="() => toggleCollapse('showConnectType')" class="title btn">
+          Тип подключения:
+          <v-icon
+            :class="['cart-svg', { 'cart-svg--open': toggled.includes('showConnectType') }]"
+            name="arrow-down"
+          ></v-icon>
         </span>
-        <div :class="['collapse-content', { 'collapse-content--open': toggled === 'showCountry' }]">
-          <label v-for="item in countries" :key="item.id" :for="item.id + 'ct'">
-            <input type="checkbox" v-model="selectedCountries" :id="item.id + 'ct'" :value="item.id" class="check" />
+        <div
+          :class="[
+            'collapse-content',
+            { 'collapse-content--open': toggled.includes('showConnectType') },
+          ]"
+        >
+          <label v-for="item in connectTypes" :key="item.id" :for="item.id + 'cn'">
+            <input
+              type="checkbox"
+              v-model="selectedTypes"
+              :id="item.id + 'cn'"
+              :value="item.id"
+              class="check"
+            />
             {{ item.name }}
           </label>
         </div>
@@ -78,16 +80,36 @@
       <div class="row">
         <span @click="() => toggleCollapse('showProducers')" class="title btn">
           Поставщики:
-          <v-icon :class="['cart-svg', { 'cart-svg--open': toggled === 'showProducers' }]" name="arrow-down"></v-icon>
+          <v-icon
+            :class="['cart-svg', { 'cart-svg--open': toggled.includes('showProducers') }]"
+            name="arrow-down"
+          ></v-icon>
         </span>
-        <div :class="['collapse-content', { 'collapse-content--open': toggled === 'showProducers' }]">
+        <div
+          :class="[
+            'collapse-content',
+            { 'collapse-content--open': toggled.includes('showProducers') },
+          ]"
+        >
           <label v-for="item in producers" :key="item.id" :for="item.id + 'pr'">
-            <input type="checkbox" v-model="selectedProducers" :id="item.id + 'pr'" :value="item.id" class="check" />
+            <input
+              type="checkbox"
+              v-model="selectedProducers"
+              :id="item.id + 'pr'"
+              :value="item.key"
+              class="check"
+            />
             {{ item.name }}
             <ul v-if="item.childrens.length" class="check__block">
               <li v-for="ch in item.childrens" :key="ch.id">
                 <label :for="ch.id + 'pr'">
-                  <input type="checkbox" v-model="selectedSubTypes" :id="ch.id + 'pr'" :value="ch.id" class="check__sub" />
+                  <input
+                    type="checkbox"
+                    v-model="selectedSubTypes"
+                    :id="ch.id + 'pr'"
+                    :value="ch.key"
+                    class="check__sub"
+                  />
                   {{ ch.name }}
                 </label>
               </li>
@@ -104,132 +126,31 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { GET_FULL_PRODUCTS_LIST } from "../../store/actions.type";
-import { CLEAR_FILTERS_LIST, SET_PAGINATION_PAGE, SAVE_SEARCH_VALUE } from "../../store/mutations.type";
+import {
+  CLEAR_FILTERS_LIST,
+  SET_PAGINATION_PAGE,
+  SAVE_SEARCH_VALUE,
+} from "../../store/mutations.type";
 
 export default {
   components: {},
   data() {
     return {
+      randomTrigger: null,
+      isFirstSet: true,
       width: null,
       currentPath: "",
       showFilter: false,
       min: 0,
       max: 100000,
-      minOs: 0,
-      maxOs: 500,
-      minGarant: 5,
-      maxGarant: 50,
-      toggled: "",
-      selectedCountries: [],
+      toggled: ["showProducers", "showCountry", "showConnectType", "showColors"],
       selectedTypes: [],
       selectedSubTypes: [],
       selectedProducers: [],
-      producers: [
-        {
-          id: 0,
-          name: "Kermi",
-          childrens: [],
-        },
-        {
-          id: 1,
-          name: "Buderus",
-          childrens: [],
-        },
-        {
-          id: 2,
-          name: "Rifar",
-          childrens: [
-            {
-              id: 21,
-              name: "Base",
-            },
-            {
-              id: 22,
-              name: "Base Ventil",
-            },
-            {
-              id: 23,
-              name: "Monolit",
-            },
-            {
-              id: 24,
-              name: "Monolit Ventil",
-            },
-            {
-              id: 25,
-              name: "Supremo",
-            },
-            {
-              id: 26,
-              name: "Supremo Ventil",
-            },
-            {
-              id: 27,
-              name: "Alum",
-            },
-            {
-              id: 28,
-              name: "Alum Ventil",
-            },
-          ],
-        },
-        // {
-        //   id: 3,
-        //   name: "Belux",
-        // },
-        // {
-        //   id: 4,
-        //   name: "Itap",
-        // },
-        // {
-        //   id: 5,
-        //   name: "Herz",
-        // },
-        // {
-        //   id: 6,
-        //   name: "Danfoss",
-        // },
-        // {
-        //   id: 7,
-        //   name: "Rehau",
-        // },
-        // {
-        //   id: 8,
-        //   name: "Meibis",
-        // },
-        {
-          id: 9,
-          name: "Axis",
-          childrens: [],
-        },
-      ],
-      countries: [
-        {
-          id: 0,
-          name: "Россия",
-        },
-        {
-          id: 1,
-          name: "Италия",
-        },
-        {
-          id: 2,
-          name: "Германия",
-        },
-        {
-          id: 3,
-          name: "Китай",
-        },
-        {
-          id: 4,
-          name: "Австрия",
-        },
-        {
-          id: 5,
-          name: "Дания",
-        },
-      ],
+      selectedColor: 0,
+      producers: [],
       connectTypes: [
         {
           id: 0,
@@ -240,6 +161,16 @@ export default {
           name: "Боковое",
         },
       ],
+      colorTypes: [
+        {
+          id: 0,
+          name: "Все",
+        },
+        {
+          id: 1,
+          name: "Цветные",
+        }
+      ],
     };
   },
   props: {
@@ -247,7 +178,7 @@ export default {
       type: Number,
       default: null,
     },
-    setManufacturerList: {
+    setManufacturer: {
       type: Function,
       default: () => null,
     },
@@ -263,6 +194,14 @@ export default {
       type: Number,
       default: null,
     },
+    selectSavedType: {
+      type: Function,
+      default: () => null,
+    },
+    selectSavedHeight: {
+      type: Function,
+      default: () => null,
+    },
     clearHeight: {
       type: Function,
       default: () => null,
@@ -274,13 +213,7 @@ export default {
   },
   mounted() {
     this.currentPath = this.$route.path;
-    const { type } = this.$route.query;
-    const newSelectedList = [`${type}`];
-
-    if (newSelectedList.length && type !== undefined) {
-      this.selectedProducers = newSelectedList;
-      this.applyFilter();
-    }
+    this.applyQueryParamsToFilters();
 
     this.$nextTick(() => {
       this.width = document.documentElement.clientWidth;
@@ -293,14 +226,20 @@ export default {
     this.$store.commit(CLEAR_FILTERS_LIST);
   },
   watch: {
+    paginationPage() {
+      const { query } = this.$route;
+      const newQuery = {
+        ...query,
+        paginationPage: this.paginationPage,
+      };
+      this.applyFilter();
+      this.$router.push({ path: '/radiator', query: newQuery })
+    },
     min() {
       if (Number(this.min) > Number(this.max)) this.max = this.min;
     },
-    minOs() {
-      if (Number(this.minOs) > Number(this.maxOs)) this.maxOs = this.minOs;
-    },
-    minGarant() {
-      if (Number(this.minGarant) > Number(this.maxGarant)) this.maxGarant = this.minGarant;
+    manufacturers() {
+      this.producers = this.manufacturers;
     },
     selectedSubTypes() {
       if (this.selectedSubTypes.length && this.selectedSubTypes.length !== 6) {
@@ -309,26 +248,34 @@ export default {
     },
     selectedProducers() {
       if (this.selectedProducers.includes(2)) {
-        this.selectedSubTypes = this.producers[2].childrens.map((item) => item.id);
+        this.selectedSubTypes = (this.producers[2]?.childrens || []).map((item) => item.key);
       }
     },
-    selectedType() {
-      this.applyFilter();
-    },
-    selectedHeight() {
+    allValuesSum() {
+      if (!this.isFirstSet) {
+        this.$store.commit(SET_PAGINATION_PAGE, 1);
+      }
       this.applyFilter();
     },
     selectedManufacturer() {
       if (this.selectedManufacturer === null) this.clearFilter();
       if (this.selectedManufacturer !== null) {
-        this.toggled = "showProducers";
+        this.toggled = [...this.toggled, "showProducers"];
         this.selectedSubTypes = [];
         this.selectedProducers = [this.selectedManufacturer];
-        this.applyFilter();
       }
     },
   },
   computed: {
+    ...mapGetters(["manufacturers", "page"]),
+    paginationPage: {
+      get() {
+        return this.page;
+      },
+      set(value) {
+        this.$store.commit(SET_PAGINATION_PAGE, parseInt(value));
+      },
+    },
     filterStatus() {
       return this.showFilter ? "Скрыть фильтр" : "Показать фильтр";
     },
@@ -338,13 +285,70 @@ export default {
       this.showFilter = !size;
       return size;
     },
+    allValuesSum() {
+      return `${this.min}
+      ${this.max}
+      ${this.selectedProducers}
+      ${this.selectedType}
+      ${this.selectedHeight}
+      ${this.selectedTypes}
+      ${this.selectedSubTypes}
+      ${this.selectedColor}
+      ${this.randomTrigger}`;
+    },
   },
   methods: {
+    applyQueryParamsToFilters() {
+      const { query } = this.$route;
+      if (Object.keys(query).length) {
+        this.randomTrigger = Math.random().toString(32).slice(2);
+        this.min = query.min || this.min;
+        this.max = query.max || this.max;
+        this.selectedColor = parseInt(query.selectedColor ) || this.selectedColor;
+        this.paginationPage = query.paginationPage || this.page;
+
+        this.selectedProducers = this.safeGetArray(query.selectedProducers) || this.selectedProducers,
+        this.selectedTypes = this.safeGetArray(query.selectedTypes) || this.selectedTypes,
+        this.selectedSubTypes = this.safeGetArray(query.selectedSubTypes) || this.selectedSubTypes,
+        
+        this.selectSavedType(parseInt(query.selectedType) || this.selectedType);
+        this.selectSavedHeight(parseInt(query.selectedHeight) || this.selectedHeight);
+
+        if (this.selectedProducers.length === 1) this.setManufacturer(parseInt(this.selectedProducers[0]));
+      }
+    },
+    safeGetArray(data) {
+      if (!data) return false;
+
+      if (Array.isArray(data)) {
+        return data;
+      }
+      let res = data.split(',');
+      res = res.length ? res : false;
+      return res;
+    },
+    setQueryParam() {
+      const query = {
+        min: this.min,
+        max: this.max,
+        selectedProducers: this.selectedProducers,
+        selectedType: this.selectedType,
+        selectedHeight: this.selectedHeight,
+        selectedTypes: this.selectedTypes,
+        selectedSubTypes: this.selectedSubTypes,
+        selectedColor: this.selectedColor,
+        paginationPage: this.paginationPage,
+      };
+
+      this.$router.push({ path: '/radiator', query });
+    },
     toggleFilter() {
       this.showFilter = !this.showFilter;
     },
     toggleCollapse(name) {
-      this.toggled = this.toggled === name ? "" : name;
+      this.toggled = this.toggled.includes(name) 
+        ? this.toggled.filter((item) => item !== name)
+        : [...this.toggled, name];
     },
     getType(path) {
       if (path.includes("radiator")) return 0;
@@ -362,7 +366,9 @@ export default {
       this.selectedTypes = [];
       this.selectedProducers = [];
       this.selectedSubTypes = [];
-      this.toggled = "";
+      this.toggled = ["showProducers", "showCountry", "showConnectType", "showColors"];
+      this.color = 0;
+      this.$store.commit(SET_PAGINATION_PAGE, 1);
 
       this.clearManufacturer();
       this.clearType();
@@ -371,35 +377,30 @@ export default {
       this.applyFilter();
     },
     applyFilter() {
-      if (this.isMobile) this.showFilter = false;
-      let data = {
-        price: {
-          min: this.min || 0,
-          max: this.max || 100000,
-        },
-        garant: {
-          min: this.minGarant || 5,
-          max: this.maxGarant || 50,
-        },
-        countries: this.selectedCountries,
-        producers: [...this.selectedProducers, ...this.selectedSubTypes],
-        rediatorType: this.selectedType,
-        height: this.selectedHeight,
-      };
-      if (this.selectedProducers.includes(2)) data.producers = [...data.producers, 21, 22, 23, 24, 25, 26, 27, 28];
-      this.$store.commit(SET_PAGINATION_PAGE, 1);
-      this.$store.commit(SAVE_SEARCH_VALUE, "");
-      data = {
-        ...data,
-        os: {
-          min: this.minOs || 0,
-          max: this.maxOs || 500,
-        },
-        types: this.selectedTypes,
-        productType: this.getType(this.currentPath),
-      };
-
-      this.$store.dispatch(GET_FULL_PRODUCTS_LIST, data);
+      this.$nextTick(() => {
+        this.setQueryParam();
+        this.isFirstSet = false;
+        if (this.isMobile) this.showFilter = false;
+        let data = {
+          price: {
+            min: this.min || 0,
+            max: this.max || 100000,
+          },
+          producers: [...this.selectedProducers, ...this.selectedSubTypes],
+          rediatorType: this.selectedType,
+          height: this.selectedHeight,
+        };
+        if (this.selectedProducers.includes(2))
+          data.producers = [...data.producers, 21, 22, 23, 24, 25, 26, 27, 28, 29];
+        this.$store.commit(SAVE_SEARCH_VALUE, "");
+        data = {
+          ...data,
+          types: this.selectedTypes,
+          color: this.selectedColor,
+          productType: this.getType(this.currentPath),
+        };
+        this.$store.dispatch(GET_FULL_PRODUCTS_LIST, data);
+      })
     },
   },
 };
@@ -463,7 +464,6 @@ ul {
   box-shadow: 0 0 15px -2px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-flow: column;
-  position: sticky;
   top: 80px;
 
   .cart-svg {

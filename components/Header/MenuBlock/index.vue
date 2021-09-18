@@ -2,7 +2,12 @@
   <fragment>
     <div :class="['menu-block', { 'menu-block--fixed': isBlockFixed }]" id="menu-block">
       <div class="products">
-        <Menu field="title" :showMenu="showMenu" :options="menuElementsList" :onClose="toggleMenu">
+        <Menu
+          field="title"
+          :showMenu="showMenu"
+          :options="menuElementsList"
+          :onClose="toggleMenu"
+        >
           <button @click="toggleMenu" type="button" class="btn">
             <div :class="['burger', { 'burger--active': showMenu }]">
               <div :class="['burger-row', { 'burger-row--hide': showMenu }]"></div>
@@ -13,11 +18,25 @@
           </button>
         </Menu>
         <div class="search">
-          <input id="search" type="text" class="search-field" placeholder="Поиск" v-model="searchV" @focus="search" @keyup.enter="goTo" />
+          <input
+            id="search"
+            type="text"
+            class="search-field"
+            placeholder="Поиск"
+            v-model="searchV"
+            @focus="search"
+            @keyup.enter="goTo"
+          />
           <span @click="goTo">
             <v-icon class="search__loop" name="search"></v-icon>
           </span>
-          <Menu :showMenu="list && list.length > 0" :options="list" :onClose="toggleSearchMenu" :styleWidthObject="{ width: '100%' }" field="name" />
+          <Menu
+            :showMenu="list && list.length > 0"
+            :options="list"
+            :onClose="toggleSearchMenu"
+            :styleWidthObject="{ width: '100%' }"
+            field="name"
+          />
         </div>
       </div>
       <router-link to="/cart" class="cart">
@@ -56,8 +75,17 @@ import _ from "lodash";
 import { mapGetters } from "vuex";
 
 import Menu from "../../DropMenu";
-import { GET_PRODUCTS, GET_FULL_PRODUCTS_LIST } from "../../../store/actions.type";
-import { CLEAR_SEARCH_PRODUCTS, CHECK_CART_DATA, SAVE_SEARCH_VALUE, SET_PAGINATION_PAGE } from "../../../store/mutations.type";
+import {
+  GET_PRODUCTS,
+  GET_FULL_PRODUCTS_LIST,
+  GET_PROJECT_SETTINGS,
+} from "../../../store/actions.type";
+import {
+  CLEAR_SEARCH_PRODUCTS,
+  CHECK_CART_DATA,
+  SAVE_SEARCH_VALUE,
+  SET_PAGINATION_PAGE,
+} from "../../../store/mutations.type";
 import { catalog, links } from "../../../constants/links";
 
 export default {
@@ -134,6 +162,7 @@ export default {
     this.debouncedSearch = _.debounce(this.search, 350);
   },
   mounted() {
+    this.$store.dispatch(GET_PROJECT_SETTINGS);
     this.$store.commit(CHECK_CART_DATA);
     document.addEventListener("scroll", this.changeSearchType);
     this.searchElement = document.documentElement;

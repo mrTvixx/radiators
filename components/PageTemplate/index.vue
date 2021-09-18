@@ -35,7 +35,7 @@ export default {
   destroyed() {
     if (!this.path) return;
     this.$store.commit(SAVE_SEARCH_VALUE, '');
-    this.$store.commit(SET_PAGINATION_PAGE, 1);
+    // this.$store.commit(SET_PAGINATION_PAGE, 1);
   },
 };
 </script>
