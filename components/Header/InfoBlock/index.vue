@@ -69,12 +69,10 @@
 <script>
 import { links } from "../../../constants/links";
 import CallModal from "../CallModal";
-import CompactMenu from "../../CompactMenu";
 
 export default {
   components: {
     CallModal,
-    CompactMenu,
   },
   data() {
     return {
@@ -85,6 +83,11 @@ export default {
     };
   },
   mounted() {
+    if (this.$route?.query?.isCallModal) {
+      this.isTooltip = false;
+      this.$refs.callModal.$refs.call.open();
+    }
+
     window.addEventListener("resize", this.updateWidth);
     this.updateWidth();
 
@@ -102,6 +105,8 @@ export default {
       this.width = window.innerWidth;
     },
     call() {
+      const { query } = this.$route;
+      this.$router.push({ path: this.$route.path, query: { ...query, isCallModal: true } })
       this.isTooltip = false;
       this.$refs.callModal.$refs.call.open();
     },

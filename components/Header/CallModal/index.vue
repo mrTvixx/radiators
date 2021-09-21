@@ -1,17 +1,5 @@
 <template>
   <div>
-    <!-- может быть использую потом -->
-    <!-- <sweet-modal class="sweet-modal-is-visible" ref="modal" blocking :hideCloseButton="true" :enableMobileFullscreen="false">
-      <div class="close-icon" @click="onModalClose">x</div>
-      <h3>Добро пожаловать на сайт магазина ДомВТепле!</h3>
-      <p>Мы предоставляем широкий выбор товаров для отопления!</p>
-      <p>Также вы можете заказать звонок, и наши специалисты помогут вам с подбором нужного оборудования (бесплатная консультация).</p>
-      <div class="modal__buttons">
-        <button class="modal__button modal__button--red" @click="onCall">Заказать звонок</button>
-        <button class="modal__button" @click="onContinue">Продолжить</button>
-      </div>
-    </sweet-modal> -->
-
     <sweet-modal
       title="Заказать звонок"
       class="sweet-modal-is-visible"
@@ -90,43 +78,28 @@ export default {
       isAgreement: true,
     };
   },
-  mounted() {
-    // может быть позже
-    // const isCall = localStorage.getItem("isCall");
-    // if (!isCall && !this.withoutAutoOpen) this.$refs.modal.open();
-  },
   computed: {
     ...mapGetters(["isLoading"]),
     isValid() {
       return Boolean(this.phone) && Boolean(this.name) && this.isAgreement;
     },
-    modals() {
-      this.$refs.modal;
-    },
   },
   methods: {
-    onContinue() {
-      this.$refs.modal.close();
-      localStorage.setItem("isCall", true);
+    removeCallFromQuery() {
+      const query = Object.assign({}, this.$route.query);
+      delete query.isCallModal;
+      this.$router.replace({ path: this.$route.path, query })
     },
     onCallClose() {
+      this.removeCallFromQuery();
       this.$refs.call.close();
     },
     onSuccClose() {
+      this.removeCallFromQuery();
       this.$refs.success.close();
     },
-    onModalClose() {
-      this.$refs.modal.close();
-    },
-    onContinue() {
-      this.$refs.modal.close();
-      localStorage.setItem("isCall", true);
-    },
-    onCall() {
-      this.$refs.modal.close();
-      this.$refs.call.open();
-    },
     onSend() {
+      this.removeCallFromQuery();
       const data = {
         username: this.name,
         phone_number: this.phone,

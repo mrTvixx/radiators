@@ -233,7 +233,7 @@ export default {
         paginationPage: this.paginationPage,
       };
       this.applyFilter();
-      this.$router.push({ path: '/radiator', query: newQuery })
+      this.$router.push({ path: this.$route.path, query: newQuery })
     },
     min() {
       if (Number(this.min) > Number(this.max)) this.max = this.min;
@@ -340,7 +340,7 @@ export default {
         paginationPage: this.paginationPage,
       };
 
-      this.$router.push({ path: '/radiator', query });
+      this.$router.push({ path: this.$route.path, query });
     },
     toggleFilter() {
       this.showFilter = !this.showFilter;
