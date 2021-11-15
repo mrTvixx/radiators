@@ -6,12 +6,12 @@
         <sup>00</sup>-20
         <sup>00</sup>
       </span>
-      <a href="tel:+79459999999" class="footer__phone">+7 945 999 99 99</a>
+      <a href="tel:+74994443465" class="footer__phone">+7 499 444 34 65</a>
     </div>
     <div class="row">
       <div class="footer__catalog">
         <span class="title">Каталог:</span>
-        <div class="footer__catalog-links">
+        <div class="footer__catalog-links footer__catalog-links--mob">
           <router-link
             class="footer__catalog-links-element"
             v-for="item in catalogList"
@@ -34,7 +34,7 @@
     </div>
     <hr />
     <div class="row">
-      <div class="year">2020</div>
+      <div class="year">2012 - 2020</div>
     </div>
   </footer>
 </template>
@@ -61,6 +61,10 @@ export default {
 
   sup {
     font-size: 0.8rem;
+  }
+
+  span {
+    font-size: 1rem;
   }
 
   hr {
@@ -112,16 +116,40 @@ export default {
       height: 65px;
       display: flex;
       flex-wrap: wrap;
+      justify-content: space-between;
 
       &-element {
-        transition: 0.3s;
         padding: 0 35px 0 0;
         cursor: pointer;
         font-size: 1rem;
         min-width: 130px;
+        transition: 0.3s;
 
         &:hover {
           color: $project-red;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 720px) {
+  .footer {
+    .row {
+      flex-flow: column;
+    }
+
+    &__catalog,
+    &__menu {
+      max-width: 100%;
+      height: 100%;
+
+      &-links {
+        padding: 5px 0 50px 0;
+
+        &--mob {
+          flex-flow: column;
+          height: 110px;
         }
       }
     }

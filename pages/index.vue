@@ -1,7 +1,8 @@
 <template>
   <PageTemplate>
     <fragment>
-      <Slider />
+      <!-- maybe be use in future -->
+      <!-- <Slider /> -->
       <Catalog />
     </fragment>
   </PageTemplate>
@@ -16,8 +17,13 @@ export default {
   components: {
     Slider,
     Catalog,
-    PageTemplate
-  }
+    PageTemplate,
+  },
+  head() {
+    return {
+      title: "ДомВТепле",
+    };
+  },
 };
 </script>
 

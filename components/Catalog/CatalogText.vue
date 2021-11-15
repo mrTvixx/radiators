@@ -1,10 +1,72 @@
 <template>
-  <section>
-    <h3>Какой-то текст о товарах</h3>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt ligula at pellentesque imperdiet. Etiam at convallis libero, eget tristique est. Nam nec tincidunt tellus, at cursus ante. Ut consectetur dui velit, sit amet rhoncus nunc placerat id. In hac habitasse platea dictumst. Integer non consequat metus, ut aliquet arcu. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras condimentum tempus arcu, eget placerat magna fringilla eget. Maecenas commodo laoreet placerat. Pellentesque vehicula pretium congue.</p>
-    <p>Integer tortor erat, rhoncus eu metus quis, dignissim varius sapien. Nulla non vehicula eros, in bibendum nisl. Cras nec ligula blandit odio viverra efficitur in quis massa. Etiam venenatis dignissim molestie. Vestibulum auctor massa ut feugiat suscipit. Morbi malesuada purus nulla, sed commodo tellus molestie at. Vestibulum lorem velit, maximus in vestibulum in, tincidunt et diam. Praesent at feugiat justo, condimentum aliquam lorem. Nulla facilisi. Ut eget malesuada odio. Nullam elit lectus, consectetur eu nisl quis, blandit tristique massa.</p>
-    <p>Quisque vulputate odio ac pharetra sagittis. Curabitur eget volutpat diam. Donec viverra eros mauris, eu blandit tellus semper nec. Duis bibendum risus nisl, sed pretium dui tincidunt at. Sed id diam a lorem ullamcorper condimentum. Donec ut dapibus nisl. Nullam id ante nulla. In non lobortis risus, et ornare magna. Fusce hendrerit maximus lacinia. Proin quis velit eget eros eleifend condimentum ac in tellus. Etiam cursus eu eros non luctus. Aliquam ac maximus libero. Nam sit amet dui quis enim placerat suscipit. Vestibulum sed eros nibh. In hac habitasse platea dictumst. Sed eu posuere metus.</p>
-    <p>Donec cursus, massa vitae pellentesque malesuada, mauris tellus egestas quam, sit amet suscipit lectus ex sit amet turpis. Nulla suscipit hendrerit quam, hendrerit accumsan lacus congue sit amet. Proin fringilla felis et sapien suscipit, ac gravida magna lacinia. Ut sollicitudin mauris nisl, non aliquam mi efficitur id. Nulla non neque eu nisi lobortis rhoncus vitae et magna. Proin id euismod nibh. Aenean efficitur elit convallis commodo finibus. Aliquam vel faucibus metus, in vulputate augue. Duis pellentesque at urna sed mollis. Donec varius facilisis quam quis efficitur. Fusce egestas odio nibh, et pellentesque nisi suscipit sed. Vivamus ac dui dapibus, volutpat risus ultricies, semper turpis. Nulla sem justo, auctor ac cursus eu, faucibus non libero. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In at erat metus.</p>
-    <p>Integer quis nibh ipsum. Suspendisse quis iaculis mi. Nullam porta et diam ut pretium. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque mattis accumsan risus a pretium. Morbi mattis commodo venenatis. Vestibulum eget elit tempor, imperdiet velit a, blandit nulla. Duis sem tellus, convallis id diam maximus, accumsan fermentum velit. Fusce tempus dictum condimentum. Nulla sed ligula ac ex semper accumsan. Aenean sodales risus nec consectetur fermentum. Duis vulputate eu sem ac imperdiet. Pellentesque vitae egestas mi. Maecenas congue dolor dui.</p>
+  <section class="main-page__text">
+    <h2>
+      <b>Рады приветствовать Вас на сайте компании ДомВТепле!</b>
+    </h2>
+    <h3>Наша компания была основана в 2012 году.</h3>
+    <p>Основным направлением деятельности компании является продажа оборудования для систем водоснабжения и отопления.</p>
+    <p>Индивидуальный подход к каждому клиенту, дает нам возможность подобрать необходимый товар, качество которого проверено временем и максимально сбалансировано по соотношению цена-качество. Мы сотрудничаем с ведущими производителями и поставщиками, что позволяет нам предлагать широкий ассортимент высококачественной продукции по низким ценам, с собственного склада и под заказ.</p>
+    <p>Наши менеджеры окажут Вам грамотную консультацию и помощь в выборе оборудования.</p>
+    <p>А наша Служба доставки максимально быстро привезёт Ваш заказ по указанному Вами адресу.</p>
+    <p>Все представленное оборудование соответствует мировым стандартам, вся продукция прошла сертификацию в России и застрахована. Наше оборудование подобрано для российских условий эксплуатации, что обеспечивает его надежную работу.</p>
+    <p>Мы даём потребителю полную и достоверную информацию о продукции.</p>
+    <p>
+      Мы ценим своих клиентов, а потому, готовы работать
+      <b>24 часа в сутки</b>,
+      без праздников и выходных!
+    </p>
+    <hr />
+    <h2>
+      <b>НАШИ ПРЕИМУЩЕСТВА</b>
+    </h2>
+    <ul>
+      <li>профессиональные консультации и помощь в подборе оборудования;</li>
+      <li>оптимальные цены на весь ассортимент (гибкие системы скидок на продукцию);</li>
+      <li>оперативная доставка по всей России (наличие своей службы доставки, а так же сотрудничество с курьерскими службами и транспортными компаниями);</li>
+      <li>Различные способы оплаты (наличный и безналичный расчет, возможна оплата картой).</li>
+    </ul>
+    <h2>
+      <b>КАК МЫ РАБОТАЕМ</b>
+    </h2>
+    <ol>
+      <li>
+        <v-icon class="icon" name="shopping-cart" />вы оформляете заказ через корзину ИМ;
+      </li>
+      <li>
+        <v-icon class="icon" name="headphones" />мы связываемся с Вами и уточняем детали, при необходимости вносим изменения в заказе;
+      </li>
+      <li>
+        <v-icon class="icon" name="file-text" />мы формируем окончательный заказ, уточняем наличие товара, согласовываем сроки поставки, условия оплаты и доставки;
+      </li>
+      <li>
+        <v-icon class="icon" name="truck" />доставка заказа или самовывоз из нашего магазина;
+      </li>
+      <li>
+        <v-icon class="icon" name="phone-call" />также наши операторы всегда готовы помочь вам подобрать необходимое оборудование и принять у вас заказ в телефонном режиме.
+      </li>
+    </ol>
   </section>
 </template>
+
+<style lang="scss">
+.main-page {
+  &__text {
+    .icon {
+      width: 20px;
+      margin: 0 10px -4px 0;
+    }
+
+    font-size: 16px;
+
+    ul,
+    ol {
+      padding-left: 20px;
+      margin: 0;
+    }
+
+    li {
+      margin: 10px 0 0;
+    }
+  }
+}
+</style>

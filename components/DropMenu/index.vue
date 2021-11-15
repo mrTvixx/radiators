@@ -5,39 +5,45 @@
     </div>
     <ul class="dropdown-menu" v-if="showMenu" :style="styleWidthObject">
       <li
-        v-html="option.name"
+        @click="() => onLinkClick(option['originalName'])"
         class="dropdown-menu__element"
-        v-for="option in options" 
+        v-for="option in options"
         :key="option.id"
-      />
+      >
+        <router-link :to="option.link" v-html="option[field || 'name']" />
+      </li>
     </ul>
   </div>
 </template>
-
 <script>
 export default {
-  props: [
-    'options',
-    'showMenu',
-    'onClose',
-    'styleWidthObject',
-  ],
+  props: {
+    field: {},
+    options: {},
+    showMenu: {},
+    onClose: {},
+    onSelect: {},
+    styleWidthObject: {}
+  },
   mounted() {
-    document.addEventListener('click', this.clickHandler);
+    document.addEventListener("click", this.clickHandler);
   },
   beforeDestroy() {
-    document.removeEventListener('click', this.clickHandler);
+    document.removeEventListener("click", this.clickHandler);
   },
   methods: {
     clickHandler(event) {
       const { target } = event;
       const { $el } = this;
-      if (!$el.contains(target) && this.showMenu) {
+      if (!$el.contains(target) && this.showMenu && target.id !== 'search') {
         this.onClose();
       }
     },
-  },
-}
+    onLinkClick() {
+      this.onClose();
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -47,7 +53,7 @@ export default {
   position: relative;
   display: inline-block;
   vertical-align: middle;
-  
+
   &-menu {
     position: absolute;
     top: 100%;
@@ -66,13 +72,22 @@ export default {
 
     &__element {
       cursor: pointer;
-      padding: 10px 0 10px 20px;
       color: $project-color;
       white-space: nowrap;
+      font-size: 1.2rem;
+      overflow: hidden;
+
+      a {
+        display: inline-block;
+        padding: 10px 20px 10px 20px;
+        width: 100%;
+      }
 
       &:hover {
         background: $project-bkg;
-        color: $project-red;
+        a {
+          color: $project-red;
+        }
       }
     }
   }
