@@ -45,7 +45,7 @@
     </div>
     <CallModal :withoutAutoOpen="true" ref="callModal" />
     <span class="company-block__number">
-      <a href="tel:+74994443465" class="contact">+7 499 444 34 65</a>
+      <a href="tel:+79996917470" class="contact">+7 999 691 74 70</a>
       <a
         @click="onEmailClick"
         href="mailto:info@домвтепле.рф"
